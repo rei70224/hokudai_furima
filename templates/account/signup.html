@@ -1,0 +1,12 @@
+{% block content %} 
+<form method="post" action="{% url 'account:signup' %}">
+    <fieldset>
+        <h1>Sign Up</h3>
+        {% csrf_token %}
+        {{ form.as_p }}
+    </fieldset>
+    <button type="submit" class="btn">
+        登録
+    </button>
+</form>
+{% endblock %}
