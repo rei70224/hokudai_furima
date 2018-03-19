@@ -40,3 +40,10 @@ def login(request):
 @login_required
 def details(request):
     return render(request, 'account/details.html')
+
+@login_required
+def logout(request):
+    auth.logout(request)
+    #messages.success(request, ('ログアウトしました'))
+    print(settings.LOGIN_REDIRECT_URL)
+    return redirect(settings.LOGIN_REDIRECT_URL)

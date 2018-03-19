@@ -1,4 +1,9 @@
 {% block content %}
-<p>{{ user.username }}</p>
-<p>{{ user.intro }}</p>
+{% if user.is_authenticated %}
+  <p>{{ user.username }}</p>
+  <p>{{ user.intro }}</p>
+  <a href="{% url "account:logout" %}">ログアウト</a>
+{% else %}
+  <a href="{% url "account:login" %}">ログイン</a>
+{% endif %}
 {% endblock %}
