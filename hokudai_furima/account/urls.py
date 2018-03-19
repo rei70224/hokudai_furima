@@ -5,4 +5,5 @@ app_name = "account"
 
 urlpatterns = [
         url(r'^$',views.signup, name='signup'),
+        url(r'^login$',views.login, name='login'),
         ]

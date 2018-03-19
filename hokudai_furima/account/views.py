@@ -1,13 +1,15 @@
 from django.conf import settings
 from django.contrib import auth, messages
-from django.contrib.auth import views as django_views
+from django.contrib.auth import views as django_views # in login
 # from
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
 # from django.utils.tran
-from .forms import (SignupForm)
+from .forms import (SignupForm, LoginForm)
+
+# inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 
 def signup(request):
     form = SignupForm(request.POST or None)
@@ -26,3 +28,9 @@ def signup(request):
     #return TemplateResponse(request, 'account/signup.html', ctx)
     return render(request, 'account/signup.html', ctx)
 
+def login(request):
+    kwargs = {
+        'template_name': 'account/login.html',
+        'authentication_form': LoginForm}
+    print(request.POST)
+    return django_views.LoginView.as_view(**kwargs)(request, **kwargs)
