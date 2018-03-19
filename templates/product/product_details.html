@@ -1,0 +1,23 @@
+{% block content %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="product">
+        {% if product.published_date %}
+            <div class="date">
+                {{ product.published_date }}
+            </div>
+        {% endif %}
+        {% if product.seller %}
+            <div class="username">
+                投稿者：{{ product.seller }}
+            </div>
+        {% endif %}
+        <h1>{{ product.title }}</h1>
+        <p>{{ product.description|linebreaksbr }}</p>
+    </div>
+{% endblock %}
