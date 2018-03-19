@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hokudai_furima.account',
     'hokudai_furima.product',
+    'hokudai_furima.search',
 ]
 
 MIDDLEWARE = [
