@@ -50,6 +50,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = (
+    ('django.contrib.auth.backends.ModelBackend'),
+)
+
 #ROOT_URLCONF = 'hokudai_furima.urls'
 ROOT_URLCONF = 'config.urls'
 
@@ -125,3 +129,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'account.User'
+LOGIN_REDIRECT_URL = '/account/'
+LOGIN_URL = '/account/login/'
