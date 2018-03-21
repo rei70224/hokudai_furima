@@ -13,12 +13,17 @@
             </div>
         {% endif %}
         <p name="product_id" style="display: none;">{{product.id}}</p>
-        {% if product.seller %}
-            <div class="username">
-                投稿者：{{ product.seller }}
-            </div>
-        {% endif %}
         <h1>{{ product.title }}</h1>
+        {% if request.user.is_authenticated %}
+            {% if product.seller.id == request.user.id %}
+            <a href="{% url "product:update_product" product.pk %}" style="display: block">編集</a>
+            {% endif %}
+        {% endif %}
+        <div class="username">
+            投稿者：{{ product.seller }}
+        </div>
+        <a>{{ product.price }} 円</p>
+        <p>{{ product.is_sold|yesno:"売り切れ,販売中" }}</p>
         <p>{{ product.description|linebreaksbr }}</p>
     </div>
 

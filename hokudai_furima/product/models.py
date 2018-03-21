@@ -7,6 +7,7 @@ class Product(models.Model):
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title  = models.CharField(max_length=200)
     description = models.TextField()
+    price = models.IntegerField(default=0)
     is_sold = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
