@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/csrf_token_ajax.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/post_talk_ajax.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+</head>
+
+<div id="chat">
+    <h2>チャット</h2>
+    <p>商品の価格交渉や受け渡し方法確認等について、自由にチャットしてください</p>
+    <ol class="talk_list">
+    {% for talk in talks %}
+        {% if talk.talker == request.user %}
+            <div class="user_talk">
+        {% else %}
+            <div class="others_talk">
+        {% endif %}
+            <div>{{ talk.talker }}</div>
+            <div class="balloon">{{ talk.sentence|linebreaksbr }}</div>
+            <div>{{ talk.created_date }}</div>
+        </div>
+    {% endfor %}
+    </ol>
+</div>
+
+{% if request.user.is_authenticated %}
+    <form method="POST" action="{% url 'chat:post_talk' %}" id="user_talk_form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">送信</button>
+    </form>
+{% else %}
+    <p>チャットに投稿するにはログインが必要です</p>
+    <a href="{% url 'account:login' %}">ログイン</a>
+{% endif %}
+
+

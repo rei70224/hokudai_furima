@@ -4,9 +4,11 @@ from .models import Product
 from .forms import NewProductForm
 from django.contrib import messages
 from django.conf import settings
-
+from hokudai_furima.chat.models import Talk, Chat
+from hokudai_furima.chat.forms import TalkForm
 # Create your views here.
 #from django import HttpResponse
+from functools import reduce
 
 def product_list(request):
     products = product.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -35,4 +37,18 @@ def create_product(request):
 
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    return render(request, 'product/product_details.html', {'product': product})
+    talk_form = TalkForm()
+    #return render(request, 'product/product_details.html', {'product': product})
+    talk_records = Chat.objects.filter(product_id=product.id)
+    print("talk_record: "+str(talk_records))
+    print(list(map(lambda x: x.talk_set.all(),list(talk_records))))
+    talk_objects = list(map(lambda x: x.talk_set.all(),list(talk_records)))
+    print(list(map(lambda x: x.sentence,list(talk_objects[0]))))
+
+    #print("talk_record: "+str(''.join(reduce(lambda x,y: x['talk']+y['talk'],list(talk_records)))))
+    if request.user.is_authenticated:
+        return render(request, 'product/product_details.html', {'product': product, 'form': talk_form, 'talks':list(map(lambda x: x.talk_set.all(),list(talk_records)))[0]})
+    else:
+        return render(request, 'product/product_details.html', {'product': product, 'talks':list(map(lambda x: x.talk_set.all(),list(talk_records)))[0]})
+
+

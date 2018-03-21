@@ -12,6 +12,7 @@
                 {{ product.published_date }}
             </div>
         {% endif %}
+        <p name="product_id" style="display: none;">{{product.id}}</p>
         {% if product.seller %}
             <div class="username">
                 投稿者：{{ product.seller }}
@@ -20,4 +21,7 @@
         <h1>{{ product.title }}</h1>
         <p>{{ product.description|linebreaksbr }}</p>
     </div>
+
+    {% include "chat/partials/_chat.html" %}
+
 {% endblock %}
