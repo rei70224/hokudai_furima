@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% block content %} 
 <form method="post" action="{% url 'account:signup' %}">
-    <fieldset>
-        <h1>Sign Up</h3>
-        {% csrf_token %}
-        {{ form.as_p }}
-    </fieldset>
+    <h1>新規登録</h3>
+    {% csrf_token %}
+    {{ form.as_p }}
     <button type="submit" class="btn">
         登録
     </button>
 </form>
+<p>アカウントを作成している場合、<a href="{% url "account:login" %}">ログイン</a></p>
 {% endblock %}
