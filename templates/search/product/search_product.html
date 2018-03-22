@@ -13,9 +13,11 @@
         {% for product in search_results %}
             <div>
                 <h1><a href="{% url 'product:product_details' pk=product.pk %}">{{ product.title}}</a></h1>
-                <span>投稿者: {{ product.seller }}</span>
-                <span>last_updated: {{ product.updated_date }}</span>
+                <span>出品者: {{ product.seller }}</span>
+                <span>最終更新: {{ product.updated_date }}</span>
                 <p>{{ product.description|linebreaksbr }}</p>
+                <a>{{ product.price }} 円</p>
+                <p>{{ product.is_sold|yesno:"売り切れ,販売中" }}</p>
             </div>
         {% endfor %}
     {% endif %}
