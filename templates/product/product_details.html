@@ -10,7 +10,7 @@
     <div class="product">
         {% if product.published_date %}
             <div class="date">
-                {{ product.published_date }}
+                最終更新: {{ product.published_date }}
             </div>
         {% endif %}
         <p name="product_id" style="display: none;">{{product.id}}</p>
@@ -21,9 +21,9 @@
             {% endif %}
         {% endif %}
         <div class="username">
-            投稿者：{{ product.seller }}
+            出品者: {{ product.seller }}
         </div>
-        <a>{{ product.price }} 円</p>
+        <p>価格: {{ product.price }} 円</p>
         <p>{{ product.is_sold|yesno:"売り切れ,販売中" }}</p>
         <p>{{ product.description|linebreaksbr }}</p>
     </div>
