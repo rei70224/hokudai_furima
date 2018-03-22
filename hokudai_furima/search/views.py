@@ -19,7 +19,6 @@ def search_product(request):
                 for result in results_by_word:
                     if result not in search_results:
                         search_results.append(result)
-            #return redirect('product:product_details', search_results_pk=products.pk, form=form)
             return render(request, 'search/product/search_product.html', {'search_results': search_results, 'form': form})
 
     form = SearchProductForm()

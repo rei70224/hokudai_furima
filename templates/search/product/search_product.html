@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
     <div>
-    <form method="GET" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">検索</button>
-    </form>
+        <h1>商品検索</h1>
+        <form method="GET" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">検索</button>
+        </form>
     </div>
 
-    <div>
+    {% if search_results %}
         <h2>検索結果</h2>
-    </div>
-    {% for product in search_results %}
-        <div>
-            <h1><a href="{% url 'product:product_details' pk=product.pk %}">{{ product.title}}</a></h1>
-            <span>投稿者: {{ product.seller }}</span>
-            <span>last_updated: {{ product.updated_date }}</span>
-            <p>{{ product.description|linebreaksbr }}</p>
-        </div>
-    {% endfor %}
+        {% for product in search_results %}
+            <div>
+                <h1><a href="{% url 'product:product_details' pk=product.pk %}">{{ product.title}}</a></h1>
+                <span>投稿者: {{ product.seller }}</span>
+                <span>last_updated: {{ product.updated_date }}</span>
+                <p>{{ product.description|linebreaksbr }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
