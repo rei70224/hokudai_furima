@@ -90,3 +90,6 @@ Thumbs.db
 
 # pyenv
 .python-version
+
+# Dockerfile
+Dockerfile
