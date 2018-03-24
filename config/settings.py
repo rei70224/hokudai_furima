@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 's7%fash0=jszafg^ii8o^eu@ynzp-6xnjf_i!+lq&3nem+w%i4'
+SECRET_KEY = os.getenv('HOKUDAI_FURIMA_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
@@ -87,13 +87,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+db_name = os.getenv('HOKUDAI_FURIMA_DB_NAME')
+db_user = os.getenv('HOKUDAI_FURIMA_DB_USER')
+db_pass = os.getenv('HOKUDAI_FURIMA_DB_PASSWORD')
+
 DATABASES = { 'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('HOKUDAI_FURIMA_DB_NAME'),
-        'USER': os.getenv('HOKUDAI_FURIMA_DB_USER'),
-        'PASSWORD': os.getenv('HOKUDAI_FURIMA_DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': db_name,
+        'USER': db_user,
+        'PASSWORD': db_pass,
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
