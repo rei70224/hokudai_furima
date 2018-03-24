@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'hokudai_furima.product',
     'hokudai_furima.search',
     'hokudai_furima.chat',
+    'hokudai_furima.core',
 ]
 
 MIDDLEWARE = [
@@ -145,11 +146,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = os.path.join(PROJECT_ROOT, 'hokudai_furima/static/')
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    STATIC_URL,
-    )
-
+    ('css', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'css')),
+    ('img', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'img')),
+    ('js', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'js')),
+)
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 AUTH_USER_MODEL = 'account.User'
 LOGIN_REDIRECT_URL = '/account/'
