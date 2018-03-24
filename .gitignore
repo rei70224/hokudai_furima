@@ -93,3 +93,6 @@ Thumbs.db
 
 # Dockerfile
 Dockerfile
+
+# deplay
+/static/
