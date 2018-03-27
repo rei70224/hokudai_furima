@@ -6,6 +6,7 @@ from django.utils.translation import pgettext_lazy
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django import forms
 
+
 class UserManager(BaseUserManager):
 
     def create_user(
@@ -17,6 +18,7 @@ class UserManager(BaseUserManager):
             **extra_fields)
         if password:
             user.set_password(password)
+            print("set_password")
         user.save()
         return user
 
@@ -28,25 +30,18 @@ class User(PermissionsMixin, AbstractBaseUser):
         max_length=150,
         unique=True,
         help_text=(
-            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+            '英数字と@, ., +, -, _が使えます'),
         validators=[username_validator],
         error_messages={
-            'unique': ("A user with that username already exists."),
+            'unique': ("このユーザ名は既に登録されています"),
         },
     )
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=50)
+    email = models.EmailField(('email'), unique=True)
     intro = models.TextField(('intro'), max_length=200, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
-    # 画像など、テキストフィールドを使わない場合どうする？
-    #icon = 
-    #is_staff = models.BooleanField(default=False)
-    #is_active = models.BooleanField(default=True)
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
-    #REQUIRED_FIELDS = ['password1','password2']
-
     objects = UserManager()
 
 
