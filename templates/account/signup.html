@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {% block content %} 
-<form method="post" action="{% url 'account:signup' %}">
-    <h1>新規登録</h3>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn">
-        登録
-    </button>
-</form>
-<p>アカウントを作成している場合、<a href="{% url "account:login" %}">ログイン</a></p>
+<div class="container">
+    <form method="post" action="{% url 'account:signup' %}">
+        <h1>新規登録</h3>
+        {% csrf_token %}
+        {% bootstrap_form form layout='virtical' %}
+        <div class="form-group column">
+            <button type="submit" class="btn">
+                登録
+            </button>
+        </div>
+    </form>
+    <p>アカウントを作成している場合、<a href="{% url "account:login" %}">ログイン</a></p>
+</div>
 {% endblock %}
