@@ -93,3 +93,6 @@ Thumbs.db
 
 # Dockerfile
 Dockerfile
+
+# for temp image file
+media
