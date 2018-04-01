@@ -9,21 +9,41 @@ from hokudai_furima.chat.forms import TalkForm
 # Create your views here.
 #from django import HttpResponse
 from functools import reduce
+import os
+from versatileimagefield.placeholder import OnDiscPlaceholderImage
+
 
 def product_list(request):
     products = product.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'product/product_list.html', {'products': products})
 
 def create_product(request):
+    print("creating...")
     if request.method == "POST":
-        form = NewProductForm(request.POST)
+        print("form is posted")
+        form = NewProductForm(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
+            print("saving...")
             product = form.save(commit=False)
             product.seller = request.user
             product.published_date = timezone.now()
             product.save()
+            print("saved")
             messages.success(request, '出品に成功しました')
             return redirect('product:product_details', pk=product.pk)
+        else:
+            """
+            if request.user.is_authenticated:
+                form = NewProductForm()
+                return render(request, 'product/create_product.html', {'form': form})
+            else:
+                # renderだとフォームが描画されない
+                #return render(request, 'main/login.html')
+                return redirect(settings.LOGIN_URL)
+            """
+            pass
+
     else:
         if request.user.is_authenticated:
             form = NewProductForm()
