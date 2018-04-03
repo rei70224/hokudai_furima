@@ -1,4 +1,4 @@
-{% for product in product_list %}
+{% for product in search_results %}
 <div>
   <h1><a href="{% url 'product:product_details' pk=product.pk %}">{{ product.title}}</a></h1>
   <span>出品者: {{ product.seller }}</span>
