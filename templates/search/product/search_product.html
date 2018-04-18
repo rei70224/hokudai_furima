@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {% block content %}
-    <div>
-        <h1>商品検索</h1>
-        <form method="GET" class="post-form">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">検索</button>
-        </form>
-    </div>
-
-    {% if search_results %}
-        <h2>検索結果</h2>
-        {% for product in search_results %}
-            <div>
-                <h1><a href="{% url 'product:product_details' pk=product.pk %}">{{ product.title}}</a></h1>
-                <span>出品者: {{ product.seller }}</span>
-                <span>最終更新: {{ product.updated_date }}</span>
-                <p>{{ product.description|linebreaksbr }}</p>
-                <p>価格: {{ product.price }} 円</p>
-                <p>{{ product.is_sold|yesno:"売り切れ,販売中" }}</p>
+    <div class="container">
+        <div>
+            <h1>商品検索</h1>
+            <form method="GET" class="post-form">{% csrf_token %}
+                {% bootstrap_form form layout='virtical' %}
+            <div class="form-group column">  
+                <button type="submit" class="btn">検索</button>
             </div>
-        {% endfor %}
-    {% endif %}
+            </form>
+        </div>
+
+        {% if is_searched %}
+            <h2>検索結果</h2>
+            {% if product_list %}
+                {% include '_product_list.html' %}
+            {% else %}
+                <p>そのキーワードに一致する商品は見つかりませんでした。</p>
+            {% endif %}
+        {% endif %}
+    </div>
 {% endblock %}

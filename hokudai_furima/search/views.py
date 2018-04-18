@@ -19,8 +19,8 @@ def search_product(request):
                 for result in results_by_word:
                     if result not in search_results:
                         search_results.append(result)
-            return render(request, 'search/product/search_product.html', {'search_results': search_results, 'form': form})
+            return render(request, 'search/product/search_product.html', {'product_list': search_results, 'form': form, 'is_searched': True})
 
     form = SearchProductForm()
-    return render(request, 'search/product/search_product.html', {'form': form})
+    return render(request, 'search/product/search_product.html', {'form': form, 'is_searched': False})
 

@@ -1,4 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>ホームです</h1>
+    <h1>ホームです</h1>
+    <h2>最新商品</h2>
+{% if product_list %}
+    {% include '_product_list.html' %}
+{% else %}
+<p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
+{% endif %}
 {% endblock %}

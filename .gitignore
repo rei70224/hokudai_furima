@@ -94,5 +94,5 @@ Thumbs.db
 # Dockerfile
 Dockerfile
 
-# deplay
-/static/
+# for temp image file
+media
