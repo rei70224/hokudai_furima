@@ -281,7 +281,7 @@ github上で、pull requestを送る。
 
 という形でpull requestを送る
 
-[!pull requestの例]()
+![pull requestの例](github_pull_request.png)
 
 
 ### 2-8. マージ
