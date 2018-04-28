@@ -208,3 +208,10 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 # 画像アップロード用
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL='mail@tetsufe.tokyo'
+EMAIL_HOST = 'mail@tetsufe.tokyo'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True

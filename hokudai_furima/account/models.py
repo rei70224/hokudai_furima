@@ -39,9 +39,14 @@ class User(PermissionsMixin, AbstractBaseUser):
     email = models.EmailField(('email'), unique=True)
     intro = models.TextField(('intro'), max_length=200, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
+    is_active = models.BooleanField(default=False)
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
     objects = UserManager()
 
 
+class Activate(models.Model):
+    """ 仮登録したユーザを本登録するModel """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    key = models.CharField(max_length=255, unique=True)
