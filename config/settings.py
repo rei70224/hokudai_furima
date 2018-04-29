@@ -209,9 +209,9 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 DEFAULT_FROM_EMAIL='mail@tetsufe.tokyo'
-EMAIL_HOST = 'mail@tetsufe.tokyo'
+EMAIL_HOST = 'mail.tetsufe.tokyo'
+EMAIL_HOST_USER = 'mail@tetsufe.tokyo'
+EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_SMTP_PASS')
 EMAIL_PORT = 465
-EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True
