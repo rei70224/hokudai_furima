@@ -82,6 +82,6 @@ def create_key():
 
 def send_activation_mail(to_email, activation_url):
     send_mail('仮登録が完了しました（北大フリマ）',
-              "本登録は以下のURLから！\\n" + activation_url,
+              "北大フリマ運営です。\n\n「北大フリマ」にご登録いただきありがとうございます。以下のURLにアクセスすることで本登録完了となり、ログインが可能になります。\n" + activation_url + '\n\nお問い合わせは、このメールへの返信ではなく、support@tetsufe.tokyoまでよろしくお願いいたします。',
               settings.DEFAULT_FROM_EMAIL,
               [to_email], fail_silently=False)
