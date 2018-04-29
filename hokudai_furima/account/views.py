@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 import uuid
 from .models import Activate
 from django.core.mail import send_mail
+import re
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
