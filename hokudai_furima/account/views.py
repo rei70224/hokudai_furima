@@ -27,7 +27,8 @@ def signup(request):
  
         # メール本文の「本登録はこちら！ http://...」のURLを作成する
         base_url = "/".join(request.build_absolute_uri().split("/")[:4])
-        activation_url = "{0}/activation/{1}".format(base_url, activate_key)
+        base_url_without_port = re.sub(':\d+','',base_url) 
+        activation_url = "{0}/activation/{1}".format(base_url_without_port, activate_key)
  
         send_activation_mail(user.email, activation_url)
 
