@@ -208,3 +208,10 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 # 画像アップロード用
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+DEFAULT_FROM_EMAIL='mail@tetsufe.tokyo'
+EMAIL_HOST = 'mail.tetsufe.tokyo'
+EMAIL_HOST_USER = 'mail@tetsufe.tokyo'
+EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_SMTP_PASS')
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
