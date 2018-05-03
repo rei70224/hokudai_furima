@@ -11,6 +11,10 @@ gitのコマンドを実行すると、英語のメッセージが出る。で�
 - [2. gitを使ってみる](#chap2)
     - gitの初期設定
     - gitの流れを体験する
+- [3. 困ったとき・迷ったとき](#chap3)
+    - どれをコミットしたか確認する
+    - どのブランチから派生したか確認する
+    - 
 
 ## <a id="chap1">gitとは</a>
 gitとは、ある「レポジトリ（＝ディレクトリ）」のファイルの差分を記録するコマンドである
@@ -251,7 +255,7 @@ pushは、ローカル（自分のPC）のコミットやブランチをリモ�
 
 ![githubレポジトリのURLをコピー](clone_github_repository.png)
 
-`$ git remote add origin レポジトリURL # ブラウザのURLバーのURLとは別なので注意！`
+`#cloneした場合はやらなくて良い $ git remote add origin レポジトリURL # ブラウザのURLバーのURLとは別なので注意！`
 
 `$ git push origin 現在のブランチ名`
 
@@ -283,10 +287,177 @@ github上で、pull requestを送る。
 
 ![pull requestの例](github_pull_request.png)
 
+### 2-7-1. 人のpull requestをテストする
+- 新しいブランチの存在確認
+
+`$ git fetch`
+
+- リモートのブランチ一覧を調べる
+
+`$ git branch -r`
+
+- ブランチをローカルにもってくる
+
+`$ git checkout -b ブランチ名(追加する機能などの名前) # $ ブランチ名の例：remove/unused_email_templates ）`
+
+
+後は自分の環境で、pull requestされたコードが正しいかテストする
 
 ### 2-8. マージ
-`$ git merge 今のブランチにマージしたい他のブランチ名`
+githubのpull request上でマージ
 
 もしくは、
 
-githubのpull request上でマージ
+`$ git merge 今のブランチにマージしたい他のブランチ名`
+
+
+### 2-9. リモートのdevelopやmasterの更新をローカルに反映する
+2-7-1では、他人がプッシュしたブランチをローカルにもってくる方法を説明した。
+この場合だと、単にローカルにもってくる（＝実質、新規作成）だけでテストすることができる。
+
+しかし、developやmasterなどの場合、自分のローカルレポジトリにすでにあるので、
+
+- リモートのブランチをローカルにコピー（git fetch）
+- リモートのブランチとローカルのブランチを合体させる（git merge）
+
+この２つの手順を行う必要がある。
+
+#### 手順
+リモートのブランチをローカルにコピー
+
+`$ git fetch`
+
+合体前のローカルブランチにcheckoutする
+
+`$ git checkout *** # 例 git checkout develop`
+
+リモートブランチをローカルブランチにマージする
+
+`$ git merge origin/*** # 例 git merge origin/develop`
+
+注意点
+- `***`の部分は同じ名前にする
+- リモートから取ってきたブランチは、全て`origin/***`というように"origin"がブランチ名の前につく
+
+
+
+## <a id="chap3">3. 困ったとき・迷ったとき</a>
+困ったときや、どうなっているかわからなくなったときに確認する方法について説明します
+
+### 3.1 どのファイルをadd・コミットしたか確認する
+使い所
+- `$ git commit -m "メッセージ"`する前に、どのファイルをaddしたか確認したい
+- `$ git push origin ブランチ名`する前にどのファイルをコミットしたか確認したい
+
+以下のコマンドを実行
+
+`$ git status`
+
+```
+On branch docs/git_tutorial_0427
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:  test.txt 
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        hello.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+ここで重要な部分は、
+
+```
+modified: test.txt 
+```
+
+これは、test.txtがadd（track）されているがコミットされていないことを示す
+
+また、
+
+```
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        hello.txt
+```
+
+は、hello.txtがadd(track)されておらず、コミットされていないことを示す
+
+### 3.2 コミットを取り消したい
+
+### 3.2.1 一つ前のコミットを取り消す
+
+`$ git reset —soft HEAD^`
+
+ファイルの変更はそのままで、コミット記録だけ取り消すことができる
+
+### 3.2.2 二つ以上コミットを取り消す
+
+`$ git log`
+
+これを実行すると、以下のように出てくる。例えば、３つ前のコミットIDはc9c3403d3af5b22ffdeaf61922a3cfa13f0070d2ということになる。
+```
+commit b8df01230ea945a56745f618c50f4f492f97092b (HEAD -> docs/git_tutorial_0427, origin/develop, develop)
+Merge: 1b5f35a da6b6a2
+Author: Tetsu <tetsubeg1ner27@gmail.com>
+Date:   Sat Apr 21 18:29:50 2018 +0900
+
+    Merge pull request #2 from TetsuFe/docs/git_tutorial_0421
+    
+    add: gitのチュートリアルドキュメント（途中）
+
+commit da6b6a2cb5a6aec74acf88ffaafc334fb98cff0e (origin/docs/git_tutorial_0421, docs/git_tutorial_0421)
+Author: TetsuFe <tetsubeg1ner27@gmail.com>
+Date:   Sat Apr 21 18:28:11 2018 +0900
+
+    add: gitのチュートリアルドキュメント（完成版）
+
+commit c9c3403d3af5b22ffdeaf61922a3cfa13f0070d2
+Author: TetsuFe <tetsubeg1ner27@gmail.com>
+Date:   Sat Apr 21 18:21:10 2018 +0900
+
+    add: gitのチュートリアルドキュメント（途中）
+```
+
+`$ git reset --soft コミットID # ３つ前のコミットまでを全部取り消す場合: git reset --soft c9c3403d3af5b22ffdeaf61922a3cfa13f0070d2`
+
+### 3.2 どのブランチから派生したか確認する
+`$ git log`
+```
+commit b8df01230ea945a56745f618c50f4f492f97092b (HEAD -> docs/git_tutorial_0427, origin/develop, develop)
+Merge: 1b5f35a da6b6a2
+Author: Tetsu <tetsubeg1ner27@gmail.com>
+Date:   Sat Apr 21 18:29:50 2018 +0900
+
+    Merge pull request #2 from TetsuFe/docs/git_tutorial_0421
+    
+    add: gitのチュートリアルドキュメント（途中）
+```
+
+ここで重要な部分は、
+
+```
+commit b8df01230ea945a56745f618c50f4f492f97092b (HEAD -> docs/git_tutorial_0427, origin/develop, develop) 
+```
+
+これは、**origin/developと、developから派生した(＝origin/developと、developと今の状態は同じ)** ということを意味する
+
+### 3.3 どのブランチにいるか確認する
+`$ git branch`
+
+```
+* develop
+master
+```
+
+`*` が今いるブランチ。この場合、developが今のブランチ
+
+### 3.4 なんかエラー出た
+とりあえずエラーコードをコピペして、ググる。
+
+時間かかりそうなら@tetsufeまで連絡する
