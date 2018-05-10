@@ -20,3 +20,12 @@ class LoginForm(django_forms.AuthenticationForm):
             if email:
                 self.fields['username'].initial = email
 
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('icon','username','email','intro')
+
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        self.fields['icon'].widget.attrs={'style':'display:none;', 'id':'icon' , 'onchange': 'fileget(this,\'0\');', }
+

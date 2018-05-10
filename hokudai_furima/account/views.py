@@ -5,12 +5,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
-from .forms import (SignupForm, LoginForm)
+from .forms import SignupForm, LoginForm, UserEditForm
 from django.contrib.auth.decorators import login_required
 import uuid
 from .models import Activate
 from django.core.mail import send_mail
 import re
+from .models import User
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -47,8 +48,17 @@ def login(request):
 
 
 @login_required
-def details(request):
-    return render(request, 'account/details.html')
+def mypage(request):
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            print(form)
+            form.save()
+            messages.success(request, ('プロフィール情報を変更しました。'))
+            return render(request, 'account/mypage.html', {'form': form})
+    else:
+        form = UserEditForm(instance=request.user)
+    return render(request, 'account/mypage.html', {'form': form})
 
 @login_required
 def logout(request):
@@ -70,8 +80,9 @@ def activation(request, key):
     user.is_active = True
     user.save()
     auth.login(request, user)
+    form = UserEditForm(instance=request.user)
  
-    return render(request, 'account/details.html')
+    return render(request, 'account/mypage.html', {'form':form})
 
  
 def create_key():
