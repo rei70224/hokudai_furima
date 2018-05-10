@@ -28,7 +28,7 @@
           </li>
           {% if request.user.is_authenticated %}
             <li>
-              <a href="{% url "account:details" %}">マイページ</a>
+              <a href="{% url "account:mypage" %}">マイページ</a>
             </li>
             <li>
               <a href="{% url "account:logout" %}">ログアウト</a>

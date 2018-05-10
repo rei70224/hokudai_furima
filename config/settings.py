@@ -157,7 +157,7 @@ STATICFILES_DIRS = (
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 AUTH_USER_MODEL = 'account.User'
-LOGIN_REDIRECT_URL = '/account/'
+LOGIN_REDIRECT_URL = '/account/mypage/'
 LOGIN_URL = '/account/login/'
 
 
