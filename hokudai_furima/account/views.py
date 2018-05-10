@@ -50,14 +50,16 @@ def login(request):
 @login_required
 def mypage(request):
     if request.method == 'POST':
-        form = UserEditForm(request.POST, instance=request.user)
+        form = UserEditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
-            print(form)
             form.save()
             messages.success(request, ('プロフィール情報を変更しました。'))
+        else:
+            for _field in form:
+                for error in _field.errors:
+                    messages.error(request, error,extra_tags=('danger'))
             return render(request, 'account/mypage.html', {'form': form})
-    else:
-        form = UserEditForm(instance=request.user)
+    form = UserEditForm(instance=request.user)
     return render(request, 'account/mypage.html', {'form': form})
 
 @login_required

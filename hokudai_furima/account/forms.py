@@ -24,8 +24,11 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('icon','username','email','intro')
+        #fields = ('username','email','intro')
 
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
+        self.fields['icon'].widget = forms.FileInput()
         self.fields['icon'].widget.attrs={'style':'display:none;', 'id':'icon' , 'onchange': 'fileget(this,\'0\');', }
+
 
