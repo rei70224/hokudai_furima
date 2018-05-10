@@ -5,6 +5,10 @@ from django.utils import timezone
 from django.utils.translation import pgettext_lazy
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django import forms
+from versatileimagefield.fields import PPOIField, VersatileImageField
+from versatileimagefield.placeholder import OnDiscPlaceholderImage
+import os
+from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -40,6 +44,8 @@ class User(PermissionsMixin, AbstractBaseUser):
     intro = models.TextField(('intro'), max_length=200, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
     is_active = models.BooleanField(default=False)
+    IMAGE_DIR = 'img/account/'
+    icon = VersatileImageField('',upload_to=IMAGE_DIR,blank=True)
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
