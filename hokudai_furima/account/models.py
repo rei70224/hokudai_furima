@@ -10,7 +10,6 @@ from versatileimagefield.placeholder import OnDiscPlaceholderImage
 import os
 from django.conf import settings
 
-
 class UserManager(BaseUserManager):
 
     def create_user(
@@ -46,7 +45,6 @@ class User(PermissionsMixin, AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     IMAGE_DIR = 'img/account/'
     icon = VersatileImageField('',upload_to=IMAGE_DIR,blank=True)
-
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
     objects = UserManager()
