@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
+<div class="container">
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -13,21 +15,48 @@
                 最終更新: {{ product.published_date }}
             </div>
         {% endif %}
+
         <p name="product_id" style="display: none;">{{product.id}}</p>
-        <h1>{{ product.title }}</h1>
+
+
+        <div class="row">
+            <div class="col-sm-6 ">
+                <img src="{% static "img/s3.png" %}"  alt="ロゴ" class="img-fluid">
+            </div>
+            <!--<div class="col-sm-3"></div>-->
+            <div class="col-sm-6 ">
+
+                    <div class="name">{{ product.title }}</div>
+                    <div class="price"> {{ product.price }} 円</div>
+
+                <div class="button_buy">
+                    <button type="button" name="buy"  class="buy" >購入</button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+        <thead>
+            <tr>
+                <th>出品者</th>
+                <th>{{ product.seller }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>出品状態</td>
+                <td>{{ product.is_sold|yesno:"売り切れ,販売中" }}</td>
+            </tr>
+        </tbody>
+        </table>
         {% if request.user.is_authenticated %}
             {% if product.seller.id == request.user.id %}
             <a href="{% url "product:update_product" product.pk %}" style="display: block">編集</a>
             {% endif %}
         {% endif %}
-        <div class="username">
-            出品者: {{ product.seller }}
-        </div>
-        <p>価格: {{ product.price }} 円</p>
-        <p>{{ product.is_sold|yesno:"売り切れ,販売中" }}</p>
         <p>{{ product.description|linebreaksbr }}</p>
     </div>
 
     {% include "chat/partials/_chat.html" %}
-
+</div>
 {% endblock %}

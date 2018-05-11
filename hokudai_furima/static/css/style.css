@@ -14,8 +14,9 @@
 }
 
 #chat {
-	background-color: #eeeaaa;
+	/*background-color: #a8dfed;*/
 	padding: 0;
+
 }
 
 
@@ -83,3 +84,21 @@
 	border-image: url(../img/balloon02.png) 30 32 34 44 fill / 15px 16px 17px 22px round;
 }
 
+.name{
+    font-size:large;
+    padding-top:50px;
+    text-align:center;
+}
+
+
+.price{
+    font-size:medium;
+    color:#faa912;
+    text-align:center;
+}
+
+
+.button_buy
+{
+    text-align:center;
+}
