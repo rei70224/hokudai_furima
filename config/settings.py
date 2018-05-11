@@ -107,10 +107,6 @@ DATABASES = { 'default': {
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -215,3 +211,12 @@ EMAIL_HOST_USER = 'mail@tetsufe.tokyo'
 EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_SMTP_PASS')
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
+
+SITE_HOST = 'django.tetsufe.tokyo'
+ENABLE_SSL = True
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
