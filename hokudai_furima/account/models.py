@@ -49,8 +49,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     USERNAME_FIELD = 'username'
     objects = UserManager()
 
-
-class Activate(models.Model):
-    """ 仮登録したユーザを本登録するModel """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    key = models.CharField(max_length=255, unique=True)
+    @property
+    def icon_url(self):
+        if self.icon and hasattr(self.icon, 'url'):
+            return self.icon.url

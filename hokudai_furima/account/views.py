@@ -1,17 +1,18 @@
 from django.conf import settings
 from django.contrib import auth, messages
-from django.contrib.auth import views as django_views # in login
-from django.http import HttpResponseRedirect
+from django.contrib.auth import views as auth_views # in login
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
-from .forms import SignupForm, LoginForm, UserEditForm
+from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change
 from django.contrib.auth.decorators import login_required
-import uuid
-from .models import Activate
-from django.core.mail import send_mail
 import re
 from .models import User
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+from .emails import send_account_activation_email
+from django.contrib.auth.tokens import default_token_generator
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -23,16 +24,17 @@ def signup(request):
         user.is_active = False
         user.save()
         # activateモデルの作成と保存。userモデルを紐づけています。
-        activate_key = create_key()  # uuidを使ったランダムな文字列作成
-        activate_instance = Activate(user=user, key=activate_key)
-        activate_instance.save()
- 
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk)).decode()
+        token = default_token_generator.make_token(user)
         # メール本文の「本登録はこちら！ http://...」のURLを作成する
-        base_url = "/".join(request.build_absolute_uri().split("/")[:4])
-        base_url_without_port = re.sub(':\d+','',base_url) 
-        activation_url = "{0}/activation/{1}".format(base_url_without_port, activate_key)
+        #base_url = "/".join(request.build_absolute_uri().split("/")[:4])
+        #base_url_without_port = re.sub(':\d+','',base_url) 
+        #activation_url = "{0}/activation/{1}".format(base_url_without_port, activate_key)
  
-        send_activation_mail(user.email, activation_url)
+        #send_activation_mail(user.email, activation_url)
+        context = {'uid': uidb64, 'token': token}
+        to_email_address = user.email
+        send_account_activation_email(context, to_email_address)
 
         messages.success(request, ('仮登録が完了しました。ログインするためには、認証メールのリンクにアクセスする必要があります。'))
         redirect_url = request.POST.get('next', settings.LOGIN_REDIRECT_URL)
@@ -44,7 +46,7 @@ def login(request):
     kwargs = {
         'template_name': 'account/login.html',
         'authentication_form': LoginForm}
-    return django_views.LoginView.as_view(**kwargs)(request, **kwargs)
+    return auth_views.LoginView.as_view(**kwargs)(request, **kwargs)
 
 
 @login_required
@@ -69,32 +71,49 @@ def logout(request):
     return redirect(settings.LOGIN_REDIRECT_URL)
 
 
-def activation(request, key):
+def activation(request, uidb64, token):
     """ /activation/:アクティベーションキー でアクセス。本登録画面 """
- 
-    # keyを使ってactivateモデルを取得
-    activate = get_object_or_404(Activate, key=key)
- 
-    # activateモデルに紐づいたユーザオブジェクトを取得
-    user = activate.user
- 
-    # is_activeをTrue(アカウントの有効化)にし、保存
-    user.is_active = True
-    user.save()
-    auth.login(request, user)
-    form = UserEditForm(instance=request.user)
- 
-    return render(request, 'account/mypage.html', {'form':form})
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except User.DoesNotExist:
+        user = None
+    if user and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        auth.login(request, user)
+        messages.success(request, ('本登録が完了しました。北大フリマへようこそ！'))
+        return redirect('account:mypage')
+    else:
+        return HttpResponse("Activation link has expired")
 
- 
-def create_key():
-    """ ランダムな文字列を生成する """
- 
-    key = uuid.uuid4().hex
-    return key
+def password_reset(request):
+    kwargs = {
+        'template_name': 'account/password_reset.html',
+        'success_url': reverse_lazy('account:reset-password-done'),
+        'form_class': PasswordResetForm}
+    return auth_views.PasswordResetView.as_view(**kwargs)(request, **kwargs)
 
-def send_activation_mail(to_email, activation_url):
-    send_mail('仮登録が完了しました（北大フリマ）',
-              "北大フリマ運営です。\n\n「北大フリマ」にご登録いただきありがとうございます。以下のURLにアクセスすることで本登録完了となり、ログインが可能になります。\n" + activation_url + '\n\nお問い合わせは、このメールへの返信ではなく、support@tetsufe.tokyoまでよろしくお願いいたします。',
-              settings.DEFAULT_FROM_EMAIL,
-              [to_email], fail_silently=False)
+class PasswordResetConfirm(auth_views.PasswordResetConfirmView):
+    template_name = 'account/password_reset_from_key.html'
+    success_url = reverse_lazy('account:reset-password-complete')
+    token = None
+    uidb64 = None
+
+def password_reset_confirm(request, uidb64=None, token=None):
+    kwargs = {
+        'template_name': 'account/password_reset_from_key.html',
+        'success_url': reverse_lazy('account:reset-password-complete'),
+        'token': token,
+        'uidb64': uidb64}
+    return PasswordResetConfirm.as_view(**kwargs)(request, **kwargs)
+
+
+def get_or_process_password_form(request):
+    form = ChangePasswordForm(data=request.POST or None, user=request.user)
+    if form.is_valid():
+        form.save()
+        logout_on_password_change(request, form.user)
+        messages.success(request, pgettext(
+            'Storefront message', 'Password successfully changed.'))
+    return form
