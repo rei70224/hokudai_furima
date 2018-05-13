@@ -9,4 +9,5 @@ urlpatterns = [
         url(r'^details/(?P<pk>\d+)/$', views.product_details, name='product_details'),
         url(r'^want/(?P<pk>\d+)/$', views.want_product, name='want_product'),
         url(r'^want/done/(?P<pk>\d+)/$', views.want_product_done, name='want_product_done'),
+        url(r'^want/cancel/(?P<pk>\d+)/$', views.cancel_want_product, name='cancel_want_product'),
     ]

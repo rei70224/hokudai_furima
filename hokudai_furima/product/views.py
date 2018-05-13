@@ -81,6 +81,7 @@ def update_product(request, product_pk):
 
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    print(product.wanting_users)
     talk_form = TalkForm()
     #return render(request, 'product/product_details.html', {'product': product})
     talk_records = Chat.objects.filter(product_id=product.id)
@@ -126,3 +127,11 @@ def want_product_done(request, pk):
     product = get_object_or_404(Product, pk=pk)
     wanting_products = request.user.product_set.all() 
     return render(request, 'product/want_product_done.html', {'product': product, 'product_list': wanting_products})
+
+
+@login_required
+def cancel_want_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.wanting_users.remove(request.user)
+    print(product.__dict__)
+    return redirect('product:product_details', pk=product.pk)   

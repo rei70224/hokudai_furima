@@ -28,12 +28,19 @@
 
                     <div class="name">{{ product.title }}</div>
                     <div class="price"> {{ product.price }} 円</div>
-
+            {% if request.user in wanting_users %}
+                <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                    <div class="button cancel-want">
+                        <button type="submit" name="cancel-want"  class="cancel-want btn" >購入希望のキャンセル</button>
+                    </div>
+                </form>
+            {% else %}
                 <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                     <div class="button_buy">
                         <button type="submit" name="buy"  class="buy btn" >購入</button>
                     </div>
                 </form>
+            {% endif %}
             </div>
         </div>
 
@@ -61,17 +68,21 @@
         {% if request.user.is_authenticated %}
             {% if product.seller.id == request.user.id %}
                 <h2>購入希望中のユーザー</h2>
-                {% for wanting_user in wanting_users %}
-                    <table class="table">
-                    <tbody>
-                        <tr>
-                            <td>{{ wanting_user }}</td>
-                            <!--<td><a href="</td>-->
-                            <!--<td><a href="</td>-->
-                        </tr>
-                    </tbody>
-                    </table>
-                {% endfor %}
+                {% if wanting_users %}
+                    {% for wanting_user in wanting_users %}
+                        <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>{{ wanting_user }}</td>
+                                <!--<td><a href="</td>-->
+                                <!--<td><a href="</td>-->
+                            </tr>
+                        </tbody>
+                        </table>
+                    {% endfor %}
+                {% else %}
+                    <p>購入希望中のユーザはいません。</p>
+                {% endif %}
             {% endif %}
         {% endif %}
     </div>
