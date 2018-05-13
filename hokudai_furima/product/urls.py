@@ -7,4 +7,6 @@ urlpatterns = [
         url(r'^create/$', views.create_product, name='create_product'),
         url(r'^update/(?P<product_pk>\d+)/$', views.update_product, name='update_product'),
         url(r'^details/(?P<pk>\d+)/$', views.product_details, name='product_details'),
+        url(r'^want/(?P<pk>\d+)/$', views.want_product, name='want_product'),
+        url(r'^want/done/(?P<pk>\d+)/$', views.want_product_done, name='want_product_done'),
     ]

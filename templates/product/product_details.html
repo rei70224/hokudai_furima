@@ -29,9 +29,11 @@
                     <div class="name">{{ product.title }}</div>
                     <div class="price"> {{ product.price }} 円</div>
 
-                <div class="button_buy">
-                    <button type="button" name="buy"  class="buy" >購入</button>
-                </div>
+                <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                    <div class="button_buy">
+                        <button type="submit" name="buy"  class="buy btn" >購入</button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -55,6 +57,23 @@
             {% endif %}
         {% endif %}
         <p>{{ product.description|linebreaksbr }}</p>
+
+        {% if request.user.is_authenticated %}
+            {% if product.seller.id == request.user.id %}
+                <h2>購入希望中のユーザー</h2>
+                {% for wanting_user in wanting_users %}
+                    <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>{{ wanting_user }}</td>
+                            <!--<td><a href="</td>-->
+                            <!--<td><a href="</td>-->
+                        </tr>
+                    </tbody>
+                    </table>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
     </div>
 
     {% include "chat/partials/_chat.html" %}
