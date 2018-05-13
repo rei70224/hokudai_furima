@@ -13,6 +13,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from .emails import send_account_activation_email
 from django.contrib.auth.tokens import default_token_generator
+from hokudai_furima.product.models import Product
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -51,6 +52,7 @@ def login(request):
 
 @login_required
 def mypage(request):
+    wanting_products = Product.objects.filter(wanting_users=request.user)
     if request.method == 'POST':
         form = UserEditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
@@ -60,9 +62,9 @@ def mypage(request):
             for _field in form:
                 for error in _field.errors:
                     messages.error(request, error,extra_tags=('danger'))
-            return render(request, 'account/mypage.html', {'form': form})
+            return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_products})
     form = UserEditForm(instance=request.user)
-    return render(request, 'account/mypage.html', {'form': form})
+    return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_products})
 
 @login_required
 def logout(request):
