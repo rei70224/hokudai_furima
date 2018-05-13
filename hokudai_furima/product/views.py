@@ -112,8 +112,8 @@ def want_product(request, pk):
     if request.method == 'POST':
         wanting_user = request.user
         product = get_object_or_404(Product, pk=pk)
-        wanting_user.product_set.add(product)
-        wanting_user.save()
+        #wanting_user.product_set.add(product)
+        #wanting_user.save()
         product.wanting_users.add(wanting_user)
         product.save()
         messages.success(request, '購入希望が送信されました')
@@ -125,7 +125,7 @@ def want_product(request, pk):
 
 def want_product_done(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    wanting_products = request.user.product_set.all() 
+    wanting_products = Product.objects.filter(wanting_users=request.user)
     return render(request, 'product/want_product_done.html', {'product': product, 'product_list': wanting_products})
 
 
