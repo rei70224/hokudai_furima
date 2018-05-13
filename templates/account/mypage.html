@@ -32,5 +32,11 @@
         </div>
     </form>
   {% endif %}
+    <h2>購入希望中の商品</h2>
+    {% if product_list %}
+        {% include "_product_list.html" %}
+    {% else %}
+        <p>購入希望中の商品はありません。</p>
+    {% endif %}
 </div>
 {% endblock %}

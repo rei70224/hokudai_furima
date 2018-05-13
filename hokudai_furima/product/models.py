@@ -105,6 +105,7 @@ class Product(models.Model):
         upload_to=IMAGE_DIR,
         blank=True,
     )
+    wanting_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wanting_users')
 
 
     def update(self):

@@ -7,10 +7,12 @@ from django.conf import settings
 from hokudai_furima.chat.models import Talk, Chat
 from hokudai_furima.chat.forms import TalkForm
 # Create your views here.
-#from django import HttpResponse
+from django.http import HttpResponse
 from functools import reduce
 import os
 from versatileimagefield.placeholder import OnDiscPlaceholderImage
+from hokudai_furima.account.models import User 
+from django.contrib.auth.decorators import login_required
 
 
 def product_list(request):
@@ -79,6 +81,7 @@ def update_product(request, product_pk):
 
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    print(product.wanting_users)
     talk_form = TalkForm()
     #return render(request, 'product/product_details.html', {'product': product})
     talk_records = Chat.objects.filter(product_id=product.id)
@@ -90,12 +93,45 @@ def product_details(request, pk):
         talks = list(map(lambda x: x.talk_set.all(),list(talk_records)))[0]
     else:
         talks = []
+    
+    wanting_users = product.wanting_users.all()
+    print("wanting")
+    print(wanting_users)
 
         #print("talk_record: "+str(''.join(reduce(lambda x,y: x['talk']+y['talk'],list(talk_records)))))
     if request.user.is_authenticated:
-        return render(request, 'product/product_details.html', {'product': product, 'form': talk_form, 'talks':talks})
+        return render(request, 'product/product_details.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_users': wanting_users})
     else:
         return render(request, 'product/product_details.html', {'product': product, 'talks':talks})
 
 #def is_same_user(product_seller_id, login_user):
 #    return login_user.id  == product_seller_id
+
+@login_required
+def want_product(request, pk):
+    if request.method == 'POST':
+        wanting_user = request.user
+        product = get_object_or_404(Product, pk=pk)
+        wanting_user.product_set.add(product)
+        wanting_user.save()
+        product.wanting_users.add(wanting_user)
+        product.save()
+        messages.success(request, '購入希望が送信されました')
+        return redirect('product:want_product_done', pk=product.pk)
+    else:
+        return HttpResponse('can\'t accept GET request')
+
+
+
+def want_product_done(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    wanting_products = request.user.product_set.all() 
+    return render(request, 'product/want_product_done.html', {'product': product, 'product_list': wanting_products})
+
+
+@login_required
+def cancel_want_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.wanting_users.remove(request.user)
+    print(product.__dict__)
+    return redirect('product:product_details', pk=product.pk)   
