@@ -74,7 +74,7 @@
                         <tbody>
                             <tr>
                                 <td>{{ wanting_user }}</td>
-                                <!--<td><a href="</td>-->
+                                <td><a href="{% url 'product:product_direct_chat' product.pk wanting_user.pk %}">非公開チャット</a></td>
                                 <!--<td><a href="</td>-->
                             </tr>
                         </tbody>
@@ -86,7 +86,5 @@
             {% endif %}
         {% endif %}
     </div>
-
-    {% include "chat/partials/_chat.html" %}
 </div>
 {% endblock %}

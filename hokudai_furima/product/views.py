@@ -135,3 +135,17 @@ def cancel_want_product(request, pk):
     product.wanting_users.remove(request.user)
     print(product.__dict__)
     return redirect('product:product_details', pk=product.pk)   
+
+
+@login_required
+def product_direct_chat(request, product_pk, wanting_user_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    wanting_user = get_object_or_404(User, pk=wanting_user_pk)
+    talk_form = TalkForm()
+    chat = Chat.objects.filter(product_id=product.id)
+    if chat.exists():
+        talks = list(map(lambda x: x.talk_set.all(),list(chat)))[0]
+    else:
+        talks = []
+    wanting_users = product.wanting_users.all()
+    return render(request, 'product/product_direct_chat.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_user': wanting_user})
