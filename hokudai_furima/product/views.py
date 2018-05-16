@@ -139,13 +139,18 @@ def cancel_want_product(request, pk):
 
 @login_required
 def product_direct_chat(request, product_pk, wanting_user_pk):
-    product = get_object_or_404(Product, pk=product_pk)
     wanting_user = get_object_or_404(User, pk=wanting_user_pk)
-    talk_form = TalkForm()
-    chat = Chat.objects.filter(product_id=product.id)
-    if chat.exists():
-        talks = list(map(lambda x: x.talk_set.all(),list(chat)))[0]
+    product = get_object_or_404(Product, pk=product_pk)
+    if request.user == wanting_user or request.user == product.seller:
+        talk_form = TalkForm()
+        chat = Chat.objects.filter(product_id=product.id, product_wanting_user=wanting_user, product_seller=product.seller)
+        print(chat)
+        if chat.exists():
+            talks = list(map(lambda x: x.talk_set.all(),list(chat)))[0]
+        else:
+            chat = Chat(product_id=product.id, product_wanting_user=wanting_user, product_seller=product.seller, created_date=timezone.now())
+            chat.save()
+            talks = []
+        return render(request, 'product/product_direct_chat.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_user': wanting_user})
     else:
-        talks = []
-    wanting_users = product.wanting_users.all()
-    return render(request, 'product/product_direct_chat.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_user': wanting_user})
+        return HttpResponse('invalid request')

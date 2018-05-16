@@ -6,6 +6,8 @@ from hokudai_furima.product.models import Product
 
 class Chat(models.Model):
     product_id = models.IntegerField(null=True)
+    product_seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='product_seller') 
+    product_wanting_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='product_wanting_user') 
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
 

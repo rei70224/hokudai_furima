@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.http import JsonResponse
 from hokudai_furima.chat.models import Talk, Chat
+from django.db.models import Q
 
 def post_talk(request):
     talker=request.user
@@ -13,15 +14,14 @@ def post_talk(request):
     product_id = request.POST.get('product_id')
     print("product_id"+str(product_id))
     created_date = timezone.now()
-    chats = Chat.objects.filter(product_id=product_id)
+    chats = Chat.objects.filter(Q(product_id=product_id) & (Q(product_seller=request.user) | Q(product_wanting_user=request.user)))
     if not chats.exists():
-        chat = Chat(product_id=product_id, created_date=created_date)
+        return HttpResponse('invalid request')
     else:
         chat = chats[0]
-    chat.save()
+        print(chat)
     talk = Talk(talker=talker, chat=chat, sentence=sentence, created_date=created_date)
     talk.save()
-    chat = talk.chat
     chat.talk_set.add(talk)
     chat.save()
     print(chat.talk_set.all())
