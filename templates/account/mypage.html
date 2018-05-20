@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 {% load bootstrap4 %}
+{% load show_product_list %}
 <script>
     let PLACEHOLDER_IMAGE = "{% static 'img/placeholder.png' %}";
 </script>
@@ -31,12 +32,19 @@
             <button id="submit" type="submit" class="btn">save</button>
         </div>
     </form>
+    <h2>出品中/販売済みの商品</h2>
+    {% if selling_product_list %}
+        {% show_product_list selling_product_list %}
+    {% else %}
+        <p>出品中/販売済みの商品はありません。</p>
+    {% endif %}
   {% endif %}
     <h2>購入希望中の商品</h2>
-    {% if product_list %}
-        {% include "_product_list.html" %}
+    {% if wanting_product_list %}
+        {% show_product_list product_list %}
     {% else %}
         <p>購入希望中の商品はありません。</p>
     {% endif %}
+
 </div>
 {% endblock %}
