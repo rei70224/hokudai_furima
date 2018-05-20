@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2 style="text-align:center">{{product}}</h2>
+    {% if request.user == wanting_user %}
+        <h2 style="text-align:center">{{product.seller}}</h2>
+    {% else %}
+        <h2 style="text-align:center">{{wanting_user}}</h2>
+    {% endif %}
+    {% include "chat/partials/_chat.html" %}
+</div>
+{% endblock %}

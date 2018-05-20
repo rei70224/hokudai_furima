@@ -69,7 +69,6 @@ def update_product(request, product_pk):
     else:
         if request.user.is_authenticated:
             product = get_object_or_404(Product, pk=product_pk)
-            product_id = product.id
             product_seller_id = product.seller.id
             if product_seller_id == request.user.id:
                 form = UpdateProductForm(instance=product)
@@ -84,7 +83,7 @@ def product_details(request, pk):
     print(product.wanting_users)
     talk_form = TalkForm()
     #return render(request, 'product/product_details.html', {'product': product})
-    talk_records = Chat.objects.filter(product_id=product.id)
+    talk_records = Chat.objects.filter(product=product)
     if talk_records.exists():
         print("talk_record: "+str(talk_records))
         print(list(map(lambda x: x.talk_set.all(),list(talk_records))))
@@ -135,3 +134,26 @@ def cancel_want_product(request, pk):
     product.wanting_users.remove(request.user)
     print(product.__dict__)
     return redirect('product:product_details', pk=product.pk)   
+
+
+@login_required
+def product_direct_chat(request, product_pk, wanting_user_pk):
+    wanting_user = get_object_or_404(User, pk=wanting_user_pk)
+    product = get_object_or_404(Product, pk=product_pk)
+    if request.user == wanting_user or request.user == product.seller:
+        talk_form = TalkForm()
+        chat = Chat.objects.filter(product=product, product_wanting_user=wanting_user, product_seller=product.seller)
+        print(chat)
+        if chat.exists():
+            talks = list(map(lambda x: x.talk_set.all(),list(chat)))[0]
+        else:
+            chat = Chat(product=product, product_wanting_user=wanting_user, product_seller=product.seller, created_date=timezone.now())
+            chat.save()
+            talks = []
+        if request.user == product.seller:
+            talk_reciever_id = wanting_user.id
+        else:
+            talk_reciever_id = product.seller.id 
+        return render(request, 'product/product_direct_chat.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_user': wanting_user, 'chat': chat, 'talk_reciever_id': talk_reciever_id})
+    else:
+        return HttpResponse('invalid request')

@@ -6,22 +6,28 @@ from django.contrib import messages
 from django.conf import settings
 from django.http import JsonResponse
 from hokudai_furima.chat.models import Talk, Chat
+from django.db.models import Q
+from django.utils import html
+from django.contrib.auth.decorators import login_required
+from hokudai_furima.account.models import User
 
+
+@login_required
 def post_talk(request):
     talker=request.user
     sentence = request.POST.get('sentence')
     product_id = request.POST.get('product_id')
-    print("product_id"+str(product_id))
+    talk_reciever = User.objects.get(id=request.POST.get('talk_reciever_id'))
+    product = Product.objects.get(id=product_id)
     created_date = timezone.now()
-    chats = Chat.objects.filter(product_id=product_id)
-    if not chats.exists():
-        chat = Chat(product_id=product_id, created_date=created_date)
+    if request.user == product.seller:
+        chat = Chat.objects.get(product=product, product_seller=request.user, product_wanting_user=talk_reciever)
     else:
-        chat = chats[0]
-    chat.save()
+        chat = Chat.objects.get(product=product, product_seller=talk_reciever, product_wanting_user=request.user)
+    if not chat:
+        return HttpResponse('invalid request')
     talk = Talk(talker=talker, chat=chat, sentence=sentence, created_date=created_date)
     talk.save()
-    chat = talk.chat
     chat.talk_set.add(talk)
     chat.save()
     print(chat.talk_set.all())
@@ -30,28 +36,22 @@ def post_talk(request):
     print(chat)
 
     d = {
-            'talker': talker.username,
-            'sentence': sentence,
-            'created_date': created_date,
+            'talker': html.escape(talker.username),
+            'sentence': html.escape(sentence),
+            'created_date': timezone.template_localtime(created_date, settings.TIME_ZONE).strftime('%Y年%-m月%-d日%-H:%M'),
+            'talk_id': talk.id,
             }
     return JsonResponse(d)
-    """
-    if request.method == "GET":
-        form = SearchProductForm(request.GET)
-        query = request.GET.get("q")
-        if query:
-            query_words = query.split(' ')
-            search_results = []
-            if query_words is None:
-                query_words = query
-            for word in query_words:
-                results_by_word = Product.objects.filter(title__icontains=word).order_by('updated_date')
-                for result in results_by_word:
-                    if result not in search_results:
-                        search_results.append(result)
-            #return redirect('product:product_details', search_results_pk=products.pk, form=form)
-            return render(request, 'search/product/search_product.html', {'search_results': search_results, 'form': form})
 
-    form = SearchProductForm()
-    return render(request, 'search/product/search_product.html', {'form': form})
-    """
+@login_required
+def delete_talk(request):
+    talk_id = request.POST.get('talk_id')
+    talk = Talk.objects.get(id=talk_id)
+    if request.user == talk.talker:
+        talk.delete()
+        d = {
+                'talk_id': talk_id
+            }
+        return JsonResponse(d)
+    else:
+        return JsonResponse({'status':'false'}, status=500)
