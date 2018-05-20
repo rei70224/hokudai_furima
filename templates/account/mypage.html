@@ -41,13 +41,12 @@
     {% else %}
         <p>出品中/販売済みの商品はありません。</p>
     {% endif %}
-  {% endif %}
     <h2>購入希望中の商品</h2>
     {% if wanting_product_list %}
-        {% show_product_list product_list %}
+        {% show_product_list wanting_product_list %}
     {% else %}
         <p>購入希望中の商品はありません。</p>
     {% endif %}
-
+  {% endif %}
 </div>
 {% endblock %}
