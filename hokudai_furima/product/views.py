@@ -167,6 +167,9 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
     if request.user == product.seller:
         product.is_sold = True
         product.save()
+        relative_url = reverse('product:product_details', kwargs={'pk': product.pk})
+        notice = Notification(reciever=wanting_user, message=request.user.username+'が「'+product.title+'」をあなたに販売することを確定しました。', relative_url=relative_url)
+        notice.save()
         messages.success(request, '購入者を決定しました。チャットで購入者と話し合いの上、商品と料金の受け渡し方法を決定してください。このサイト上での決済はできませんのでご注意ください。')
         return redirect('product:product_details', pk=product.pk)   
     else:
