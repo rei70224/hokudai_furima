@@ -37,6 +37,15 @@
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">送信</button>
     </form>
+    <div>
+      <form method="POST" action="{% url "product:decide_to_sell" product.pk wanting_user.pk %}" id="dicide-to-sell-form">{% csrf_token %}
+      {% if not product.is_sold %}
+        <button type="submit" class="save btn btn-default">このユーザに販売</button>
+      {% else %}
+        <button type="submit" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
+      {% endif %}
+      </form>
+    </div>
 {% else %}
     <p>チャットに投稿するにはログインが必要です</p>
     <a href="{% url 'account:login' %}">ログイン</a>

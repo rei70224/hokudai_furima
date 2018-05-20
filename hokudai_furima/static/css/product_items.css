@@ -26,7 +26,12 @@
     width: 85px;
     height: 85px;
     overflow: hidden;
-  }
+}
+
+.big_ribbon_area {
+    right: 15px;
+    width: 90px;
+}
 
 .ribbon {
     display: inline-block;
@@ -52,3 +57,4 @@
     border-bottom: dashed 1px rgba(255, 255, 255, 0.65);
     */
 }
+

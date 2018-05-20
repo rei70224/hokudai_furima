@@ -159,3 +159,18 @@ def product_direct_chat(request, product_pk, wanting_user_pk):
         return render(request, 'product/product_direct_chat.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_user': wanting_user, 'chat': chat, 'talk_reciever_id': talk_reciever_id})
     else:
         return HttpResponse('invalid request')
+
+@login_required
+def decide_to_sell(request, product_pk, wanting_user_pk):
+    wanting_user = get_object_or_404(User, pk=wanting_user_pk)
+    product = get_object_or_404(Product, pk=product_pk)
+    if request.user == product.seller:
+        product.is_sold = True
+        product.save()
+        relative_url = reverse('product:product_details', kwargs={'pk': product.pk})
+        notice = Notification(reciever=wanting_user, message=request.user.username+'が「'+product.title+'」をあなたに販売することを確定しました。', relative_url=relative_url)
+        notice.save()
+        messages.success(request, '購入者を決定しました。チャットで購入者と話し合いの上、商品と料金の受け渡し方法を決定してください。このサイト上での決済はできませんのでご注意ください。')
+        return redirect('product:product_details', pk=product.pk)   
+    else:
+        return HttpResponse('invalid request')
