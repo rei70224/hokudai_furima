@@ -15,10 +15,6 @@
                 最終更新: {{ product.published_date }}
             </div>
         {% endif %}
-
-        <p name="product_id" style="display: none;">{{product.id}}</p>
-
-
         <div class="row">
             <div class="col-sm-6 ">
                 <img src="{% static "img/s3.png" %}"  alt="ロゴ" class="img-fluid">
@@ -28,22 +24,24 @@
 
                     <div class="name">{{ product.title }}</div>
                     <div class="price"> {{ product.price }} 円</div>
-            {% if request.user != product.seller %}
-              {% if request.user in wanting_users %}
-                  <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-                      <div class="button cancel-want">
-                          <button type="submit" name="cancel-want"  class="cancel-want btn" >購入希望のキャンセル</button>
-                      </div>
-                  </form>
-              {% else %}
-                  <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-                      <div class="button_buy">
-                          <button type="submit" name="buy"  class="buy btn" >購入希望</button>
-                      </div>
-                  </form>
-              {% endif %}
+            {% if request.user.is_authenticated %}
               {% if request.user != product.seller %}
-                  <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}">非公開チャット</a>
+                {% if request.user in wanting_users %}
+                    <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                        <div class="button cancel-want">
+                            <button type="submit" name="cancel-want"  class="cancel-want btn" >購入希望のキャンセル</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                        <div class="button_buy">
+                            <button type="submit" name="buy"  class="buy btn" >購入希望</button>
+                        </div>
+                    </form>
+                {% endif %}
+                {% if request.user != product.seller %}
+                    <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}">非公開チャット</a>
+                {% endif %}
               {% endif %}
             {% endif %}
             </div>
