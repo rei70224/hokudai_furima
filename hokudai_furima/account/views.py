@@ -52,7 +52,6 @@ def login(request):
 
 @login_required
 def mypage(request):
-    wanting_products = Product.objects.filter(wanting_users=request.user)
     if request.method == 'POST':
         form = UserEditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
@@ -62,9 +61,11 @@ def mypage(request):
             for _field in form:
                 for error in _field.errors:
                     messages.error(request, error,extra_tags=('danger'))
-            return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_products})
+            return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_product_list})
     form = UserEditForm(instance=request.user)
-    return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_products})
+    wanting_product_list = Product.objects.filter(wanting_users=request.user)
+    selling_product_list = Product.objects.filter(seller=request.user)
+    return render(request, 'account/mypage.html', {'form': form, 'wanting_product_list': wanting_product_list, 'selling_product_list': selling_product_list})
 
 @login_required
 def logout(request):
