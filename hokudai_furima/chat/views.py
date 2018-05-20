@@ -9,7 +9,8 @@ from hokudai_furima.chat.models import Talk, Chat
 from django.db.models import Q
 from django.utils import html
 from django.contrib.auth.decorators import login_required
-from hokudai_furima.account.models import User
+from hokudai_furima.account.models import User, Notification
+from django.urls import reverse
 
 
 @login_required
@@ -21,15 +22,21 @@ def post_talk(request):
     product = Product.objects.get(id=product_id)
     created_date = timezone.now()
     if request.user == product.seller:
-        chat = Chat.objects.get(product=product, product_seller=request.user, product_wanting_user=talk_reciever)
+        product_wanting_user = talk_reciever
+        chat = Chat.objects.get(product=product, product_seller=request.user, product_wanting_user=product_wanting_user)
     else:
-        chat = Chat.objects.get(product=product, product_seller=talk_reciever, product_wanting_user=request.user)
+        product_wanting_user = request.user
+        chat = Chat.objects.get(product=product, product_seller=talk_reciever, product_wanting_user=product_wanting_user)
     if not chat:
         return HttpResponse('invalid request')
     talk = Talk(talker=talker, chat=chat, sentence=sentence, created_date=created_date)
     talk.save()
     chat.talk_set.add(talk)
     chat.save()
+    relative_url = reverse('product:product_direct_chat', kwargs={'product_pk': product.pk, 'wanting_user_pk':product_wanting_user.pk})
+    print(relative_url)
+    notice = Notification(reciever=talk_reciever, message=request.user.username+'から'+product.title+'についてのDMが届いています。', relative_url=relative_url)
+    notice.save()
     print(chat.talk_set.all())
     print(chat.__dict__)
     print(talk.__dict__)

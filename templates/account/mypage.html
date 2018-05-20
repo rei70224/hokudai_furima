@@ -15,6 +15,9 @@
 
 <div class="container">
   {% if user.is_authenticated %}
+    <div id="notice-link">
+      <a href="{% url "account:notification" %}">お知らせ</a>
+    </div>
     <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
         <div class="image-form-group">
             <label for="upload-image_files">プロフィール画像</label>

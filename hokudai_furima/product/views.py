@@ -11,8 +11,9 @@ from django.http import HttpResponse
 from functools import reduce
 import os
 from versatileimagefield.placeholder import OnDiscPlaceholderImage
-from hokudai_furima.account.models import User 
+from hokudai_furima.account.models import User, Notification
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 
 def product_list(request):
@@ -111,10 +112,11 @@ def want_product(request, pk):
     if request.method == 'POST':
         wanting_user = request.user
         product = get_object_or_404(Product, pk=pk)
-        #wanting_user.product_set.add(product)
-        #wanting_user.save()
         product.wanting_users.add(wanting_user)
         product.save()
+        relative_url = reverse('product:product_details', kwargs={'pk': product.pk})
+        notification = Notification(reciever=product.seller, message=wanting_user.username+'さんが「'+product.title+'」の購入を希望しました。', relative_url=relative_url)
+        notification.save()
         messages.success(request, '購入希望が送信されました')
         return redirect('product:want_product_done', pk=product.pk)
     else:
