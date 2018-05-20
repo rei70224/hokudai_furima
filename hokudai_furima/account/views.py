@@ -8,12 +8,13 @@ from django.urls import reverse, reverse_lazy
 from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change
 from django.contrib.auth.decorators import login_required
 import re
-from .models import User
+from .models import User, Notification
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from .emails import send_account_activation_email
 from django.contrib.auth.tokens import default_token_generator
 from hokudai_furima.product.models import Product
+from copy import deepcopy
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -120,3 +121,13 @@ def get_or_process_password_form(request):
         messages.success(request, pgettext(
             'Storefront message', 'Password successfully changed.'))
     return form
+
+@login_required
+def notification(request):
+    notification_list = Notification.objects.filter(reciever=request.user) 
+    for notification in notification_list:
+        if notification.unread:
+            notification.unread = False
+            notification.save()
+            notification.unread = True
+    return render(request, 'account/notification.html', {'notification_list': notification_list})
