@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/product_items.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container">
     {% if messages %}
@@ -16,11 +19,16 @@
             </div>
         {% endif %}
         <div class="row">
-            <div class="col-sm-6 ">
+            <div class="col-6 col-md-6 col-xl-6 col-lg-6">
+                {% if product.is_sold %}
+                  <div class="ribbon_area big_ribbon_area">
+                    <span class="ribbon">SOLD</span>
+                  </div>
+                {% endif %}
                 <img src="{% static "img/s3.png" %}"  alt="ロゴ" class="img-fluid">
             </div>
             <!--<div class="col-sm-3"></div>-->
-            <div class="col-sm-6 ">
+            <div class="col-6 col-md-6 col-xl-6 col-lg-6">
 
                     <div class="name">{{ product.title }}</div>
                     <div class="price"> {{ product.price }} 円</div>

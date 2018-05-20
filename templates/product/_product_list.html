@@ -1,4 +1,7 @@
 {% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/product_items.css' %}">
+{% endblock %}
 <div class="container">
   <div class="row">
   {% for product in product_list %}
@@ -6,7 +9,7 @@
       <div class="item-wrap">
         <div class="item">
           <a href="{% url 'product:product_details' pk=product.pk %}">
-            {% if productis_sold %}
+            {% if product.is_sold %}
               <div class="ribbon_area">
                 <span class="ribbon">SOLD</span>
               </div>
