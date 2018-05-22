@@ -43,8 +43,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     intro = models.TextField(('intro'), max_length=200, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
     is_active = models.BooleanField(default=False)
-    IMAGE_DIR = 'img/account/'
-    icon = VersatileImageField('',upload_to=IMAGE_DIR,blank=True)
+    icon = VersatileImageField('',upload_to='account',blank=True)
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
     objects = UserManager()
