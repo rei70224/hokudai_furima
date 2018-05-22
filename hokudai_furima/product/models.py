@@ -77,7 +77,6 @@ class ProductImage(models.Model):
 """    
      
 class Product(models.Model):
-    IMAGE_DIR = 'img/product/'
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title  = models.CharField(max_length=200)
     description = models.TextField()
@@ -85,28 +84,28 @@ class Product(models.Model):
     is_sold = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
-    #images = models.ForeignKey(ProductImage, related_name='images', on_delete=models.CASCADE, null=True)
-    image0 = VersatileImageField('',
-        upload_to=IMAGE_DIR,  blank=False, null=True)
-        #upload_to='products/images/',  blank=False, null=True)
-
+    image0 = VersatileImageField(
+        '',
+        upload_to='product', 
+        blank=False,
+        null=True
+    )
     image1 = VersatileImageField(
         '',
-        upload_to=IMAGE_DIR,
+        upload_to='product',
         blank=True,
     )
     image2 = VersatileImageField(
         '',
-        upload_to=IMAGE_DIR,
+        upload_to='product',
         blank=True,
     )
     image3 = VersatileImageField(
         '',
-        upload_to=IMAGE_DIR,
+        upload_to='product',
         blank=True,
     )
     wanting_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wanting_users')
-
 
     def update(self):
         self.updated_date = timezone.now()

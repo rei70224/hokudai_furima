@@ -145,7 +145,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     ('css', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'css')),
     ('img', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'img')),
@@ -224,14 +224,14 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 AWS_STATIC_LOCATION = 'static'
-STATICFILES_STORAGE = 'config.storage_backends.StaticStorage'
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-
+STATICFILES_STORAGE = 'config.storage_backends.StaticStorage' # DEBUG == False
+    
 AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
-DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage'
+DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage' # DEBUG == False 
 
 AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-PRIVATE_FILE_STORAGE = 'storage_backends.PrivateMediaStorage'
+PRIVATE_FILE_STORAGE = 'config.storage_backends.PrivateMediaStorage'
 
 try:
     from .local_settings import *
