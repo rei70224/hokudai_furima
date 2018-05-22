@@ -94,5 +94,5 @@ Thumbs.db
 # Dockerfile
 Dockerfile
 
-# for temp image file
-media
+# static file(css, js, etc.)
+static
