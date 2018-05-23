@@ -58,3 +58,18 @@
     */
 }
 
+.square-box{
+  position:relative;
+  overflow:hidden;
+  padding-bottom:100%;
+}
+
+.square-box img{
+  position:absolute;
+  display:block;
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  margin:auto;
+}

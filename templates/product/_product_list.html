@@ -14,7 +14,9 @@
                 <span class="ribbon">SOLD</span>
               </div>
             {% endif %}
-            <img src="{{ product.image0.url }}" class="img-fluid">
+            <div class="square-box">
+                <img src="{{ product.image0_thumbnail_url }}" class="img-fluid">
+            </div>
             <div class="caption">
               <h4>{{ product.title}}</h4>
               <p>¥ {{ product.price }}</p>
