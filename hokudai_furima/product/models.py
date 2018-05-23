@@ -44,6 +44,10 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def image0_thumbnail_url(self):
+        if self.image0 and hasattr(self.image0, 'url'):
+            return self.image0.thumbnail['600x600'].url
 
 
 
