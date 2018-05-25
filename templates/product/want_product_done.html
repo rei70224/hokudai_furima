@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="product">
+        {% if product.published_date %}
+            <div class="date">
+                最終更新: {{ product.published_date }}
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-sm-6 ">
+                <img src="{% static "img/s3.png" %}"  alt="ロゴ" class="img-fluid">
+            </div>
+            <!--<div class="col-sm-3"></div>-->
+            <div class="col-sm-6 ">
+                    <div class="name">{{ product.title }}</div>
+                    <div class="price"> {{ product.price }} 円</div>
+            </div>
+        </div>
+            
+
+
+        <table class="table">
+        <thead>
+            <tr>
+                <th>出品者</th>
+                <th>{{ product.seller }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>出品状態</td>
+                <td>{{ product.is_sold|yesno:"売り切れ,販売中" }}</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    {% if product_list %}
+        <h2>購入希望中の商品一覧</h2>
+        {% include 'product/_product_list.html' %}
+    {% endif %}
+</div>
+{% endblock %}

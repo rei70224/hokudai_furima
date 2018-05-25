@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    {% block meta_tags %}{% endblock %}
     {% block css %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/logo.css' %}">
@@ -14,7 +15,9 @@
   <body>
     <header>
       <div id="logo">
+          <a href="{% url "home" %}">
         <img src="{% static "img/hu_furima_logo.png" %}"  alt="ロゴ">
+          </a>
       </div>
       <nav id="navbar">
         <ul>
@@ -26,7 +29,7 @@
           </li>
           {% if request.user.is_authenticated %}
             <li>
-              <a href="{% url "account:details" %}">マイページ</a>
+              <a href="{% url "account:mypage" %}">マイページ</a>
             </li>
             <li>
               <a href="{% url "account:logout" %}">ログアウト</a>
@@ -43,6 +46,15 @@
       </nav>
     </header>
     <main>
+      {% if messages %}
+        <div class="container">
+          <ul class="messages" style="padding-left: 0px;">
+            {% for message in messages %}
+            <li style="list-style-type: none;"{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}><strong>{{ message }}</strong></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
       {% block content %} {% endblock %}
     </main>
   </body>

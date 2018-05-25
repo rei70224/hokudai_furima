@@ -5,7 +5,10 @@ from django.utils import timezone
 from django.utils.translation import pgettext_lazy
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django import forms
-
+from versatileimagefield.fields import PPOIField, VersatileImageField
+from versatileimagefield.placeholder import OnDiscPlaceholderImage
+import os
+from django.conf import settings
 
 class UserManager(BaseUserManager):
 
@@ -39,9 +42,19 @@ class User(PermissionsMixin, AbstractBaseUser):
     email = models.EmailField(('email'), unique=True)
     intro = models.TextField(('intro'), max_length=200, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
-
+    is_active = models.BooleanField(default=False)
+    icon = VersatileImageField('',upload_to='account',blank=True)
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
     objects = UserManager()
 
+    @property
+    def icon_url(self):
+        if self.icon and hasattr(self.icon, 'url'):
+            return self.icon.url
 
+class Notification(models.Model):
+    reciever = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    unread = models.BooleanField(default=True)
+    message = models.TextField(max_length=256, null=True) 
+    relative_url = models.TextField(max_length=256, null=True) 

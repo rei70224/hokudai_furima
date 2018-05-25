@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load bootstrap4 %}
+{% load show_product_list %}
+<script>
+    let PLACEHOLDER_IMAGE = "{% static 'img/placeholder.png' %}";
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'js/image_form_utils.js' %}"></script>
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/lock_img_aspect.css' %}">
+  <link rel="stylesheet" href="{% static 'css/hide_djangoform_message.css' %}">
+{% endblock %}
+
+<div class="container">
+  {% if user.is_authenticated %}
+    <div id="notice-link">
+      <a href="{% url "account:notification" %}">お知らせ</a>
+    </div>
+    <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+        <div class="image-form-group">
+            <label for="upload-image_files">プロフィール画像</label>
+            <div class="row">
+                <div class="col-3 " style="display:inline-block;">
+                    <div class="imgAspect ratio1_1">
+                        <img id="img0" src="{% if user.icon_url %}{{ user.icon_url }}{% else %}{% static 'img/placeholder.png' %}{% endif %}" alt="img" name="thumbnail_img" class="img-fluid"> 
+                    </div>
+                        <button type="button" class="btn" onclick="$('#icon').click();">変更</button>
+                </div>
+            </div>
+            {% bootstrap_form form layout='virtical' %}
+        </div>
+        <div class="form-group column">  
+            <button id="submit" type="submit" class="btn">save</button>
+        </div>
+    </form>
+    <h2>出品中/販売済みの商品</h2>
+    {% if selling_product_list %}
+        {% show_product_list selling_product_list %}
+    {% else %}
+        <p>出品中/販売済みの商品はありません。</p>
+    {% endif %}
+    <h2>購入希望中の商品</h2>
+    {% if wanting_product_list %}
+        {% show_product_list wanting_product_list %}
+    {% else %}
+        <p>購入希望中の商品はありません。</p>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

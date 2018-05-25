@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',  # django-bootstrap4
     'versatileimagefield', # djang-versatileimagefield
+    'storages',
     'hokudai_furima.account',
     'hokudai_furima.product',
     'hokudai_furima.search',
@@ -107,10 +108,6 @@ DATABASES = { 'default': {
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -148,7 +145,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     ('css', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'css')),
     ('img', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'img')),
@@ -157,7 +154,7 @@ STATICFILES_DIRS = (
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 AUTH_USER_MODEL = 'account.User'
-LOGIN_REDIRECT_URL = '/account/'
+LOGIN_REDIRECT_URL = '/account/mypage/'
 LOGIN_URL = '/account/login/'
 
 
@@ -208,3 +205,35 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 # 画像アップロード用
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+DEFAULT_FROM_EMAIL='mail@tetsufe.tokyo'
+EMAIL_HOST = 'mail.tetsufe.tokyo'
+EMAIL_HOST_USER = 'mail@tetsufe.tokyo'
+EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_SMTP_PASS')
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+
+SITE_HOST = 'django.tetsufe.tokyo'
+ENABLE_SSL = True
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_STATIC_LOCATION = 'static'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+STATICFILES_STORAGE = 'config.storage_backends.StaticStorage' # DEBUG == False
+    
+AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
+DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage' # DEBUG == False 
+
+AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
+PRIVATE_FILE_STORAGE = 'config.storage_backends.PrivateMediaStorage'
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

@@ -1,10 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
+{% load show_product_list %}
 {% block content %}
-    <h1>ホームです</h1>
-    <h2>最新商品</h2>
-{% if product_list %}
-    {% include '_product_list.html' %}
-{% else %}
-<p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
+    <div class="container">
+        <h1>ホームです</h1>
+        <h2>最新商品</h2>
+        {% if product_list %}
+            {% show_product_list product_list %}
+        {% else %}
+        <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
+    </div>
 {% endif %}
 {% endblock %}
