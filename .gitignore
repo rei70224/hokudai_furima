@@ -95,4 +95,4 @@ Thumbs.db
 Dockerfile
 
 # static file(css, js, etc.)
-static
+/static/
