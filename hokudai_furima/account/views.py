@@ -45,6 +45,8 @@ def signup(request):
     return render(request, 'account/signup.html', ctx)
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('account:mypage')
     kwargs = {
         'template_name': 'account/login.html',
         'authentication_form': LoginForm}
