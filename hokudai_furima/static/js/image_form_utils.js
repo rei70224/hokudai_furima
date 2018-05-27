@@ -1,10 +1,16 @@
 $(function(){
+    for(var i=0;i<4;i++){
+        if($('#img'+i).attr('src') != PLACEHOLDER_IMAGE){
+            $("#edde"+i).html('<button type="button" id="rem'+i+'" onclick="resetImg('+i+');return false;">削除</button>');
+        }
+    }
     var date = new Date();
     date.setTime( date.getTime() + ( 10 * 1000 ));
     //submitを押したら、クッキーを保存
     $("#submit").click(function(){
-        if($('img[src=\"'+PLACEHOLDER_IMAGE+'\"]').length==4){
-            alert("商品画像をアップロードして下さい。");
+        //if($('img[src=\"'+PLACEHOLDER_IMAGE+'\"]').length==4){
+        if($('#img0').attr('src') == PLACEHOLDER_IMAGE){
+            alert("一番左に商品画像をアップロードして下さい。");
             return false;
         }
     })
@@ -62,6 +68,7 @@ function fileget(imgfile,targetID){
                         $("#base64_"+i).val(e.target.result);
                         $("#edde"+i).html('<button type="button" id="rem'+i+'" onclick="resetImg('+i+');return false;">削除</button>');
                         resolve(i+1);
+                        $("input[name=image_"+targetID+"_exists]").val(1);
                     }
                 }
                 console.log("loop_count:"+loop_count);
@@ -98,6 +105,7 @@ function resetImg(targetID){
     $("#img"+targetID).attr("src",PLACEHOLDER_IMAGE);
     $("#edi"+targetID).remove();
     $("#rem"+targetID).remove();
+    $("input[name=image_"+targetID+"_exists]").val(2);
 }
 
 function checknum(){
@@ -108,5 +116,4 @@ function checknum(){
     $('#filenames').val('');
     $('#keynames').val('');
 }
-
 

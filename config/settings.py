@@ -233,6 +233,11 @@ DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage' # DEBUG == F
 AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
 PRIVATE_FILE_STORAGE = 'config.storage_backends.PrivateMediaStorage'
 
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {
+    message_constants.ERROR: 'alert alert-danger',
+}
+
 try:
     from .local_settings import *
 except ImportError:
