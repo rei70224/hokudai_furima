@@ -214,6 +214,10 @@ $ git branch -r
 - ブランチをローカルにもってくる
 
 ```bash
+$ git fetch
+```
+
+```bash
 $ git checkout -b もってきたいブランチ名
 ```
 
