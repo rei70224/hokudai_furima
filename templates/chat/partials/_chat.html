@@ -18,7 +18,7 @@
         {% else %}
             <div class="others_talk" id="{{talk.id}}">
         {% endif %}
-              <div>{{ talk.talker }}</div>
+              <div><a href="{% url 'account:others_page' talk.talker.pk %}">{{ talk.talker }}</a></div>
               <div class="balloon">{{ talk.sentence|linebreaksbr }}</div>
               <div>{{ talk.created_date }}</div>
               <form method="POST" action="{% url 'chat:delete_talk' %}" class="delete_talk_form">{% csrf_token %}
