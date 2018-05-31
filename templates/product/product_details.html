@@ -59,7 +59,7 @@
         <thead>
             <tr>
                 <th>出品者</th>
-                <th>{{ product.seller }}</th>
+                <th><a href="{% url 'account:others_page' product.seller.pk %}">{{ product.seller }}</a></th>
             </tr>
         </thead>
         <tbody>
