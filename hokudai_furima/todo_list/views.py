@@ -3,7 +3,7 @@ from django.utils import timezone
 from hokudai_furima.product.models import Product
 from django.contrib import messages
 from django.conf import settings
-from .models import Todo
+from .models import ReportToBuyTodo
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
@@ -16,7 +16,7 @@ def add_todo_list(request, message, relative_url):
 
 @login_required
 def show_todo_list(request):
-    undone_todo_list = Todo.objects.filter(user=request.user, is_done=False)
-    done_todo_list = Todo.objects.filter(user=request.user, is_done=True)
+    undone_todo_list = ReportToBuyTodo.objects.filter(user=request.user, is_done=False)
+    done_todo_list = ReportToBuyTodo.objects.filter(user=request.user, is_done=True)
     print(done_todo_list)
     return render(request, 'todo_list/todo_list.html', {'undone_todo_list': undone_todo_list, 'done_todo_list': done_todo_list})
