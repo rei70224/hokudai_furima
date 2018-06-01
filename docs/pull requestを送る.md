@@ -183,6 +183,8 @@ pushは、ローカル（自分のPC）のブランチをリモートのリポ�
 $ git push origin 現在のブランチ名
 ```
 
+**基本的に、他の人に迷惑をかける可能性がわずかにあるのはこの操作(git push)だけです。が、基本的にちょっとミスしたくらいでは問題ありません。**
+
 これで、やっとpull requestを送ることができます！
 
 
@@ -204,7 +206,28 @@ github上で、pull requestを送ります。
 これで pull request の作成ができるようになりました！
 
 
-### 2.7 人のpull requestをテストする
+### 2.7 ２回目以降のpull request
+これであなたはpull requestを無事、送ることができたと思います。
+
+最初はやることが多かったですが、これからは以下の手順でpull requestを遅れます。
+
+- 作業内容をだいたい決める
+- `$ git status`で編集中かつ未コミットのファイルがないか確認。なければ次に進む
+    - ある場合はコミットするか、`$ git stash # 場合によっては$ git stash -u` などで一時退避
+- `$ git co develop`
+- `$ git branch`でdevelopにいることを確認
+    - もしくは過去の作業ブランチの続きをやる場合はそのブランチでもよい
+- `$ git pull origin develop` # リモートのorigin/developブランチのコミットを今の作業ブランチ(develop)にマージする
+- `$ git checkout -b 新しいブランチ名`
+- ファイル編集
+- `$ git add -A # または $ git add 編集したファイル`
+- `$ git commit -m "メッセージ"`
+- `$ git push origin 現在のブランチ名`
+- pull requestを送る
+
+
+
+### 2.8 人のpull requestをテストする
 - リモートのブランチ一覧を調べる
 
 ```bash
@@ -218,14 +241,29 @@ $ git fetch
 ```
 
 ```bash
-$ git checkout -b もってきたいブランチ名
+$ git checkout -b 新しいブランチ名 origin/もってきたいブランチ名
 ```
 
 後は自分の環境で、pull requestされたコードが正しいかテストする
 
-### 2.8 pull requestからマージ（統合）
+### 2.9 pull requestからマージ（統合）
 githubのpull request上でマージ（統合）できます。
 
 問題がなければここからマージします。
 
 ここはとりあえず知ってなくても大丈夫です。
+
+
+### まとめ
+- git: 編集記録を管理するツール
+- gitの用語
+    - コミット: 編集記録(をつけること)
+    - ブランチ: 編集記録が分岐したもの(AさんのブランチA・BさんのブランチB)
+    - マージ: 分岐したAさんのブランチAとBさんのブランチBを統合すること
+    - プッシュ: リモートリポジトリにコードと編集記録をアップロードすること
+    - リモートリポジトリ: githubのサーバにあるコード
+    - ローカルリポジトリ: あなたのPC上にあるコード
+- 注意すべきこと
+    - 「北大フリマ」では、基本的にdevelopから派生したブランチで作業すること
+        - `$ git branch`で自分がdevelopにいることを確認してから`$ git checkout -b 新しいブランチ名`で新しいブランチを作る
+    - pull requestのbaseはdevelopを指定する
