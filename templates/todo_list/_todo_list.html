@@ -1,0 +1,14 @@
+<div class="card">
+  <ul class="list-group">
+    {% for todo in undone_todo_list %}
+      <a href="{{ todo.relative_url }}" class="list-group-item list-group-item-action list-group-item-info" >
+        {{ todo.message }}
+      </a>
+    {% endfor %}
+    {% for todo in done_todo_list %}
+      <a href="{{ todo.relative_url }}" class="list-group-item list-group-item-action" >
+        {{ todo.message }}
+      </a>
+  {% endfor %}
+  </ul>
+</div>
