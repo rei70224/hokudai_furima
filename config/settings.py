@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'hokudai_furima.search',
     'hokudai_furima.chat',
     'hokudai_furima.core',
+    'hokudai_furima.todo_list',
 ]
 
 MIDDLEWARE = [

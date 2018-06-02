@@ -17,6 +17,7 @@
   {% if user.is_authenticated %}
     <div id="notice-link">
       <a href="{% url "account:notification" %}">お知らせ</a>
+      <a href="{% url "todo_list:show_todo_list" %}">TODOリスト</a>
     </div>
     <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
         <div class="image-form-group">

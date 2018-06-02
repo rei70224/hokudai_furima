@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils.datastructures import MultiValueDict
 import re
+from hokudai_furima.todo_list.models import ReportToBuyTodo
 
 
 def product_list(request):
@@ -206,10 +207,15 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
     if request.user == product.seller:
         product.is_sold = True
         product.save()
-        relative_url = reverse('product:product_details', kwargs={'pk': product.pk})
-        notice = Notification(reciever=wanting_user, message=request.user.username+'が「'+product.title+'」をあなたに販売することを確定しました。', relative_url=relative_url)
-        notice.save()
+        relative_url = reverse('product:product_direct_chat', kwargs={'product_pk': product.pk, 'wanting_user_pk': wanting_user.pk})
+        notification = Notification(reciever=wanting_user, message=request.user.username+'が「'+product.title+'」をあなたに販売することを確定しました。チャットで出品者と取引方法を確認し合ってください', relative_url=relative_url)
+        notification.save()
+        todo = ReportToBuyTodo(user=request.user, relative_url=relative_url, product=product)
+        todo.set_template_message(wanting_user)
+        todo.save()
         messages.success(request, '購入者を決定しました。チャットで購入者と話し合いの上、商品と料金の受け渡し方法を決定してください。このサイト上での決済はできませんのでご注意ください。')
         return redirect('product:product_details', pk=product.pk)   
     else:
         return HttpResponse('invalid request')
+
+
