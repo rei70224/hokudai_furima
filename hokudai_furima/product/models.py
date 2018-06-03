@@ -8,7 +8,7 @@ from versatileimagefield.placeholder import OnDiscPlaceholderImage
 
 
 class Product(models.Model):
-    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='seller')
     title  = models.CharField(max_length=200)
     description = models.TextField()
     price = models.PositiveIntegerField(default=0)
@@ -16,6 +16,7 @@ class Product(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
     wanting_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wanting_users')
+    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='buyer')
 
     def update(self):
         self.updated_date = timezone.now()
