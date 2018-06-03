@@ -47,13 +47,21 @@
         </div>
     </div>
     <div>
-      <form method="POST" action="{% url "product:decide_to_sell" product.pk wanting_user.pk %}" id="dicide-to-sell-form">{% csrf_token %}
-      {% if not product.is_sold %}
-        <button type="submit" class="save btn btn-default">このユーザに販売</button>
+      {% if product.seller == request.user %}
+        <form method="POST" action="{% url "product:decide_to_sell" product.pk wanting_user.pk %}" id="dicide-to-sell-form">{% csrf_token %}
+        {% if not product.is_sold %}
+          <button type="submit" class="save btn btn-default">このユーザに販売</button>
+        {% else %}
+          <button type="submit" style="text-align: center;" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
+        {% endif %}
+        </form>
       {% else %}
-        <button type="submit" style="text-align: center;" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
+        {% if product.is_sold %}
+          <form method="POST" action="{% url "product:complete_to_recieve" product.pk %}" id="dicide-to-sell-form">{% csrf_token %}
+            <button type="submit" class="save btn btn-default">商品を受け取りました</button>
+          </form>
+        {% endif %}
       {% endif %}
-      </form>
     </div>
 {% else %}
     <p>チャットに投稿するにはログインが必要です</p>
