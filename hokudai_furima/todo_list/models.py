@@ -11,8 +11,21 @@ class Todo(models.Model):
     def done(self):
         self.is_done = True
 
-class ReportToBuyTodo(Todo):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE, null=True)
+    def update(self):
+        self.save()
 
-    def set_template_message(self, wanting_user):
-        self.message='販売を決定した「'+self.product.title+'」の取引方法について、'+'購入者「'+wanting_user.username+'」とチャットで取引方法を確認し合ってください'
+class ReportToRecieveTodo(Todo):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+
+    def set_template_message(self):
+        self.message = '「'+self.product.title+'」の受け取りが完了しましたら、「商品を受け取りました」をクリックしてください'
+
+
+class RatingTodo(Todo):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+
+    def set_template_message(self):
+        if self.user == self.product.seller:
+            self.message = self.product.buyer.username+'との間での「'+self.product.title+'」の受け渡しの完了を確認しました。最後に購入者を評価してください。'
+        else:
+            self.message = self.product.seller.username+'との間での「'+self.product.title+'」の受け渡しの完了を確認しました。最後に出品者を評価してください。'
