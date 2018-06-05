@@ -21,7 +21,6 @@
   -moz-border-radius: 0 6px 6px;
   border-radius: 0 6px 6px 6px;
   padding: 3px 20px;
-
 }
 
 .dropdown-submenu:hover>.dropdown-menu {
@@ -47,4 +46,3 @@
 .dropdown-submenu:hover>a:after {
   border-left-color: #fff;
 }
-
