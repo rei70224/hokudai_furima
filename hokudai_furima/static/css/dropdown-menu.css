@@ -4,7 +4,6 @@
 
 .dropdown:hover > .dropdown-menu{
   display: block;
-  padding: 3px 20px;
   color: #262626;
 }
 
@@ -20,13 +19,10 @@
   -webkit-border-radius: 0 6px 6px 6px;
   -moz-border-radius: 0 6px 6px;
   border-radius: 0 6px 6px 6px;
-  padding: 3px 20px;
 }
 
 .dropdown-submenu:hover>.dropdown-menu {
   display: block;
-  padding: 3px 20px;
-  color: #262626;
 }
 
 .dropdown-submenu>a:after {
