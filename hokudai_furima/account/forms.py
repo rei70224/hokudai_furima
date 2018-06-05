@@ -14,9 +14,9 @@ class SignupForm(django_forms.UserCreationForm):
     def clean(self):
         cleaned_data=super().clean()
         email = cleaned_data.get("email")
-        m = re.search('@eis.hokudai.ac.jp','email')
+        m = re.search('@eis.hokudai.ac.jp$',email)
         if m is None:
-            self._errors["email"]=["登録に使えるのはhokudai.ac.jpを持つメールアドレスのみです。"]
+            self._errors["email"]=["登録に使えるのは@eis.hokudai.ac.jpを持つメールアドレスのみです。"]
 
 class LoginForm(django_forms.AuthenticationForm):
 
