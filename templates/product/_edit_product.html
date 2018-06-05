@@ -24,6 +24,36 @@
           {% endif %}
         </div>
     </div>
+
+    <div class="form-group">
+    <label for="exampleSelect1">カテゴリー</label>
+    <select name="category" class="form-control" id="category" onchange="getcategory();" required="">
+      <option value="">---</option>
+      <option value="ladies">レディース</option>
+      <option value="mens">メンズ</option>
+      <option value="stationery">文房具・事務用品</option>
+      <option value="babykids">ベビー・キッズ</option>
+      <option value="interior">インテリア・住まい・小物</option>
+      <option value="entame">エンタメ・ホビー</option>
+      <option value="cosme">コスメ・香水・美容</option>
+      <option value="kaden">家電・スマホ・カメラ</option>
+      <option value="handmade">ハンドメイド</option>
+      <option value="food">食料品</option>
+      <option value="ticket">チケット</option>
+      <option value="sports">スポーツ・レジャー</option>
+      <option value="bike">自転車・オートバイ</option>
+      <option value="digitalitem">デジタル商品</option>
+      <option value="others">その他</option>
+    </select>
+  </div>
+
+
+
+
+
+
+
+
     <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
         {% bootstrap_form product_form layout='virtical' %}
         {% for product_image_form in product_image_forms %}
