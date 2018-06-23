@@ -1,12 +1,14 @@
 from django.db import models
 from django.conf import settings
 from hokudai_furima.product.models import Product
+from django.utils import timezone
 
 class Todo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     is_done = models.BooleanField(default=False)
     message = models.TextField(max_length=256, null=True) 
     relative_url = models.TextField(max_length=256, null=True) 
+    created_date = models.DateTimeField(default=timezone.now)
 
     def done(self):
         self.is_done = True
