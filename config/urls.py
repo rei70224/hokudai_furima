@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'search/', include('hokudai_furima.search.urls')),
     url(r'chat/', include('hokudai_furima.chat.urls')),
     url(r'^', include('hokudai_furima.core.urls')),
+    url(r'rating/', include('hokudai_furima.rating.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # 画像への直リンクを使う場合は必要。この一行がなくても、{{user.icon.url}}で表示することは可能
