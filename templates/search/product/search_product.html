@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load show_product_list %}
 {% load static %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/product_list.css' %}">
@@ -22,6 +23,12 @@
                 {% include 'product/_product_list.html' %}
             {% else %}
                 <p>そのキーワードに一致する商品は見つかりませんでした。</p>
+                <h2>最新商品</h2>
+                {% if latest_product_list %}
+                  {% show_product_list latest_product_list %}
+                {% else %}
+                  <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
+                {% endif %}
             {% endif %}
         {% endif %}
     </div>

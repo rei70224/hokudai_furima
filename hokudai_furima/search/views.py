@@ -13,7 +13,11 @@ def search_product(request):
         option_form = SearchProductOptionForm(request.GET)
         if keyword_form.is_valid() and option_form.is_valid():
             search_results = search(request)
-            return render(request, 'search/product/search_product.html', {'product_list': search_results, 'keyword_form': keyword_form, 'option_form': option_form, 'is_searched': True})
+            if len(search_results) > 0:
+                return render(request, 'search/product/search_product.html', {'product_list': search_results, 'keyword_form': keyword_form, 'option_form': option_form, 'is_searched': True})
+            else:
+                latest_products = Product.objects.all().order_by('-created_date')[:16]
+                return render(request, 'search/product/search_product.html', {'latest_product_list': latest_products, 'keyword_form': keyword_form, 'option_form': option_form, 'is_searched': True})
 
     keyword_form = SearchProductKeywordForm()
     option_form = SearchProductOptionForm()
