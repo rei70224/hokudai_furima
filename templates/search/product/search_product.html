@@ -10,6 +10,8 @@
         <div>
             <form method="GET" class="post-form">{% csrf_token %}
                 {% bootstrap_form keyword_form layout='virtical' %}
+                <div id="incremental_search_option">
+                </div>
                 {% bootstrap_form option_form layout='virtical' %}
             <div class="form-group column" style="text-align:center;">  
                 <button type="submit" class="btn">検索</button>
@@ -32,4 +34,8 @@
             {% endif %}
         {% endif %}
     </div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/csrf_token_ajax.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/incremental_search.js' %}"></script>
 {% endblock %}
