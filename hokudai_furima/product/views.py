@@ -241,7 +241,7 @@ def complete_to_recieve(request, product_pk):
         buyer_rating_todo.set_template_message()
         buyer_rating_todo.save()
 
-        messages.success(request, '商品の受け取り処理がを完了しました。最後に出品者を評価してください。')
+        messages.success(request, '商品の受け取り処理が完了しました。最後に出品者を評価してください。')
         return redirect('rating:post_rating', product_pk=product.pk)
     else:
         return HttpResponse('invalid request')
