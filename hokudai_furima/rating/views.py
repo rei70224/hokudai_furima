@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from hokudai_furima.account.models import User, Notification
 from django.contrib.auth.decorators import login_required
+from hokudai_furima.todo_list.models import RatingTodo
 
 @login_required
 def post_rating(request, product_pk):
@@ -24,6 +25,9 @@ def post_rating(request, product_pk):
             if not UserRating.objects.filter(product=product, rating_user=request.user):
                 user_rating = UserRating(product=product, rating_user=request.user, rated_user=rated_user, rating=rating)
                 user_rating.save()
+                rating_todo = RatingTodo.objects.get(product=product, user=request.user)
+                rating_todo.done()
+                rating_todo.update()
                 return redirect('rating:thankyou')
             else:
                 messages.error(request, '評価は一度しかできません')
