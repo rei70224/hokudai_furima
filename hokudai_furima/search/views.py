@@ -5,6 +5,7 @@ from .forms import SearchProductKeywordForm, SearchProductOptionForm
 from django.contrib import messages
 from django.conf import settings
 from django.http import HttpResponse
+from django.http import JsonResponse
 
 
 def search_product(request):
@@ -13,7 +14,11 @@ def search_product(request):
         option_form = SearchProductOptionForm(request.GET)
         if keyword_form.is_valid() and option_form.is_valid():
             search_results = search(request)
-            return render(request, 'search/product/search_product.html', {'product_list': search_results, 'keyword_form': keyword_form, 'option_form': option_form, 'is_searched': True})
+            if len(search_results) > 0:
+                return render(request, 'search/product/search_product.html', {'product_list': search_results, 'keyword_form': keyword_form, 'option_form': option_form, 'is_searched': True})
+            else:
+                latest_products = Product.objects.all().order_by('-created_date')[:16]
+                return render(request, 'search/product/search_product.html', {'latest_product_list': latest_products, 'keyword_form': keyword_form, 'option_form': option_form, 'is_searched': True})
 
     keyword_form = SearchProductKeywordForm()
     option_form = SearchProductOptionForm()
@@ -39,6 +44,31 @@ def search(request):
             search_results = sort_product_records_by(search_results, sort_method)
         return search_results
 
+
+def search_product_ajax(request):
+    if request.method == "GET":
+        q = request.GET.get('q')
+        search_results = search_ajax(q)
+        if len(search_results) > 5:
+            search_results = search_results[:5]
+        minimal_search_results = [{'title': result.title} for result in search_results]
+        if len(minimal_search_results) > 0:
+            return JsonResponse(minimal_search_results, safe=False)
+        else:
+            return JsonResponse({'status':'false'}, status=500)
+
+def search_ajax(q):
+        query_words = q.split(' ')
+        search_results = []
+        if query_words is None:
+            query_words = query
+        for word in query_words:
+            records_per_word = []
+            records_per_word += Product.objects.filter(title__icontains=word)
+            for record in records_per_word:
+                if record not in search_results:
+                    search_results.append(record)
+        return search_results
 
 def parse_search_request(request):
     query_keyword_string = request.GET.get("q")
