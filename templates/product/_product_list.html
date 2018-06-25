@@ -5,7 +5,7 @@
 <div class="container">
   <div class="row">
   {% for product in product_list %}
-    <div class="col-md-6 col-lg-3" style="padding:2px;">
+    <div class="col-6 col-lg-3" style="padding:2px;">
       <div class="item-wrap">
         <div class="item">
           <a href="{% url 'product:product_details' pk=product.pk %}">
