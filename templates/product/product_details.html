@@ -29,15 +29,17 @@
                 {% if request.user in wanting_users %}
                   {% if not product.is_sold %}
                     <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-                        <div class="button cancel-want">
-                            <button type="submit" name="cancel-want"  class="cancel-want btn" >購入希望のキャンセル</button>
+                      <div class="row">
+                        <div class="col-md-8" style="margin:0 15px; padding:0;">
+                          <button type="submit" name="cancel-want" class="btn btn-lg btn-block" style="background-color:#fe6222;color:white;" >購入希望のキャンセル</button>
                         </div>
+                      </div>
                     </form>
                   {% endif %}
                 {% else %}
                     <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                         <div class="row">
-                            <div class="col-sm-3" style="margin:0 15px; padding:0;">
+                            <div class="col-md-8" style="margin:0 15px; padding:0;">
                                 <button   class="btn btn-lg btn-block " style="background-color:#fe6222;color:white;" type="button" >購入希望</button>
                             </div>
                         </div>
