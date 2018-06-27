@@ -30,20 +30,20 @@
                   {% if not product.is_sold %}
                     <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                       <div class="row">
-                        <div class="col-md-8" style="margin:0 15px; padding:0;">
+                        <div class="col-md-6" style="margin:0 15px; padding:0;">
                           <button type="submit" name="cancel-want" class="btn btn-lg btn-block" style="background-color:#fe6222;color:white;" >購入希望のキャンセル</button>
                         </div>
                       </div>
                     </form>
                   {% endif %}
                 {% else %}
-                    <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-8" style="margin:0 15px; padding:0;">
-                                <button   class="btn btn-lg btn-block " style="background-color:#fe6222;color:white;" type="button" >購入希望</button>
-                            </div>
-                        </div>
-                    </form>
+                  <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-6" style="margin:0 15px; padding:0;">
+                        <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#fe6222;color:white;">購入希望</button>
+                      </div>
+                    </div>
+                  </form>
                 {% endif %}
                 {% if request.user != product.seller %}
                     <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}">非公開チャット</a>
