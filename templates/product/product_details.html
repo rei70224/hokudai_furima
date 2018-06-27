@@ -1,113 +1,115 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/product_items.css' %}">
+<link rel="stylesheet" href="{% static 'css/product_items.css' %}">
 {% endblock %}
 {% block content %}
-<div class="container">
+  <div class="container">
     <div class="product">
-        {% if product.published_date %}
-            <div class="date">
-                最終更新: {{ product.published_date }}
+      {% if product.published_date %}
+        <div class="date">
+          最終更新: {{ product.published_date }}
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="col-sm-4 ">
+          {% if product.is_sold %}
+            <div class="ribbon_area big_ribbon_area">
+              <span class="ribbon">SOLD</span>
             </div>
-        {% endif %}
-        <div class="row">
-            <div class="col-sm-4 ">
-                {% if product.is_sold %}
-                  <div class="ribbon_area big_ribbon_area">
-                    <span class="ribbon">SOLD</span>
+          {% endif %}
+          <img src="{{ product.productimage_set.all.0.thumbnail_url }}" class="img-fluid">
+        </div>
+        <!--<div class="col-sm-3"></div>-->
+        <div class="col-sm-8    " style="padding:20px;">
+          <div class="h4">{{ product.title }}</div>
+          <div class="h3" style="color:#ff5722"> {{ product.price }} 円</div>
+          {% if request.user.is_authenticated %}
+            {% if request.user != product.seller %}
+              {% if request.user in wanting_users %}
+                {% if not product.is_sold %}
+                  <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-6" style="margin:0 15px; padding:0;">
+                        <button type="submit" name="cancel-want" class="btn btn-lg btn-block" style="background-color:#fe6222;color:white;" >購入希望のキャンセル</button>
+                      </div>
+                    </div>
+                  </form>
+                {% endif %}
+              {% else %}
+                <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6" style="margin:0 15px; padding:0;">
+                      <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#fe6222;color:white;">購入希望</button>
+                    </div>
                   </div>
-                {% endif %}
-                <img src="{{ product.productimage_set.all.0.thumbnail_url }}" class="img-fluid">
-            </div>
-            <!--<div class="col-sm-3"></div>-->
-            <div class="col-sm-8    " style="padding:20px;">
-                    <div class="h4">{{ product.title }}</div>
-                    <div class="h3" style="color:#ff5722"> {{ product.price }} 円</div>
-            {% if request.user.is_authenticated %}
+                </form>
+              {% endif %}
               {% if request.user != product.seller %}
-                {% if request.user in wanting_users %}
-                  {% if not product.is_sold %}
-                    <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-                        <div class="button cancel-want">
-                            <button type="submit" name="cancel-want"  class="cancel-want btn" >購入希望のキャンセル</button>
-                        </div>
-                    </form>
-                  {% endif %}
-                {% else %}
-                    <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-                        <div class="row">
-                            <div class="col-sm-3" style="margin:0 15px; padding:0;">
-                                <button   class="btn btn-lg btn-block " style="background-color:#fe6222;color:white;" type="button" >購入希望</button>
-                            </div>
-                        </div>
-                    </form>
-                {% endif %}
-                {% if request.user != product.seller %}
-                    <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}">非公開チャット</a>
-                {% endif %}
+                <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}">非公開チャット</a>
               {% endif %}
             {% endif %}
-            </div>
+          {% endif %}
         </div>
+      </div>
 
-        <table class="table">
+      <table class="table">
         <thead>
-            <tr>
-                <th>出品者</th>
-                <th><a href="{% url 'account:others_page' product.seller.pk %}">{{ product.seller }}</a></th>
-            </tr>
+          <tr>
+            <th>出品者</th>
+            <th><a href="{% url 'account:others_page' product.seller.pk %}">{{ product.seller }}</a></th>
+          </tr>
         </thead>
         <tbody>
-            <tr>
-                <th>出品状態</th>
-                <td>{{ product.is_sold|yesno:"売り切れ,販売中" }}</td>
-            </tr>
-            <tr>
-                <th>カテゴリ</th>
-                <td>数学　英語　物理　的なことを入力するのかな？</td>
-            </tr>
-            <tr>
-                <th>状態</th>
-                <td>きれい・書き込みありとか書くのかな？</td>
-            </tr>
+          <tr>
+            <th>出品状態</th>
+            <td>{{ product.is_sold|yesno:"売り切れ,販売中" }}</td>
+          </tr>
+          <tr>
+            <th>カテゴリ</th>
+            <td>数学　英語　物理　的なことを入力するのかな？</td>
+          </tr>
+          <tr>
+            <th>状態</th>
+            <td>きれい・書き込みありとか書くのかな？</td>
+          </tr>
         </tbody>
-        </table>
-        {% if request.user.is_authenticated %}
-            {% if product.seller.id == request.user.id %}
-            <a href="{% url "product:update_product" product.pk %}" style="display: block">編集</a>
-            {% endif %}
+      </table>
+      {% if request.user.is_authenticated %}
+        {% if product.seller.id == request.user.id %}
+          <a href="{% url "product:update_product" product.pk %}" style="display: block">編集</a>
         {% endif %}
-        <p>{{ product.description|linebreaksbr }}</p>
-        <br>
-        {% if request.user.is_authenticated %}
-            {% if product.seller.id == request.user.id %}
-                <h5>購入希望中のユーザー</h5>
-                {% if wanting_users %}
-                    {% for wanting_user in wanting_users %}
-                        <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>{{ wanting_user }}</td>
-                                <td><a href="{% url 'product:product_direct_chat' product.pk wanting_user.pk %}">非公開チャット</a></td>
-                                <td>
-                                  <form method="POST" action="{% url "product:decide_to_sell" product.pk wanting_user.pk %}" id="dicide-to-sell-form">{% csrf_token %}
-                                    {% if not product.is_sold %}
-                                      <button type="submit" class="save btn btn-default">このユーザに販売</button>
-                                    {% else %}
-                                      <button type="submit" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
-                                    {% endif %}
-                                  </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                        </table>
-                    {% endfor %}
-                {% else %}
-                    <p>購入希望中のユーザはいません。</p>
-                {% endif %}
-            {% endif %}
+      {% endif %}
+      <p>{{ product.description|linebreaksbr }}</p>
+      <br>
+      {% if request.user.is_authenticated %}
+        {% if product.seller.id == request.user.id %}
+          <h5>購入希望中のユーザー</h5>
+          {% if wanting_users %}
+            {% for wanting_user in wanting_users %}
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>{{ wanting_user }}</td>
+                    <td><a href="{% url 'product:product_direct_chat' product.pk wanting_user.pk %}">非公開チャット</a></td>
+                    <td>
+                      <form method="POST" action="{% url "product:decide_to_sell" product.pk wanting_user.pk %}" id="dicide-to-sell-form">{% csrf_token %}
+                        {% if not product.is_sold %}
+                          <button type="submit" class="save btn btn-default">このユーザに販売</button>
+                        {% else %}
+                          <button type="submit" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
+                        {% endif %}
+                      </form>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            {% endfor %}
+          {% else %}
+            <p>購入希望中のユーザはいません。</p>
+          {% endif %}
         {% endif %}
+      {% endif %}
     </div>
-</div>
+  </div>
 {% endblock %}
