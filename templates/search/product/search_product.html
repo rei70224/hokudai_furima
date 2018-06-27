@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load show_product_list %}
 {% load static %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/product_list.css' %}">
@@ -7,10 +8,12 @@
 {% block content %}
     <div class="container">
         <div>
-            <h1>商品検索</h1>
             <form method="GET" class="post-form">{% csrf_token %}
-                {% bootstrap_form form layout='virtical' %}
-            <div class="form-group column">  
+                {% bootstrap_form keyword_form layout='virtical' %}
+                <div id="incremental_search_option">
+                </div>
+                {% bootstrap_form option_form layout='virtical' %}
+            <div class="form-group column" style="text-align:center;">  
                 <button type="submit" class="btn">検索</button>
             </div>
             </form>
@@ -22,7 +25,17 @@
                 {% include 'product/_product_list.html' %}
             {% else %}
                 <p>そのキーワードに一致する商品は見つかりませんでした。</p>
+                <h2>最新商品</h2>
+                {% if latest_product_list %}
+                  {% show_product_list latest_product_list %}
+                {% else %}
+                  <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
+                {% endif %}
             {% endif %}
         {% endif %}
     </div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/csrf_token_ajax.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/incremental_search.js' %}"></script>
 {% endblock %}

@@ -45,6 +45,8 @@ def signup(request):
     return render(request, 'account/signup.html', ctx)
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('account:mypage')
     kwargs = {
         'template_name': 'account/login.html',
         'authentication_form': LoginForm}
@@ -67,6 +69,13 @@ def mypage(request):
     wanting_product_list = Product.objects.filter(wanting_users=request.user)
     selling_product_list = Product.objects.filter(seller=request.user)
     return render(request, 'account/mypage.html', {'form': form, 'wanting_product_list': wanting_product_list, 'selling_product_list': selling_product_list})
+
+
+def others_page(request, user_pk):
+    others_user = get_object_or_404(User, pk=user_pk)
+    others_user_product_list = Product.objects.filter(seller=others_user)
+    return render(request, 'account/others_page.html', {'others_user': others_user, 'others_user_product_list': others_user_product_list})
+
 
 @login_required
 def logout(request):

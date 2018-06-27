@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'hokudai_furima.search',
     'hokudai_furima.chat',
     'hokudai_furima.core',
+    'hokudai_furima.todo_list',
+    'hokudai_furima.rating',
 ]
 
 MIDDLEWARE = [
@@ -232,6 +234,11 @@ DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage' # DEBUG == F
 
 AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
 PRIVATE_FILE_STORAGE = 'config.storage_backends.PrivateMediaStorage'
+
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {
+    message_constants.ERROR: 'alert alert-danger',
+}
 
 try:
     from .local_settings import *

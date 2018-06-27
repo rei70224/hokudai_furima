@@ -4,12 +4,19 @@ from django import forms
 from ..account.models import User
 from django.contrib.auth import forms as django_forms, update_session_auth_hash
 from . import emails
+import re
  
 class SignupForm(django_forms.UserCreationForm):
     class Meta:
         model = User
         fields = ('username','email',)
         
+    def clean(self):
+        cleaned_data=super().clean()
+        email = cleaned_data.get("email")
+        m = re.search('@eis.hokudai.ac.jp$',email)
+        if m is None:
+            self._errors["email"]=["登録に使えるのは@eis.hokudai.ac.jpを持つメールアドレスのみです。"]
 
 class LoginForm(django_forms.AuthenticationForm):
 
