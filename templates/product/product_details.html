@@ -19,7 +19,7 @@
             </div>
         {% endif %}
         <div class="row">
-            <div class="col-sm-4 bg-primary ">
+            <div class="col-sm-4 ">
                 {% if product.is_sold %}
                   <div class="ribbon_area big_ribbon_area">
                     <span class="ribbon">SOLD</span>
@@ -42,7 +42,7 @@
                 {% else %}
                     <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                         <div class="row">
-                            <div class="col-sm-3" style="margin:0 15px;padding:0;">
+                            <div class="col-sm-3" style="margin:0 15px; padding:0;">
                                 <button   class="btn btn-lg btn-block " style="background-color:#fe6222;color:white;" type="button" >購入希望</button>
                             </div>
                         </div>
@@ -59,14 +59,22 @@
         <table class="table">
         <thead>
             <tr>
-                <th>出品者</th>
-                <th>{{ product.seller }}</th>
+                <th style="widows: 120px;">出品者</th>
+                <th scope="row"><a href="">{{ product.seller }}</a></th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>出品状態</td>
+                <th>出品状態</th>
                 <td>{{ product.is_sold|yesno:"売り切れ,販売中" }}</td>
+            </tr>
+            <tr>
+                <th>カテゴリ</th>
+                <td>数学　英語　物理　的なことを入力するのかな？</td>
+            </tr>
+            <tr>
+                <th>状態</th>
+                <td>きれい・書き込みありとか書くのかな？</td>
             </tr>
         </tbody>
         </table>
@@ -76,10 +84,10 @@
             {% endif %}
         {% endif %}
         <p>{{ product.description|linebreaksbr }}</p>
-
+        <br>
         {% if request.user.is_authenticated %}
             {% if product.seller.id == request.user.id %}
-                <h2>購入希望中のユーザー</h2>
+                <h5>購入希望中のユーザー</h5>
                 {% if wanting_users %}
                     {% for wanting_user in wanting_users %}
                         <table class="table">
