@@ -46,7 +46,8 @@ def signup(request):
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('account:mypage')
+        redirect_url = request.POST.get('next', settings.LOGIN_REDIRECT_URL)
+        return redirect(redirect_url)
     kwargs = {
         'template_name': 'account/login.html',
         'authentication_form': LoginForm}
