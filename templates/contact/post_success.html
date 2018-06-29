@@ -1,1 +1,10 @@
-<h2>送信完了</h2>
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+  <div class="container">
+    <h2 style="text-align:center">お問い合わせ</h2>
+      <p>お客様が入力したメッセージは次のようになります</p>
+    <p>{{ text }}</p>
+  </div>
+{% endblock %}
