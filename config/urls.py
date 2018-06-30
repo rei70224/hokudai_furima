@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'search/', include('hokudai_furima.search.urls')),
     url(r'chat/', include('hokudai_furima.chat.urls')),
     url(r'todo_list/', include('hokudai_furima.todo_list.urls')),
+    url(r'contact/', include('hokudai_furima.contact.urls')),
     url(r'^', include('hokudai_furima.core.urls')),
     url(r'rating/', include('hokudai_furima.rating.urls')),
 ]
