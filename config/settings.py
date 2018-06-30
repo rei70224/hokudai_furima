@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'hokudai_furima.core',
     'hokudai_furima.todo_list',
     'hokudai_furima.contact',
+    'hokudai_furima.rating',
 ]
 
 MIDDLEWARE = [

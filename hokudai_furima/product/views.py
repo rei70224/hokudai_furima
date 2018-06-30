@@ -224,24 +224,25 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
 def complete_to_recieve(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk)
     if request.user == product.buyer:
-        relative_url = reverse('product:product_direct_chat', kwargs={'product_pk': product.pk, 'wanting_user_pk': request.user.pk})
-        notification = Notification(reciever=request.user, message=product.seller.username+'との間での「'+product.title+'」の受け渡しの完了を確認しました。最後に出品者を評価してください。', relative_url=relative_url)
+        rating_relative_url = reverse('rating:post_rating', kwargs={'product_pk': product.pk})
+        notification = Notification(reciever=request.user, message=product.seller.username+'との間での「'+product.title+'」の受け渡しの完了を確認しました。最後に出品者を評価してください。', relative_url=rating_relative_url)
         notification.save()
-        notification = Notification(reciever=product.seller, message=request.user.username+'との間での「'+product.title+'」の受け渡しの完了を確認しました。最後に購入者を評価してください。', relative_url=relative_url)
+        notification = Notification(reciever=product.seller, message=request.user.username+'との間での「'+product.title+'」の受け渡しの完了を確認しました。最後に購入者を評価してください。', relative_url=rating_relative_url)
         notification.save()
+
         report_to_recieve_todo = ReportToRecieveTodo.objects.get(user=product.buyer, product=product)
         report_to_recieve_todo.done()
         report_to_recieve_todo.update()
 
-        seller_rating_todo = RatingTodo(user=product.seller, relative_url=relative_url, product=product)
+        seller_rating_todo = RatingTodo(user=product.seller, relative_url=rating_relative_url, product=product)
         seller_rating_todo.set_template_message()
         seller_rating_todo.save()
-        buyer_rating_todo = RatingTodo(user=product.buyer, relative_url=relative_url, product=product)
+        buyer_rating_todo = RatingTodo(user=product.buyer, relative_url=rating_relative_url, product=product)
         buyer_rating_todo.set_template_message()
         buyer_rating_todo.save()
 
-        messages.success(request, '商品の受け取り処理がを完了しました。最後に出品者を評価してください。')
-        return redirect('product:product_details', pk=product.pk)   
+        messages.success(request, '商品の受け取り処理が完了しました。最後に出品者を評価してください。')
+        return redirect('rating:post_rating', product_pk=product.pk)
     else:
         return HttpResponse('invalid request')
 

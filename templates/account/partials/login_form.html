@@ -3,9 +3,9 @@
   {% csrf_token %}
   <h1>ログイン</h3>
   {% bootstrap_form form layout='virtical' %}
-  {% if REDIRECT_FIELD_VALUE %}
-    <input type="hidden" name="{{ REDIRECT_FIELD_NAME }}" value="{{ REDIRECT_FIELD_VALUE }}"/>
-  {% endif %}
+    {% if next %}
+      <input type="hidden" name="next" value="{{ next }}" />
+    {% endif %}
     <div class="form-group row">  
     <button type="submit" class="btn">
       ログイン
