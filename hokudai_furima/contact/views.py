@@ -14,5 +14,9 @@ def post_contact(request):
 
 def post_success(request, pk):
     contact = get_object_or_404(Contact, pk=pk)
+    email = contact.email
     text = contact.text
-    return render(request, 'contact/post_success.html', {'text': text})
+    return render(request, 'contact/post_success.html', {
+        'email': email,
+        'text': text,
+    })
