@@ -7,6 +7,7 @@
 </script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'js/image_form_utils.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/get_category.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/lock_img_aspect.css' %}">
 <link rel="stylesheet" href="{% static 'css/submit_button.css' %}">
 
@@ -45,13 +46,242 @@
       <option value="digitalitem">デジタル商品</option>
       <option value="others">その他</option>
     </select>
+    </div>
+
+    <div class="form-group">
+    <select name="ladies" class="form-control incategory" id="ladies" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="トップス">トップス</option>
+      <option value="ジャケット/アウター">ジャケット/アウター</option>
+      <option value="パンツ">パンツ</option>
+      <option value="スカート">スカート</option>
+      <option value="ワンピース">ワンピース</option>
+      <option value="靴">靴</option>
+      <option value="ルームウェア/パジャマ">ルームウェア/パジャマ</option>
+      <option value="レッグウェア">レッグウェア</option>
+      <option value="帽子">帽子</option>
+      <option value="バッグ">バッグ</option>
+      <option value="アクセサリー">アクセサリー</option>
+      <option value="ヘアアクセサリー">ヘアアクセサリー</option>
+      <option value="小物">小物</option>
+      <option value="時計">時計</option>
+      <option value="ウィッグ/エクステ">ウィッグ/エクステ</option>
+      <option value="浴衣/水着">浴衣/水着</option>
+      <option value="スーツ/フォーマル/ドレス">スーツ/フォーマル/ドレス</option>
+      <option value="マタニティ">マタニティ</option>
+      <option value="その他">その他</option>
+    </select>
   </div>
 
+  <div class="form-group">
+    <select name="mens" class="form-control incategory" id="mens" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="トップス">トップス</option>
+      <option value="ジャケット/アウター">ジャケット/アウター</option>
+      <option value="パンツ">パンツ</option>
+      <option value="靴">靴</option>
+      <option value="バッグ">バッグ</option>
+      <option value="スーツ">スーツ</option>
+      <option value="帽子">帽子</option>
+      <option value="アクセサリー">アクセサリー</option>
+      <option value="小物">小物</option>
+      <option value="時計">時計</option>
+      <option value="水着">水着</option>
+      <option value="レッグウェア">レッグウェア</option>
+      <option value="アンダーウェア">アンダーウェア</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
 
+  <div class="form-group">
+    <select name="stationery" class="form-control incategory" id="stationery" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="筆記具">筆記具</option>
+      <option value="ノート/メモ帳">ノート/メモ帳</option>
+      <option value="テープ/マスキングテープ">テープ/マスキングテープ</option>
+      <option value="カレンダー/スケジュール">カレンダー/スケジュール</option>
+      <option value="アルバム/スクラップ">アルバム/スクラップ</option>
+      <option value="ファイル/バインダー">ファイル/バインダー</option>
+      <option value="ハサミ/カッター">ハサミ/カッター</option>
+      <option value="カードホルダー/名刺管理">カードホルダー/名刺管理</option>
+      <option value="のり/ホッチキス">のり/ホッチキス</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
 
+  <div class="form-group">
+    <select name="interior" class="form-control incategory" id="interior" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="キッチン/食器">キッチン/食器</option>
+      <option value="ベッド/マットレス">ベッド/マットレス</option>
+      <option value="ソファ/ソファベッド">ソファ/ソファベッド</option>
+      <option value="椅子/チェア">椅子/チェア</option>
+      <option value="机/テーブル">机/テーブル</option>
+      <option value="収納家具">収納家具</option>
+      <option value="ラグ/カーペット/マット">ラグ/カーペット/マット</option>
+      <option value="カーテン/ブラインド">カーテン/ブラインド</option>
+      <option value="ライト/照明">ライト/照明</option>
+      <option value="寝具">寝具</option>
+      <option value="インテリア小物">インテリア小物</option>
+      <option value="季節/年中行事">季節/年中行事</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
 
+  <div class="form-group">
+    <select name="entame" class="form-control incategory" id="entame" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="漫画">漫画</option>
+      <option value="本">本</option>
+      <option value="雑誌">雑誌</option>
+      <option value="DVD/ブルーレイ">DVD/ブルーレイ</option>
+      <option value="CD">CD</option>
+      <option value="レコード">レコード</option>
+      <option value="ミリタリー">ミリタリー</option>
+      <option value="テレビゲーム">テレビゲーム</option>
+      <option value="タレントグッズ">タレントグッズ</option>
+      <option value="楽器/器材">楽器/器材</option>
+      <option value="フィギュア">フィギュア</option>
+      <option value="トレーディングカード">トレーディングカード</option>
+      <option value="おもちゃ/ぬいぐるみ">おもちゃ/ぬいぐるみ</option>
+      <option value="美術品">美術品</option>
+      <option value="アート用品">アート用品</option>
+      <option value="コレクション">コレクション</option>
+      <option value="コミック/アニメグッズ">コミック/アニメグッズ</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
 
+  <div class="form-group">
+    <select name="cosme" class="form-control incategory" id="cosme" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="ベースメーク/化粧品">ベースメーク/化粧品</option>
+      <option value="スキンケア/基礎化粧品">スキンケア/基礎化粧品</option>
+      <option value="香水">香水</option>
+      <option value="ネイルケア">ネイルケア</option>
+      <option value="ヘアケア">ヘアケア</option>
+      <option value="ボディケア">ボディケア</option>
+      <option value="オーラルケア">オーラルケア</option>
+      <option value="リラクゼーション">リラクゼーション</option>
+      <option value="ダイエット">ダイエット</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
 
+  <div class="form-group">
+    <select name="kaden" class="form-control incategory" id="kaden" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="スマートフォン/携帯電話">スマートフォン/携帯電話</option>
+      <option value="スマホアクセサリー">スマホアクセサリー</option>
+      <option value="PC/タブレット">PC/タブレット</option>
+      <option value="カメラ">カメラ</option>
+      <option value="テレビ/映像機器">テレビ/映像機器</option>
+      <option value="オーディオ機器">オーディオ機器</option>
+      <option value="美容/健康">美容/健康</option>
+      <option value="冷暖房/空調">冷暖房/空調</option>
+      <option value="生活家電">生活家電</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <select name="handmade" class="form-control incategory" id="handmade" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="アクセサリー(女性用)">アクセサリー(女性用)</option>
+      <option value="ファッション/小物">ファッション/小物</option>
+      <option value="アクセサリー/時計">アクセサリー/時計</option>
+      <option value="日用品/インテリア">日用品/インテリア</option>
+      <option value="趣味/おもちゃ">趣味/おもちゃ</option>
+      <option value="キッズ/ベビー">キッズ/ベビー</option>
+      <option value="素材/材料">素材/材料</option>
+      <option value="二次創作物">二次創作物</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <select name="food" class="form-control incategory" id="food" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="お米">お米</option>
+      <option value="野菜類">野菜類</option>
+      <option value="麺・パン・シリアル">麺・パン・シリアル</option>
+      <option value="調味料・スパイス">調味料・スパイス</option>
+      <option value="スイーツ・お菓子">スイーツ・お菓子</option>
+      <option value="その他食品">その他食品</option>
+      <option value="水・ソフトドリンク">水・ソフトドリンク</option>
+      <option value="コーヒー・お茶">コーヒー・お茶</option>
+      <option value="その他飲料">その他飲料</option>
+      <option value="ビール・発泡酒">ビール・発泡酒</option>
+      <option value="ワイン">ワイン</option>
+      <option value="日本酒">日本酒</option>
+      <option value="焼酎">焼酎</option>
+      <option value="梅酒">梅酒</option>
+      <option value="チューハイ・カクテル">チューハイ・カクテル</option>
+      <option value="その他酒類">その他酒類</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
+
+    <div class="form-group">
+    <select name="ticket" class="form-control incategory" id="ticket" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="音楽">音楽</option>
+      <option value="スポーツ">スポーツ</option>
+      <option value="演劇/芸能">演劇/芸能</option>
+      <option value="イベント">イベント</option>
+      <option value="映画">映画</option>
+      <option value="施設利用券">施設利用券</option>
+      <option value="優待券/割引券">優待券/割引券</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <select name="sports" class="form-control incategory" id="sports" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="自転車">自転車</option>
+      <option value="ゴルフ">ゴルフ</option>
+      <option value="アウトドア">アウトドア</option>
+      <option value="フィッシング">フィッシング</option>
+      <option value="スノーボード">スノーボード</option>
+      <option value="スキー">スキー</option>
+      <option value="トレーニング/エクササイズ">トレーニング/エクササイズ</option>
+      <option value="その他スポーツ">その他スポーツ</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <select name="bike" class="form-control incategory" id="bike" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="自動車">自動車</option>
+      <option value="オートバイ">オートバイ</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <select name="digitalitem" class="form-control incategory" id="digitalitem" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="テキスト">テキスト</option>
+      <option value="画像">画像</option>
+      <option value="音声">音声</option>
+      <option value="動画">動画</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <select name="others" class="form-control incategory" id="others" style="display:none;" required="">
+      <option value="">---</option>
+      <option value="日用品/生活雑貨/旅行">日用品/生活雑貨/旅行</option>
+      <option value="文房具/事務用品">文房具/事務用品</option>
+      <option value="ペット用品">ペット用品</option>
+      <option value="事務/店舗用品">事務/店舗用品</option>
+      <option value="アンティーク/コレクション">アンティーク/コレクション</option>
+      <option value="まとめ売り">まとめ売り</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
 
 
     <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
