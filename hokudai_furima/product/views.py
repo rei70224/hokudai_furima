@@ -182,15 +182,19 @@ def cancel_want_product(request, pk):
 def product_direct_chat(request, product_pk, wanting_user_pk):
     wanting_user = get_object_or_404(User, pk=wanting_user_pk)
     product = get_object_or_404(Product, pk=product_pk)
-    if request.user == wanting_user or request.user == product.seller:
+    if (request.user == wanting_user and request.user != product.seller) or (request.user == product.seller and request.user != wanting_user):
         talk_form = TalkForm()
         chat = Chat.objects.filter(product=product, product_wanting_user=wanting_user, product_seller=product.seller)
         if chat.exists():
-            talks = list(map(lambda x: x.talk_set.all(),list(chat)))[0]
+            talks = chat[0].talk_set.all()
         else:
-            chat = Chat(product=product, product_wanting_user=wanting_user, product_seller=product.seller, created_date=timezone.now())
-            chat.save()
-            talks = []
+            # 売り手から新しいユーザとのチャットルームを作成することはできない
+            if request.user != product.seller:
+                chat = Chat(product=product, product_wanting_user=wanting_user, product_seller=product.seller, created_date=timezone.now())
+                chat.save()
+                talks = []
+            else:
+                return HttpResponse('invalid request')
         if request.user == product.seller:
             talk_reciever_id = wanting_user.id
         else:
