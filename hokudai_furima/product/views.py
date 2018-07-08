@@ -183,7 +183,6 @@ def product_direct_chat(request, product_pk, wanting_user_pk):
     wanting_user = get_object_or_404(User, pk=wanting_user_pk)
     product = get_object_or_404(Product, pk=product_pk)
     if (request.user == wanting_user and request.user != product.seller) or (request.user == product.seller and request.user != wanting_user):
-        talk_form = TalkForm()
         chat = Chat.objects.filter(product=product, product_wanting_user=wanting_user, product_seller=product.seller)
         if chat.exists():
             talks = chat[0].talk_set.all()
@@ -199,6 +198,7 @@ def product_direct_chat(request, product_pk, wanting_user_pk):
             talk_reciever_id = wanting_user.id
         else:
             talk_reciever_id = product.seller.id 
+        talk_form = TalkForm()
         return render(request, 'product/product_direct_chat.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_user': wanting_user, 'chat': chat, 'talk_reciever_id': talk_reciever_id})
     else:
         return HttpResponse('invalid request')
