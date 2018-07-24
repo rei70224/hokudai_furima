@@ -6,10 +6,18 @@ from versatileimagefield.fields import PPOIField, VersatileImageField
 import os
 from versatileimagefield.placeholder import OnDiscPlaceholderImage
 
+from django.core.exceptions import ValidationError
+
+def has_no_singlequote(value):
+    if "\'" in value:
+        raise ValidationError(
+            '商品名にはシングルクオート（\'）を含めないでください。',
+            params={'value': value},
+        )
 
 class Product(models.Model):
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='seller')
-    title  = models.CharField(max_length=200)
+    title  = models.CharField(max_length=200, validators=[has_no_singlequote])
     description = models.TextField()
     price = models.PositiveIntegerField(default=0)
     is_sold = models.BooleanField(default=False)

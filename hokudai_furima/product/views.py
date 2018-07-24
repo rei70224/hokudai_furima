@@ -52,11 +52,9 @@ def create_product(request):
             product.save()
             messages.success(request, '出品に成功しました')
             return redirect('product:product_details', pk=product.pk)
-        else:
-            messages.error(request, 'エラーが発生しました。もう一度やり直してください。ご不便おかけしまして申し訳ありません。')
-
+    else:
+        product_form = ProductForm()
     product_image_forms = [ProductImageForm(_i) for _i in range(4)]
-    product_form = ProductForm()
     return render(request, 'product/create_product.html', {'product_form': product_form, 'product_image_forms': product_image_forms})
 
 
