@@ -8,7 +8,7 @@ from versatileimagefield.placeholder import OnDiscPlaceholderImage
 from django.core.exceptions import ValidationError
 from enum import Enum
 
-class AssessLevelChoice(Enum):   # A subclass of Enum
+class AccessLevelChoice(Enum):   # A subclass of Enum
     private = "非公開"
     public = "公開"
 
@@ -31,7 +31,7 @@ class Product(models.Model):
     buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='buyer')
     access_level = models.CharField(
         max_length=10,
-        choices=[(level.name, level.value) for level in AssessLevelChoice],
+        choices=[(level.name, level.value) for level in AccessLevelChoice],
         default='公開'
     )
 
