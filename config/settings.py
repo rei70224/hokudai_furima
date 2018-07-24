@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'hokudai_furima.todo_list',
     'hokudai_furima.contact',
     'hokudai_furima.rating',
+    'rules.apps.AutodiscoverRulesConfig',
 ]
 
 MIDDLEWARE = [
@@ -63,7 +64,8 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    ('django.contrib.auth.backends.ModelBackend'),
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 #ROOT_URLCONF = 'hokudai_furima.urls'
