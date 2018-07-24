@@ -142,3 +142,7 @@ def notification(request):
             notification.save()
             notification.unread = True
     return render(request, 'account/notification.html', {'notification_list': notification_list})
+
+@login_required
+def delete(request):
+    return render(request, 'account/delete_account.html')
