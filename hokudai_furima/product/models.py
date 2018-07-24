@@ -5,8 +5,12 @@ from django.db.models import F, Max, Q
 from versatileimagefield.fields import PPOIField, VersatileImageField
 import os
 from versatileimagefield.placeholder import OnDiscPlaceholderImage
-
 from django.core.exceptions import ValidationError
+from enum import Enum
+
+class AssessLevelChoice(Enum):   # A subclass of Enum
+    private = "非公開"
+    public = "公開"
 
 def has_no_singlequote(value):
     if "\'" in value:
@@ -25,6 +29,11 @@ class Product(models.Model):
     updated_date = models.DateTimeField(blank=True, null=True)
     wanting_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wanting_users')
     buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='buyer')
+    access_level = models.CharField(
+        max_length=10,
+        choices=[(level.name, level.value) for level in AssessLevelChoice],
+        default='公開'
+    )
 
     def update(self):
         self.updated_date = timezone.now()
