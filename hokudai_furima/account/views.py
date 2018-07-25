@@ -44,7 +44,7 @@ def signup(request):
     ctx = {'form': form}
     return render(request, 'account/signup.html', ctx)
 
-def login(request):
+def login(request, backends='django.contrib.auth.backends.ModelBackend'):
     if request.user.is_authenticated:
         redirect_url = request.POST.get('next', settings.LOGIN_REDIRECT_URL)
         return redirect(redirect_url)

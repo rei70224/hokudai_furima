@@ -16,7 +16,10 @@ from django.urls import reverse
 from django.utils.datastructures import MultiValueDict
 import re
 from hokudai_furima.todo_list.models import ReportToRecieveTodo, RatingTodo
+from rules.contrib.views import permission_required
 
+def get_product_by_pk(request, pk):
+    return get_object_or_404(Product, pk=pk)
 
 def product_list(request):
     products = product.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -130,7 +133,7 @@ def update_product(request, product_pk):
                 product_image_forms.append(ProductImageForm(_i))
         return render(request, 'product/update_product.html', {'product_form': product_form, 'product_image_forms': product_image_forms, 'product':product, 'product_image_thumbnail_urls': product_image_thumbnail_urls, 'placeholder_image_number_list': range(len(product_image_thumbnail_urls), 4)})
 
-
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
     talk_form = TalkForm()
