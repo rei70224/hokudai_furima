@@ -15,6 +15,7 @@ from .emails import send_account_activation_email
 from django.contrib.auth.tokens import default_token_generator
 from hokudai_furima.product.models import Product
 from copy import deepcopy
+from hokudai_furima.product.utils import get_public_product_list
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -67,14 +68,14 @@ def mypage(request):
                     messages.error(request, error,extra_tags=('danger'))
             return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_product_list})
     form = UserEditForm(instance=request.user)
-    wanting_product_list = Product.objects.filter(wanting_users=request.user)
-    selling_product_list = Product.objects.filter(seller=request.user)
+    wanting_product_list = get_public_product_list(request.user, Product.objects.filter(wanting_users=request.user))
+    selling_product_list = get_public_product_list(request.user, Product.objects.filter(seller=request.user))
     return render(request, 'account/mypage.html', {'form': form, 'wanting_product_list': wanting_product_list, 'selling_product_list': selling_product_list})
 
 
 def others_page(request, user_pk):
     others_user = get_object_or_404(User, pk=user_pk)
-    others_user_product_list = Product.objects.filter(seller=others_user)
+    others_user_product_list = get_public_product_list(request.user, Product.objects.filter(seller=others_user))
     return render(request, 'account/others_page.html', {'others_user': others_user, 'others_user_product_list': others_user_product_list})
 
 
