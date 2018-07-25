@@ -151,6 +151,7 @@ def product_details(request, pk):
 
 
 @login_required
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def want_product(request, pk):
     if request.method == 'POST':
         wanting_user = request.user
@@ -166,6 +167,7 @@ def want_product(request, pk):
         return HttpResponse('can\'t accept GET request')
 
 
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def want_product_done(request, pk):
     product = get_object_or_404(Product, pk=pk)
     wanting_products = Product.objects.filter(wanting_users=request.user)
@@ -173,12 +175,14 @@ def want_product_done(request, pk):
 
 
 @login_required
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def cancel_want_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.wanting_users.remove(request.user)
     return redirect('product:product_details', pk=product.pk)   
 
 
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 @login_required
 def product_direct_chat(request, product_pk, wanting_user_pk):
     wanting_user = get_object_or_404(User, pk=wanting_user_pk)
@@ -225,6 +229,7 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
         return HttpResponse('invalid request')
 
 
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 @login_required
 def complete_to_recieve(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk)
