@@ -1,4 +1,4 @@
-/* サイドバー（スマホではドロップダウン） */
+/* PC用ヘッダ */
 .pc-header {
   margin-top: 10px;
 }
@@ -30,6 +30,7 @@ input .search {
   width: 50px;
 }
 
+/* ナビゲーションバー */
 #navbar {
   float: right;
 }
