@@ -11,6 +11,7 @@
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/lock_img_aspect.css' %}">
   <link rel="stylesheet" href="{% static 'css/hide_djangoform_message.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
 {% endblock %}
 
 <div class="container">
@@ -50,4 +51,5 @@
     {% endif %}
   {% endif %}
 </div>
+{% include "footer_sell_button.html" %}
 {% endblock %}
