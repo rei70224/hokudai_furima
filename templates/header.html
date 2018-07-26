@@ -1,0 +1,43 @@
+{% load static %}
+<div class="pc-header">
+  <div class="container">
+      <div id="logo">
+          <a href="{% url "home" %}">
+        <img src="{% static "img/hu_furima_logo.png" %}"  alt="ロゴ">
+          </a>
+      </div>
+      <div style="margin-left: 200px;">
+        <form method="GET" action="{% url 'search:search_product' %}" class="search-form ml-auto">
+            <input type="text" name="q" class="form-control search" placeholder="キーワードから検索" value="">
+            <button class="btn btn-default search-button" type="submit">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </form>
+      </div>
+    <nav id="navbar">
+      <ul>
+        <li>
+          <a href="{% url "search:search_product" %}">商品検索</a>
+        </li>
+        <li>
+          <a href="{% url "product:create_product" %}">出品</a>
+        </li>
+        {% if request.user.is_authenticated %}
+          <li>
+            <a href="{% url "account:mypage" %}">マイページ</a>
+          </li>
+          <li>
+            <a href="{% url "account:logout" %}">ログアウト</a>
+          </li>
+        {% else %}
+          <li>
+            <a href="{% url "account:login" %}">ログイン</a>
+          </li>
+          <li>
+            <a href="{% url "account:signup" %}">新規登録</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
