@@ -21,6 +21,9 @@ from rules.contrib.views import permission_required
 def get_product_by_pk(request, pk):
     return get_object_or_404(Product, pk=pk)
 
+def get_product_by_pk_for_chat(request, product_pk, wanting_user_pk):
+    return get_object_or_404(Product, pk=product_pk)
+
 def product_list(request):
     products = product.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'product/product_list.html', {'products': products})
@@ -182,7 +185,7 @@ def cancel_want_product(request, pk):
     return redirect('product:product_details', pk=product.pk)   
 
 
-@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
+@permission_required('products.can_access', fn=get_product_by_pk_for_chat, raise_exception=True)
 @login_required
 def product_direct_chat(request, product_pk, wanting_user_pk):
     wanting_user = get_object_or_404(User, pk=wanting_user_pk)
