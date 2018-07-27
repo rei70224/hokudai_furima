@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
-from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change
+from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change, DeleteAccountForm
 from django.contrib.auth.decorators import login_required
 import re
 from .models import User, Notification
@@ -146,3 +146,18 @@ def notification(request):
 @login_required
 def delete(request):
     return render(request, 'account/delete_account.html')
+
+@login_required
+def delete(request):
+    if request.method == 'POST':
+        form = DeleteAccountForm(request.POST)
+        if form.is_valid():
+            if request.user.check_password(form.cleaned_data['password']):
+                user = User.objects.get(email=request.user.email)
+                user.is_active = False
+                user.save()
+                messages.success(request, '退会処理が完了しました。')
+                return redirect('account:login')
+    else:
+        form = DeleteAccountForm()
+    return render(request, 'account/delete_account.html', {'form': form})

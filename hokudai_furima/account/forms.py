@@ -77,3 +77,6 @@ class PasswordResetForm(django_forms.PasswordResetForm):
         del context['user']
         #emails.send_password_reset_email.delay(context, to_email)
         emails.send_password_reset_email(context, to_email)
+
+class DeleteAccountForm(forms.Form):
+    password = forms.CharField(label='パスワード', max_length=256, widget=forms.PasswordInput())
