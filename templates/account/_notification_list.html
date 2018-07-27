@@ -1,13 +1,7 @@
-<ul>
+<ul class="list-group">
 {% for notification in notification_list %}
-  <li>
-    <div class="item-wrap">
-      <div class="item  {{ notification.unread|yesno:'unread, read' }}">
-        <a href="{{ notification.relative_url }}">
-          <p>{{ notification.message }}</p>
-        </a>
-      </div>
-    </div>
-  </li>
+<a href="{{ notification.relative_url }}" class="list-group-item list-group-item-action {{ notification.unread|yesno:'list-group-item-info, '}}">
+    <p>{{ notification.message }}</p>
+  </a>
 {% endfor %}
 </ul>

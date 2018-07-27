@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
+from .utils import get_undone_todo_list, get_done_todo_list 
 
 def add_todo_list(request, message, relative_url):
     #relative_url = reverse('product:product_details', kwargs={'pk': product.pk})
@@ -16,10 +17,6 @@ def add_todo_list(request, message, relative_url):
 
 @login_required
 def show_todo_list(request):
-    undone_todo_list = list(ReportToRecieveTodo.objects.filter(user=request.user, is_done=False))
-    done_todo_list = list(ReportToRecieveTodo.objects.filter(user=request.user, is_done=True))
-    undone_todo_list += list(RatingTodo.objects.filter(user=request.user, is_done=False))
-    done_todo_list += list(RatingTodo.objects.filter(user=request.user, is_done=True))
-    sorted_done_todo_list = sorted(done_todo_list, key=lambda instance: instance.created_date, reverse=True)
-    sorted_undone_todo_list = sorted(undone_todo_list, key=lambda instance: instance.created_date, reverse=True)
+    sorted_undone_todo_list = get_undone_todo_list(request.user)
+    sorted_done_todo_list = get_done_todo_list(request.user)
     return render(request, 'todo_list/todo_list.html', {'undone_todo_list': sorted_undone_todo_list, 'done_todo_list': sorted_done_todo_list})
