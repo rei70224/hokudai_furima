@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
-from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change
+from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change, DeleteAccountForm
 from django.contrib.auth.decorators import login_required
 import re
 from .models import User, Notification
@@ -15,6 +15,8 @@ from .emails import send_account_activation_email
 from django.contrib.auth.tokens import default_token_generator
 from hokudai_furima.product.models import Product
 from copy import deepcopy
+from hokudai_furima.product.utils import get_public_product_list
+from hokudai_furima.todo_list.utils import get_undone_todo_list, get_done_todo_list
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -44,36 +46,28 @@ def signup(request):
     ctx = {'form': form}
     return render(request, 'account/signup.html', ctx)
 
-def login(request):
+def login(request, backends='django.contrib.auth.backends.ModelBackend'):
     if request.user.is_authenticated:
-        return redirect('account:mypage')
+        redirect_url = request.POST.get('next', settings.LOGIN_REDIRECT_URL)
+        return redirect(redirect_url)
     kwargs = {
         'template_name': 'account/login.html',
         'authentication_form': LoginForm}
     return auth_views.LoginView.as_view(**kwargs)(request, **kwargs)
 
-
 @login_required
 def mypage(request):
-    if request.method == 'POST':
-        form = UserEditForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, ('プロフィール情報を変更しました。'))
-        else:
-            for _field in form:
-                for error in _field.errors:
-                    messages.error(request, error,extra_tags=('danger'))
-            return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_product_list})
-    form = UserEditForm(instance=request.user)
-    wanting_product_list = Product.objects.filter(wanting_users=request.user)
-    selling_product_list = Product.objects.filter(seller=request.user)
-    return render(request, 'account/mypage.html', {'form': form, 'wanting_product_list': wanting_product_list, 'selling_product_list': selling_product_list})
+    wanting_product_list = get_public_product_list(request.user, Product.objects.filter(wanting_users=request.user))
+    selling_product_list = get_public_product_list(request.user, Product.objects.filter(seller=request.user))
+    notification_list = fetch_notification_list(request)
+    sorted_undone_todo_list = get_undone_todo_list(request.user)
+    sorted_done_todo_list = get_done_todo_list(request.user)
+    return render(request, 'account/mypage.html', {'wanting_product_list': wanting_product_list, 'selling_product_list': selling_product_list, 'notification_list': notification_list, 'done_todo_list': sorted_done_todo_list, 'undone_todo_list': sorted_undone_todo_list})
 
 
 def others_page(request, user_pk):
     others_user = get_object_or_404(User, pk=user_pk)
-    others_user_product_list = Product.objects.filter(seller=others_user)
+    others_user_product_list = get_public_product_list(request.user, Product.objects.filter(seller=others_user))
     return render(request, 'account/others_page.html', {'others_user': others_user, 'others_user_product_list': others_user_product_list})
 
 
@@ -94,7 +88,7 @@ def activation(request, uidb64, token):
     if user and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        auth.login(request, user)
+        auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         messages.success(request, ('本登録が完了しました。北大フリマへようこそ！'))
         return redirect('account:mypage')
     else:
@@ -132,11 +126,45 @@ def get_or_process_password_form(request):
     return form
 
 @login_required
-def notification(request):
+def fetch_notification_list(request):
     notification_list = Notification.objects.filter(reciever=request.user) 
     for notification in notification_list:
         if notification.unread:
             notification.unread = False
             notification.save()
             notification.unread = True
+    return notification_list
+
+@login_required
+def notification(request):
+    notification_list = fetch_notification_list(request)
     return render(request, 'account/notification.html', {'notification_list': notification_list})
+
+@login_required
+def edit(request):
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('プロフィール情報を変更しました。'))
+        else:
+            for _field in form:
+                for error in _field.errors:
+                    messages.error(request, error,extra_tags=('danger'))
+            return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_product_list})
+    form = UserEditForm(instance=request.user)
+    return render(request, 'account/edit.html', {'form': form})
+
+@login_required
+def delete(request):
+    if request.method == 'POST':
+        form = DeleteAccountForm(request.POST)
+        user = User.objects.get(email=request.user.email)
+        if form.is_valid(user):
+            user.is_active = False
+            user.save()
+            messages.success(request, '退会処理が完了しました。')
+            return redirect('account:login')
+    else:
+        form = DeleteAccountForm()
+    return render(request, 'account/delete_account.html', {'form': form})

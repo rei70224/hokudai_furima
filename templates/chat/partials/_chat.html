@@ -21,12 +21,18 @@
         {% else %}
             <div class="others_talk" id="{{talk.id}}">
         {% endif %}
-              <div><a href="{% url 'account:others_page' talk.talker.pk %}">{{ talk.talker }}</a></div>
+              {% if talk.talker != request.user %}
+                <div><a href="{% url 'account:others_page' talk.talker.pk %}">{{ talk.talker }}</a></div>
+              {% else %}
+                <div>{{ talk.talker }}</div>
+              {% endif %}
               <div class="balloon">{{ talk.sentence|linebreaksbr }}</div>
               <div>{{ talk.created_date }}</div>
               <form method="POST" action="{% url 'chat:delete_talk' %}" class="delete_talk_form">{% csrf_token %}
                   <input type="hidden" name="talk_id" value={{talk.id}}>
-                  <button type="submit" class="save btn btn-default">削除</button>
+                  {% if talk.talker == request.user %}
+                    <button type="submit" class="save btn btn-default">削除</button>
+                  {% endif %}
               </form>
             </div>
     {% endfor %}

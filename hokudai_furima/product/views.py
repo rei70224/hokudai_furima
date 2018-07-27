@@ -16,7 +16,13 @@ from django.urls import reverse
 from django.utils.datastructures import MultiValueDict
 import re
 from hokudai_furima.todo_list.models import ReportToRecieveTodo, RatingTodo
+from rules.contrib.views import permission_required
 
+def get_product_by_pk(request, pk):
+    return get_object_or_404(Product, pk=pk)
+
+def get_product_by_pk_for_chat(request, product_pk, wanting_user_pk):
+    return get_object_or_404(Product, pk=product_pk)
 
 def product_list(request):
     products = product.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -52,11 +58,9 @@ def create_product(request):
             product.save()
             messages.success(request, '出品に成功しました')
             return redirect('product:product_details', pk=product.pk)
-        else:
-            messages.error(request, 'エラーが発生しました。もう一度やり直してください。ご不便おかけしまして申し訳ありません。')
-
+    else:
+        product_form = ProductForm()
     product_image_forms = [ProductImageForm(_i) for _i in range(4)]
-    product_form = ProductForm()
     return render(request, 'product/create_product.html', {'product_form': product_form, 'product_image_forms': product_image_forms})
 
 
@@ -132,7 +136,7 @@ def update_product(request, product_pk):
                 product_image_forms.append(ProductImageForm(_i))
         return render(request, 'product/update_product.html', {'product_form': product_form, 'product_image_forms': product_image_forms, 'product':product, 'product_image_thumbnail_urls': product_image_thumbnail_urls, 'placeholder_image_number_list': range(len(product_image_thumbnail_urls), 4)})
 
-
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
     talk_form = TalkForm()
@@ -150,6 +154,7 @@ def product_details(request, pk):
 
 
 @login_required
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def want_product(request, pk):
     if request.method == 'POST':
         wanting_user = request.user
@@ -165,6 +170,7 @@ def want_product(request, pk):
         return HttpResponse('can\'t accept GET request')
 
 
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def want_product_done(request, pk):
     product = get_object_or_404(Product, pk=pk)
     wanting_products = Product.objects.filter(wanting_users=request.user)
@@ -172,29 +178,35 @@ def want_product_done(request, pk):
 
 
 @login_required
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def cancel_want_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.wanting_users.remove(request.user)
     return redirect('product:product_details', pk=product.pk)   
 
 
+@permission_required('products.can_access', fn=get_product_by_pk_for_chat, raise_exception=True)
 @login_required
 def product_direct_chat(request, product_pk, wanting_user_pk):
     wanting_user = get_object_or_404(User, pk=wanting_user_pk)
     product = get_object_or_404(Product, pk=product_pk)
-    if request.user == wanting_user or request.user == product.seller:
-        talk_form = TalkForm()
+    if (request.user == wanting_user and request.user != product.seller) or (request.user == product.seller and request.user != wanting_user):
         chat = Chat.objects.filter(product=product, product_wanting_user=wanting_user, product_seller=product.seller)
         if chat.exists():
-            talks = list(map(lambda x: x.talk_set.all(),list(chat)))[0]
+            talks = chat[0].talk_set.all()
         else:
-            chat = Chat(product=product, product_wanting_user=wanting_user, product_seller=product.seller, created_date=timezone.now())
-            chat.save()
-            talks = []
+            # 売り手から新しいユーザとのチャットルームを作成することはできない
+            if request.user != product.seller:
+                chat = Chat(product=product, product_wanting_user=wanting_user, product_seller=product.seller, created_date=timezone.now())
+                chat.save()
+                talks = []
+            else:
+                return HttpResponse('invalid request')
         if request.user == product.seller:
             talk_reciever_id = wanting_user.id
         else:
             talk_reciever_id = product.seller.id 
+        talk_form = TalkForm()
         return render(request, 'product/product_direct_chat.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_user': wanting_user, 'chat': chat, 'talk_reciever_id': talk_reciever_id})
     else:
         return HttpResponse('invalid request')
@@ -220,6 +232,7 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
         return HttpResponse('invalid request')
 
 
+@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 @login_required
 def complete_to_recieve(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk)
