@@ -151,13 +151,12 @@ def delete(request):
 def delete(request):
     if request.method == 'POST':
         form = DeleteAccountForm(request.POST)
-        if form.is_valid():
-            if request.user.check_password(form.cleaned_data['password']):
-                user = User.objects.get(email=request.user.email)
-                user.is_active = False
-                user.save()
-                messages.success(request, '退会処理が完了しました。')
-                return redirect('account:login')
+        user = User.objects.get(email=request.user.email)
+        if form.is_valid(user):
+            user.is_active = False
+            user.save()
+            messages.success(request, '退会処理が完了しました。')
+            return redirect('account:login')
     else:
         form = DeleteAccountForm()
     return render(request, 'account/delete_account.html', {'form': form})
