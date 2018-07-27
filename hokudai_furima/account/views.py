@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
-from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change
+from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change, DeleteAccountForm
 from django.contrib.auth.decorators import login_required
 import re
 from .models import User, Notification
@@ -154,3 +154,17 @@ def edit(request):
             return render(request, 'account/mypage.html', {'form': form, 'product_list': wanting_product_list})
     form = UserEditForm(instance=request.user)
     return render(request, 'account/edit.html', {'form': form})
+
+@login_required
+def delete(request):
+    if request.method == 'POST':
+        form = DeleteAccountForm(request.POST)
+        user = User.objects.get(email=request.user.email)
+        if form.is_valid(user):
+            user.is_active = False
+            user.save()
+            messages.success(request, '退会処理が完了しました。')
+            return redirect('account:login')
+    else:
+        form = DeleteAccountForm()
+    return render(request, 'account/delete_account.html', {'form': form})
