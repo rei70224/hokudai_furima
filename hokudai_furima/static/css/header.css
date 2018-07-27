@@ -30,6 +30,10 @@ input .search {
   width: 50px;
 }
 
+#incremental_search_option {
+  clear:left;
+}
+
 /* ナビゲーションバー */
 #navbar {
 }
