@@ -15,29 +15,37 @@
         </form>
       </div>
     <nav id="navbar">
-      <ul>
-        <li>
-          <a href="{% url "search:search_product" %}">商品検索</a>
-        </li>
-        <li>
-          <a href="{% url "product:create_product" %}">出品</a>
-        </li>
-        {% if request.user.is_authenticated %}
-          <li>
-            <a href="{% url "account:mypage" %}">マイページ</a>
-          </li>
-          <li>
-            <a href="{% url "account:logout" %}">ログアウト</a>
-          </li>
-        {% else %}
-          <li>
-            <a href="{% url "account:login" %}">ログイン</a>
-          </li>
-          <li>
-            <a href="{% url "account:signup" %}">新規登録</a>
-          </li>
-        {% endif %}
-      </ul>
+      <div class="nav-right">
+        <ul>
+          {% if request.user.is_authenticated %}
+            <li>
+              <a href="{% url "account:notification" %}">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                <span>お知らせ</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url "todo_list:show_todo_list" %}">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                <span>TODO</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url "account:mypage" %}">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <span>マイページ</span>
+              </a>
+            </li>
+          {% else %}
+            <li>
+              <a href="{% url "account:login" %}">ログイン</a>
+            </li>
+            <li>
+              <a href="{% url "account:signup" %}">新規登録</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
     </nav>
   </div>
 </div>
