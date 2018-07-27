@@ -77,3 +77,13 @@ class PasswordResetForm(django_forms.PasswordResetForm):
         del context['user']
         #emails.send_password_reset_email.delay(context, to_email)
         emails.send_password_reset_email(context, to_email)
+
+class DeleteAccountForm(forms.Form):
+    password = forms.CharField(label='パスワード', max_length=256, widget=forms.PasswordInput())
+    def is_valid(self, user):
+        if super().is_valid():
+            if not user.check_password(self.cleaned_data['password']):
+                self._errors["password"] = ["正しいパスワードを入力してください。"]
+            else:
+                return True
+        return False
