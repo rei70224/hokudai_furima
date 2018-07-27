@@ -1,0 +1,56 @@
+{% load static %}
+<div class="pc-header">
+  <div class="container">
+      <div id="logo">
+          <a href="{% url "home" %}">
+        <img src="{% static "img/hu_furima_logo.png" %}"  alt="ロゴ">
+          </a>
+      </div>
+      <div style="margin-left: 200px;">
+        <form method="GET" action="{% url 'search:search_product' %}" class="search-form ml-auto">
+            <input type="text" id="id_q" name="q" class="form-control search" placeholder="キーワードから検索" value="">
+            <button class="btn btn-default search-button" type="submit">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </form>
+        <div id="incremental_search_option">
+        </div>
+      </div>
+    <nav id="navbar">
+      <div class="nav-right">
+        <ul>
+          {% if request.user.is_authenticated %}
+            <li>
+              <a href="{% url "account:notification" %}">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                <span>お知らせ</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url "todo_list:show_todo_list" %}">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                <span>TODO</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url "account:mypage" %}">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <span>マイページ</span>
+              </a>
+            </li>
+          {% else %}
+            <li>
+              <a href="{% url "account:login" %}">ログイン</a>
+            </li>
+            <li>
+              <a href="{% url "account:signup" %}">新規登録</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'js/csrf_token_ajax.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/incremental_search.js' %}"></script>

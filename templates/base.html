@@ -10,9 +10,10 @@
       {% include "_ogp.html" %}
     {% endblock %}
     {% block css %}{% endblock %}
-    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/logo.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -21,36 +22,7 @@
   </head>
   <body>
     <header>
-      <div id="logo">
-          <a href="{% url "home" %}">
-        <img src="{% static "img/hu_furima_logo.png" %}"  alt="ロゴ">
-          </a>
-      </div>
-      <nav id="navbar">
-        <ul>
-          <li>
-            <a href="{% url "search:search_product" %}">商品検索</a>
-          </li>
-          <li>
-            <a href="{% url "product:create_product" %}">出品</a>
-          </li>
-          {% if request.user.is_authenticated %}
-            <li>
-              <a href="{% url "account:mypage" %}">マイページ</a>
-            </li>
-            <li>
-              <a href="{% url "account:logout" %}">ログアウト</a>
-            </li>
-          {% else %}
-            <li>
-              <a href="{% url "account:login" %}">ログイン</a>
-            </li>
-            <li>
-              <a href="{% url "account:signup" %}">新規登録</a>
-            </li>
-          {% endif %}
-        </ul>
-      </nav>
+      {% include "header.html" %}
     </header>
     <main>
       {% if messages %}

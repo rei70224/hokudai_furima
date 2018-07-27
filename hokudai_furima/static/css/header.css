@@ -1,0 +1,64 @@
+/* PC用ヘッダ */
+.pc-header {
+  margin-top: 10px;
+}
+
+#logo {
+  float: left;
+}
+
+#logo img {
+  height: 50px;
+  width: 200px;
+}
+
+.search-form {
+  float: left;
+  height: 50px;
+  display: inline-flex;
+  width:100%;
+}
+
+input .search {
+  width: 100%;
+}
+
+.search-button {
+  display: block;
+  float: right;
+  height: 50px;
+  width: 50px;
+}
+
+#incremental_search_option {
+  clear:left;
+}
+
+/* ナビゲーションバー */
+#navbar {
+}
+
+.nav-left {
+  /* 未実装 */
+}
+
+.nav-right {
+  float: right;
+}
+
+#navbar ul{
+  list-style: none;
+}
+
+#navbar li {
+  width: 120px;
+  text-align: center;
+  float: left;
+  height: 50px;
+  line-height: 50px;
+}
+
+#navbar li a {
+  text-decoration: none;
+  color: #000;
+}
