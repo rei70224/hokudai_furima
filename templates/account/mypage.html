@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css %}
+  <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
   <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
   <link rel="stylesheet" href="{% static 'css/todo_list.css' %}">
   <link rel="stylesheet" href="{% static 'css/notification.css' %}">
@@ -53,4 +54,5 @@
     </div>
   </div>
 </div>
+{% include "footer_sell_button.html" %}
 {% endblock %}
