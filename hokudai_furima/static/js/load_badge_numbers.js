@@ -13,4 +13,19 @@ $(window).on('load', function(){
         }
     }).fail(function(){
     });
+
+    // 未完了のTODDの数をバッジに表示する
+    $.ajax({
+      url: '/todo_list/ajax/undone_number/',
+      type: 'GET',
+      processData: false,
+      contentType: false,
+      dataType: 'json'
+    })
+    .done(function(data){
+        if(data.undone_todo_number!=0){
+            $('.todo-badge').text(data.undone_todo_number);
+        }
+    }).fail(function(){
+    });
 });
