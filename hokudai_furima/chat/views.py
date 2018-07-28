@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from hokudai_furima.account.models import User
 from hokudai_furima.notification.models import Notification
 from django.urls import reverse
+from .emails import send_accept_new_message_email
 
 
 @login_required
@@ -38,6 +39,7 @@ def post_talk(request):
     print(relative_url)
     notice = Notification(reciever=talk_reciever, message=request.user.username+'から'+product.title+'についてのDMが届いています。', relative_url=relative_url)
     notice.save()
+    send_accept_new_message_email(product.pk, product_wanting_user.pk, request.user.username, talk_reciever.email)
     print(chat.talk_set.all())
     print(chat.__dict__)
     print(talk.__dict__)
