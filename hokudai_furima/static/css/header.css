@@ -19,7 +19,8 @@
   width:100%;
 }
 
-input .search {
+input[type=text], .search {
+  height: 100%;
   width: 100%;
 }
 
@@ -30,7 +31,8 @@ input .search {
   width: 50px;
 }
 
-#incremental_search_option {
+#header_suggest_area {
+  padding-top: 10px;
   clear:left;
 }
 
