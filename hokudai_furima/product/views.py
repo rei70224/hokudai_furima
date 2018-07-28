@@ -25,6 +25,9 @@ def get_product_by_pk(request, pk):
 def get_product_by_pk_for_chat(request, product_pk, wanting_user_pk):
     return get_object_or_404(Product, pk=product_pk)
 
+def get_product_by_product_pk(request, product_pk):
+    return get_object_or_404(Product, pk=product_pk)
+
 def product_list(request):
     products = product.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'product/product_list.html', {'products': products})
@@ -233,7 +236,7 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
         return HttpResponse('invalid request')
 
 
-@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
+@permission_required('products.can_access', fn=get_product_by_product_pk, raise_exception=True)
 @login_required
 def complete_to_recieve(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk)
