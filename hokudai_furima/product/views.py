@@ -18,6 +18,7 @@ from django.utils.datastructures import MultiValueDict
 import re
 from hokudai_furima.todo_list.models import ReportToRecieveTodo, RatingTodo
 from rules.contrib.views import permission_required
+from .emails import send_decided_buyer_email, send_rating_other_email, send_want_your_product_email
 
 def get_product_by_pk(request, pk):
     return get_object_or_404(Product, pk=pk)
@@ -168,6 +169,9 @@ def want_product(request, pk):
         relative_url = reverse('product:product_details', kwargs={'pk': product.pk})
         notification = Notification(reciever=product.seller, message=wanting_user.username+'さんが「'+product.title+'」の購入を希望しました。', relative_url=relative_url)
         notification.save()
+
+        send_want_your_product_email(pk, wanting_user.pk, product.seller.email)
+
         messages.success(request, '購入希望が送信されました')
         return redirect('product:want_product_done', pk=product.pk)
     else:
@@ -230,6 +234,9 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
         todo = ReportToRecieveTodo(user=product.buyer, relative_url=relative_url, product=product)
         todo.set_template_message()
         todo.save()
+
+        send_decided_buyer_email(product_pk, wanting_user_pk, wanting_user.email)
+
         messages.success(request, '購入者を決定しました。チャットで購入者と話し合いの上、商品と料金の受け渡し方法を決定してください。このサイト上での決済はできませんのでご注意ください。')
         return redirect('product:product_details', pk=product.pk)   
     else:
@@ -257,6 +264,9 @@ def complete_to_recieve(request, product_pk):
         buyer_rating_todo = RatingTodo(user=product.buyer, relative_url=rating_relative_url, product=product)
         buyer_rating_todo.set_template_message()
         buyer_rating_todo.save()
+
+        send_rating_other_email(product_pk, product.seller.username, product.buyer.email)
+        send_rating_other_email(product_pk, product.buyer.username, product.seller.email)
 
         messages.success(request, '商品の受け取り処理が完了しました。最後に出品者を評価してください。')
         return redirect('rating:post_rating', product_pk=product.pk)
