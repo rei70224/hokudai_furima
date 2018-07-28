@@ -1,7 +1,7 @@
 $(window).on('load', function(){
     // 未読のお知らせの数をバッジに表示する
     $.ajax({
-      url: 'notification/ajax/unread_number/',
+      url: '/notification/ajax/unread_number/',
       type: 'GET',
       processData: false,
       contentType: false,
