@@ -7,7 +7,10 @@
           </a>
       </div>
       <div style="margin-left: 200px;">
-        <form method="GET" action="{% url 'search:search_product' %}" class="search-form ml-auto">
+        <form method="GET" action="{% url 'search:search_product' %}" class="search-form ml-auto">{% csrf_token %}
+            <input type='hidden' name="price_range" value='0_1000000' />
+            <input type='hidden' name="is_sold" value='all' />
+            <input type='hidden' name="sort_method" value='sort_new' />
             <input type="text" id="header_query" name="q" class="form-control search" placeholder="キーワードから検索" value="">
             <button class="btn btn-default search-button" type="submit">
               <i class="fa fa-search" aria-hidden="true"></i>
