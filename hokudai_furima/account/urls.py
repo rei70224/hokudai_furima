@@ -23,6 +23,5 @@ urlpatterns = [
         url(r'password/reset/complete/$', auth_views.PasswordResetCompleteView.as_view(  # noqa
             template_name='account/password_reset_from_key_done.html'),
             name='reset-password-complete'),
-        url(r'^notification/$', views.notification, name='notification'),
         url(r'^delete/$', views.delete, name='delete'),
     ]

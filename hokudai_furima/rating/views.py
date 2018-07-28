@@ -5,7 +5,8 @@ from .models import UserRating
 from hokudai_furima.product.models import Product
 from django.contrib import messages
 from django.http import HttpResponse
-from hokudai_furima.account.models import User, Notification
+from hokudai_furima.account.models import User
+from hokudai_furima.notification.models import Notification
 from django.contrib.auth.decorators import login_required
 from hokudai_furima.todo_list.models import RatingTodo
 

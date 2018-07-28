@@ -10,7 +10,8 @@ from django.http import HttpResponse
 from functools import reduce
 import os
 from versatileimagefield.placeholder import OnDiscPlaceholderImage
-from hokudai_furima.account.models import User, Notification
+from hokudai_furima.account.models import User
+from hokudai_furima.notification.models import Notification
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils.datastructures import MultiValueDict

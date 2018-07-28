@@ -8,7 +8,8 @@ from django.urls import reverse, reverse_lazy
 from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, PasswordResetForm, logout_on_password_change, DeleteAccountForm
 from django.contrib.auth.decorators import login_required
 import re
-from .models import User, Notification
+from .models import User
+from hokudai_furima.notification.models import Notification
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from .emails import send_account_activation_email
@@ -17,6 +18,7 @@ from hokudai_furima.product.models import Product
 from copy import deepcopy
 from hokudai_furima.product.utils import get_public_product_list
 from hokudai_furima.todo_list.utils import get_undone_todo_list, get_done_todo_list
+from hokudai_furima.notification.utils import fetch_notification_list
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -124,21 +126,6 @@ def get_or_process_password_form(request):
         messages.success(request, pgettext(
             'Storefront message', 'Password successfully changed.'))
     return form
-
-@login_required
-def fetch_notification_list(request):
-    notification_list = Notification.objects.filter(reciever=request.user) 
-    for notification in notification_list:
-        if notification.unread:
-            notification.unread = False
-            notification.save()
-            notification.unread = True
-    return notification_list
-
-@login_required
-def notification(request):
-    notification_list = fetch_notification_list(request)
-    return render(request, 'account/notification.html', {'notification_list': notification_list})
 
 @login_required
 def edit(request):

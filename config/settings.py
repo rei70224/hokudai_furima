@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'hokudai_furima.todo_list',
     'hokudai_furima.contact',
     'hokudai_furima.rating',
+    'hokudai_furima.notification',
     'rules.apps.AutodiscoverRulesConfig',
 ]
 

@@ -9,7 +9,8 @@ from hokudai_furima.chat.models import Talk, Chat
 from django.db.models import Q
 from django.utils import html
 from django.contrib.auth.decorators import login_required
-from hokudai_furima.account.models import User, Notification
+from hokudai_furima.account.models import User
+from hokudai_furima.notification.models import Notification
 from django.urls import reverse
 
 
