@@ -1,7 +1,21 @@
 $(window).on('load', function(){
-    $('#id_q').on('keyup', function(e){
+  $('#id_q').on('keyup', function(e){
     e.preventDefault();
-    var input = $.trim($(this).val());
+    incremental_search('#main_suggest_area', '#id_q');
+  });
+});
+
+
+$(window).on('load', function(){
+  $('#header_query').on('keyup', function(e){
+    e.preventDefault();
+    incremental_search('#header_suggest_area', '#header_query');
+  });
+});
+
+
+function incremental_search(suggest_area_id, query_input_id){
+    var input = $.trim($(query_input_id).val());
     $.ajax({
       url: '/search/product/ajax',
       type: 'GET',
@@ -10,26 +24,25 @@ $(window).on('load', function(){
       contentType: false,
       dataType: 'json'
     })
-    .done(function(data){ //データを受け取ることに成功したら、dataを引数に取って以下のことする(dataには@usersが入っている状態ですね)
-        $('#incremental_search_option').empty()
-        $('#incremental_search_option').append('<div class="dropdown"><div class="dropdown-menu show" style="width:100%; margin-top:-10px"></div></div>');
-      $(data).each(function(i, product){ //dataをuserという変数に代入して、以下のことを繰り返し行う(単純なeach文ですね)
-        $('.dropdown-menu').append('<span class="dropdown-item" onclick="clickDropdownItem(\''+ htmlEscape(product.title).replace('&#x27;', '&quot;') +'\')">' + htmlEscape(product.title) + '</span>') //resultというidの要素に対して、<li>ユーザーの名前</li>を追加する。
+    .done(function(data){
+        $(suggest_area_id).empty()
+        $(suggest_area_id).append('<div class="dropdown"><div class="dropdown-menu show" style="width:100%; margin-top:-10px"></div></div>');
+      $(data).each(function(i, product){
+        $(suggest_area_id+' > .dropdown > .dropdown-menu').append('<span class="dropdown-item" onclick="clickDropdownItem(\''+ htmlEscape(product.title).replace('&#x27;', '&quot;') +"\',\'"+suggest_area_id+"\',\'"+query_input_id+"\')\">" + htmlEscape(product.title) + '</span>')
       });
     }).fail(function(){
         // エラーの場合処理
-        $('#incremental_search_option').empty()
+        $(suggest_area_id).empty()
     });
-  });
-});
-
-function clickDropdownItem(text){
-    $('#incremental_search_option').empty();
-    setInputText(text);
 }
 
-function setInputText(text){
-    $('#id_q').val(text);
+function clickDropdownItem(text, suggest_area_id, query_input_id){
+    $(suggest_area_id).empty();
+    setInputText(text, query_input_id);
+}
+
+function setInputText(text, query_input_id){
+    $(query_input_id).val(text);
     console.log('setInputText');
 }
 

@@ -8,12 +8,12 @@
       </div>
       <div style="margin-left: 200px;">
         <form method="GET" action="{% url 'search:search_product' %}" class="search-form ml-auto">
-            <input type="text" id="id_q" name="q" class="form-control search" placeholder="キーワードから検索" value="">
+            <input type="text" id="header_query" name="q" class="form-control search" placeholder="キーワードから検索" value="">
             <button class="btn btn-default search-button" type="submit">
               <i class="fa fa-search" aria-hidden="true"></i>
             </button>
         </form>
-        <div id="incremental_search_option">
+        <div id="header_suggest_area">
         </div>
       </div>
     <nav id="navbar">
