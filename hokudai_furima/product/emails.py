@@ -13,7 +13,7 @@ def send_want_your_product_email(product_pk, wanting_user_pk, to_email_address):
             kwargs={'pk': product_pk}))
     wanting_user = User.objects.get(pk=wanting_user_pk)
     product = Product.objects.get(pk=product_pk)
-    send_mail('新規メッセージを受信しました（ホクマ）',
+    send_mail('商品の購入希望のお知らせ（ホクマ）',
           make_email_body_with_template(wanting_user.username+'さんが「'+product.title+"」の購入を希望しました。\n" + product_url),
           settings.DEFAULT_FROM_EMAIL,
           [to_email_address], fail_silently=False)
