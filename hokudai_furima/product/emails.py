@@ -40,3 +40,15 @@ def send_decided_buyer_email(product_pk, wanting_user_pk, to_email_address):
           make_email_body_with_template(wanting_user.username+'さんが「'+product.title+'」をあなたに販売することを確定しました。チャットで出品者と取引方法を確認し合ってください\n'+chat_url),
           settings.DEFAULT_FROM_EMAIL,
           [to_email_address], fail_silently=False)
+
+def send_cancel_your_product_email(product_pk, wanting_user_pk, to_email_address):
+    product_url = build_absolute_uri(
+        reverse(
+            'product:product_details',
+            kwargs={'pk': product_pk}))
+    wanting_user = User.objects.get(pk=wanting_user_pk)
+    product = Product.objects.get(pk=product_pk)
+    send_mail('商品の購入希望キャンセルのお知らせ（ホクマ）',
+          make_email_body_with_template(wanting_user.username+'さんが「'+product.title+"」の購入希望をキャンセルしました。悪質なキャンセル行為と感じた場合は、ホクマ運営のお問い合わせメールアドレス（support@example.com）までご報告ください。\n" + product_url),
+          settings.DEFAULT_FROM_EMAIL,
+          [to_email_address], fail_silently=False)

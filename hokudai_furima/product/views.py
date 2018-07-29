@@ -18,7 +18,7 @@ from django.utils.datastructures import MultiValueDict
 import re
 from hokudai_furima.todo_list.models import ReportToRecieveTodo, RatingTodo
 from rules.contrib.views import permission_required
-from .emails import send_decided_buyer_email, send_rating_other_email, send_want_your_product_email
+from .emails import send_decided_buyer_email, send_rating_other_email, send_want_your_product_email, send_cancel_your_product_email
 
 def get_product_by_pk(request, pk):
     return get_object_or_404(Product, pk=pk)
@@ -184,6 +184,7 @@ def cancel_want_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.wanting_users.remove(request.user)
     messages.success(request, '購入希望をキャンセルしました')
+    send_cancel_your_product_email(pk, request.user.pk, product.seller.email)
     return redirect('product:product_details', pk=product.pk)   
 
 
