@@ -35,9 +35,8 @@ def send_decided_buyer_email(product_pk, wanting_user_pk, to_email_address):
             'product:product_direct_chat',
             kwargs={'product_pk': product_pk, 'wanting_user_pk': wanting_user_pk}))
     product = Product.objects.get(pk=product_pk)
-    wanting_user = User.objects.get(pk=wanting_user_pk)
     send_mail('購入希望中の商品について（ホクマ）',
-          make_email_body_with_template(wanting_user.username+'さんが「'+product.title+'」をあなたに販売することを確定しました。チャットで出品者と取引方法を確認し合ってください\n'+chat_url),
+          make_email_body_with_template(product.seller.username+'さんが「'+product.title+'」をあなたに販売することを確定しました。チャットで出品者と取引方法を確認し合ってください\n'+chat_url),
           settings.DEFAULT_FROM_EMAIL,
           [to_email_address], fail_silently=False)
 
