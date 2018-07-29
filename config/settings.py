@@ -219,7 +219,7 @@ EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_SMTP_PASS')
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 
-SITE_HOST = 'django.tetsufe.tokyo'
+SITE_HOST = 'hufurima.com'
 ENABLE_SSL = True
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
