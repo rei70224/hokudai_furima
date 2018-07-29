@@ -32,7 +32,7 @@
                   <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                     <div class="row">
                       <div class="col-md-6" style="margin:0 15px; padding:0;">
-                        <button type="button" name="cancel-want" class="btn btn-lg btn-block" style="background-color:#fe6222;color:white;" data-toggle="modal" data-target="#cancel-product-modal">購入希望のキャンセル</button>
+                        <button type="button" name="cancel-want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;" data-toggle="modal" data-target="#cancel-product-modal">購入希望のキャンセル</button>
                         <div class="modal fade" id="cancel-product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -60,13 +60,19 @@
                 <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                   <div class="row">
                     <div class="col-md-6" style="margin:0 15px; padding:0;">
-                      <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#fe6222;color:white;">購入希望</button>
+                      <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;">購入希望</button>
                     </div>
                   </div>
                 </form>
               {% endif %}
               {% if request.user != product.seller %}
-                <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}">非公開チャット</a>
+                  <div class="row">
+                    <div class="col-md-6" style="margin:15px 15px 0px 15px; padding:0;">
+                      <button type="button" class="btn btn-lg btn-block" style="background-color:#fe6222;">
+                        <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}" style="display:block; color:white; text-decoration:none">非公開チャット</a>
+                      </button>
+                    </div>
+                  </div>
               {% endif %}
             {% endif %}
           {% endif %}
