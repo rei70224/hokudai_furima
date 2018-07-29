@@ -150,6 +150,8 @@ def product_details(request, pk):
             chatting_users = list(map(lambda x:x.product_wanting_user, Chat.objects.filter(product=product)))
             chatting_but_not_wanting_users = [user for user in chatting_users if user not in wanting_users]
             return render(request, 'product/product_details.html', {'product': product, 'wanting_users': wanting_users, 'chatting_but_not_wanting_users': chatting_but_not_wanting_users})
+        else:
+            return render(request, 'product/product_details.html', {'product': product, 'wanting_users': wanting_users})
     return render(request, 'product/product_details.html', {'product': product})
 
 
