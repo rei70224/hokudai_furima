@@ -128,6 +128,21 @@
           {% else %}
             <p>購入希望中のユーザはいません。</p>
           {% endif %}
+          <h5>チャットのみ進行中（購入検討中）のユーザー</h5>
+          {% if chatting_but_not_wanting_users %}
+            {% for catting_user in chatting_but_not_wanting_users %}
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>{{ catting_user }}</td>
+                    <td><a href="{% url 'product:product_direct_chat' product.pk catting_user.pk %}">非公開チャット</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            {% endfor %}
+          {% else %}
+            <p>チャットのみ進行中のユーザはいません。</p>
+          {% endif %}
         {% endif %}
       {% endif %}
     </div>

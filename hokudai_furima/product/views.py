@@ -146,9 +146,11 @@ def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
     wanting_users = product.wanting_users.all()
     if request.user.is_authenticated:
-        return render(request, 'product/product_details.html', {'product': product, 'wanting_users': wanting_users})
-    else:
-        return render(request, 'product/product_details.html', {'product': product})
+        if request.user == product.seller:
+            chatting_users = list(map(lambda x:x.product_wanting_user, Chat.objects.filter(product=product)))
+            chatting_but_not_wanting_users = [user for user in chatting_users if user not in wanting_users]
+            return render(request, 'product/product_details.html', {'product': product, 'wanting_users': wanting_users, 'chatting_but_not_wanting_users': chatting_but_not_wanting_users})
+    return render(request, 'product/product_details.html', {'product': product})
 
 
 @login_required
