@@ -173,16 +173,9 @@ def want_product(request, pk):
         send_want_your_product_email(pk, wanting_user.pk, product.seller.email)
 
         messages.success(request, '購入希望が送信されました')
-        return redirect('product:want_product_done', pk=product.pk)
+        return redirect('product:product_details', pk=product.pk)
     else:
         return HttpResponse('can\'t accept GET request')
-
-
-@permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
-def want_product_done(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    wanting_products = Product.objects.filter(wanting_users=request.user)
-    return render(request, 'product/want_product_done.html', {'product': product, 'product_list': wanting_products})
 
 
 @login_required
