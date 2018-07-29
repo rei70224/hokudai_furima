@@ -144,18 +144,11 @@ def update_product(request, product_pk):
 @permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    talk_form = TalkForm()
-    talk_records = Chat.objects.filter(product=product)
-    if talk_records.exists():
-        talks = list(map(lambda x: x.talk_set.all(),list(talk_records)))[0]
-    else:
-        talks = []
-    
     wanting_users = product.wanting_users.all()
     if request.user.is_authenticated:
-        return render(request, 'product/product_details.html', {'product': product, 'form': talk_form, 'talks':talks, 'wanting_users': wanting_users})
+        return render(request, 'product/product_details.html', {'product': product, 'wanting_users': wanting_users})
     else:
-        return render(request, 'product/product_details.html', {'product': product, 'talks':talks})
+        return render(request, 'product/product_details.html', {'product': product})
 
 
 @login_required
