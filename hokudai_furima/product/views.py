@@ -183,6 +183,7 @@ def want_product(request, pk):
 def cancel_want_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.wanting_users.remove(request.user)
+    messages.success(request, '購入希望をキャンセルしました')
     return redirect('product:product_details', pk=product.pk)   
 
 
