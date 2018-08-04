@@ -1,0 +1,12 @@
+.sns-buttons {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.fb-share-button > span {
+  display: inline-block;
+	vertical-align: baseline !important;
+}
+.twitter-button {
+  display: inline-block;
+  vertical-align: top;
+}
