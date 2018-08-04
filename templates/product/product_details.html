@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/product_items.css' %}">
-<link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
+  <link rel="stylesheet" href="{% static 'css/product_items.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
+  <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
 {% endblock %}
 {% block content %}
   <div class="container">
@@ -76,6 +77,14 @@
               {% endif %}
             {% endif %}
           {% endif %}
+        </div>
+        <div class="sns-buttons">
+          <div class="twitter-button">
+          　<a href="//twitter.com/share" class="twitter-share-button" data-text="{{product.title}} {{request.build_absolute_uri}} #ホクマ #北大 @hufurimaさんから" data-url="{{request.build_absolute_uri}}" data-lang="ja">Tweet</a>
+          </div>
+          <div class="fb-share-button" data-href="https://hufurima.com" data-layout="button_count" data-size="small" data-mobile-iframe="true">
+            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhufurima.com%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+          </div>
         </div>
       </div>
 
@@ -154,4 +163,12 @@
     </div>
   </div>
   {% include "footer_sell_button.html" %}
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
 {% endblock %}
