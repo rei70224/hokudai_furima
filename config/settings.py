@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'hokudai_furima.rating',
     'hokudai_furima.notification',
     'rules.apps.AutodiscoverRulesConfig',
+    'webpack_loader',
 ]
 
 MIDDLEWARE = [
@@ -153,9 +154,10 @@ USE_TZ = True
 
 #STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    ('css', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'css')),
+    #('css', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'css')),
     ('img', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'img')),
     ('js', os.path.join(PROJECT_ROOT, 'hokudai_furima', 'static', 'js')),
+    os.path.join(PROJECT_ROOT, 'assets'),
 )
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
@@ -291,6 +293,18 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True
         }
+    }
+}
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(PROJECT_ROOT, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': [
+            r'.+\.hot-update\.js',
+            r'.+\.map'
+        ]
     }
 }
 
