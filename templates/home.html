@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load show_product_list %}
+{% load show_pagenated_product_list %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
 {% endblock %}
@@ -9,7 +9,7 @@
         <h1>ホームです</h1>
         <h2>最新商品</h2>
         {% if product_list %}
-          {% show_product_list request product_list %}
+          {% show_pagenated_product_list request product_list %}
         {% else %}
           <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
         {% endif %}
