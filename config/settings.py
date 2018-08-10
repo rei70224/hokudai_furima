@@ -294,7 +294,7 @@ LOGGING = {
     }
 }
 
-PRODUCT_NUM_PER_PAGE =16
+PRODUCT_NUM_PER_PAGE = 16
 
 try:
     from .local_settings import *
