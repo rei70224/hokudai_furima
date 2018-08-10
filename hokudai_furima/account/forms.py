@@ -28,6 +28,19 @@ class LoginForm(django_forms.AuthenticationForm):
             if email:
                 self.fields['username'].initial = email
 
+    def clean(self):
+        username_or_email = self.cleaned_data.get('username')
+        m = re.search('@eis.hokudai.ac.jp$', username_or_email)
+        if m is not None:
+            email = username_or_email
+            try:
+                user = User.objects.get(email=email)
+                if user:
+                    self.cleaned_data['username'] = user.username
+            except:
+                pass
+        super().clean()
+
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
