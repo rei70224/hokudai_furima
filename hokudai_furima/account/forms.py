@@ -22,6 +22,7 @@ class LoginForm(django_forms.AuthenticationForm):
 
     def __init__(self, request=None, *args, **kwargs):
         super().__init__(request=request, *args, **kwargs)
+        self.fields['username'].label = "メールアドレスまたはユーザ名"
         if request:
             email = request.GET.get('email')
             print(email)
