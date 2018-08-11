@@ -212,10 +212,10 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-DEFAULT_FROM_EMAIL='mail@tetsufe.tokyo'
-EMAIL_HOST = 'mail.tetsufe.tokyo'
-EMAIL_HOST_USER = 'mail@tetsufe.tokyo'
-EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_SMTP_PASS')
+DEFAULT_FROM_EMAIL='noreply@hufurima.com'
+EMAIL_HOST = 'mail.hufurima.com'
+EMAIL_HOST_USER = 'noreply@hufurima.com'
+EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_NOREPLY_SMTP_PASS')
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 
