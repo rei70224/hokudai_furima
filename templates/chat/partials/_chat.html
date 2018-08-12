@@ -67,9 +67,13 @@
         </form>
       {% else %}
         {% if product.is_sold %}
-          <form method="POST" action="{% url "product:complete_to_recieve" product.pk %}" id="dicide-to-sell-form">{% csrf_token %}
-            <button type="submit" class="save btn btn-default">商品を受け取りました</button>
-          </form>
+          {% if request.user == product.buyer %}
+            <form method="POST" action="{% url "product:complete_to_recieve" product.pk %}" id="dicide-to-sell-form">{% csrf_token %}
+              <button type="submit" class="save btn btn-default">商品を受け取りました</button>
+            </form>
+          {% else %}
+            <button type="button" disabled class="btn btn-default">商品は売り切れました</button>
+          {% endif %}
         {% endif %}
       {% endif %}
     </div>
