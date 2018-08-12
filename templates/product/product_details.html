@@ -56,12 +56,26 @@
                       </div>
                     </div>
                   </form>
+                {% else %}
+                  <div class="row">
+                    <div class="col-md-6" style="margin:0 15px; padding:0;">
+                      {% if request.user == product.buyer %}
+                        <button type="button" class="btn btn-lg btn-block" disabled style="background-color:#25b425;color:white;">購入済み</button>
+                      {% else %}
+                        <button type="button" class="btn btn-lg btn-block" disabled style="background-color:#25b425;color:white;">売り切れ</button>
+                      {% endif %}
+                    </div>
+                  </div>
                 {% endif %}
               {% else %}
                 <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                   <div class="row">
                     <div class="col-md-6" style="margin:0 15px; padding:0;">
-                      <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;">購入希望</button>
+                      {% if not product.is_sold %}
+                        <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;">購入希望</button>
+                      {% else %}
+                        <button type="button" class="btn btn-lg btn-block" disabled style="background-color:#25b425;color:white;">売り切れ</button>
+                      {% endif %}
                     </div>
                   </div>
                 </form>
