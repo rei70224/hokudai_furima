@@ -6,6 +6,7 @@
 {% endblock %}
 {% block content %}
   <div class="container">
+    <p>{{rated_user_name}}さんの評価をしましょう！</p>
     <form method="POST" action="{% url 'rating:post_rating' product_pk %}" enctype="multipart/form-data" class="post-form">{% csrf_token %}
       {% bootstrap_form form layout='virtical' %}
       <div class="form-group column">  

@@ -36,7 +36,7 @@ def post_rating(request, product_pk):
                 #return redirect('rating:thankyou', {'rated_user': rated_user})
 
         user_rating_form = UserRatingForm()
-        return render(request, 'rating/post_rating.html', {'form': user_rating_form, 'product_pk': product_pk})
+        return render(request, 'rating/post_rating.html', {'form': user_rating_form, 'product_pk': product_pk, 'rated_user_name': rated_user.username})
     else:
         return HttpResponse('invalid request')
 
