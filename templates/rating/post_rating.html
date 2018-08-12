@@ -1,14 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load bootstrap4 %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/product_items.css' %}">
+  <link rel="stylesheet" href="{% static 'css/post_rating.css' %}">
 {% endblock %}
 {% block content %}
   <div class="container">
+    <h2>ユーザ評価</h2>
     <p>{{rated_user_name}}さんの評価をしましょう！</p>
     <form method="POST" action="{% url 'rating:post_rating' product_pk %}" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-      {% bootstrap_form form layout='virtical' %}
+      {% for value, name in form.fields.rating.choices %}
+        <div class="radio">
+          <label for="id_rating_{{value}}">
+            <input type="radio" name="rating" value="{{value}}" class="" title="" required id="id_rating_{{value}}" />
+              {% if value == 'good' %}
+                <i class="fa fa-smile {{value}}"></i>
+              {% elif value == 'normal' %}
+                <i class="fa fa-meh {{value}}"></i>
+              {% elif value == 'bad' %}
+                <i class="fa fa-frown {{value}}"></i>
+              {% endif %}
+              {{name}}
+          </label>
+        </div>
+      {% endfor %}
       <div class="form-group column">  
         <button id="submit" type="submit" class="btn submit_button">送信</button>
       </div>

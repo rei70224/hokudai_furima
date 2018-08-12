@@ -1,0 +1,13 @@
+/* カラーコードはbootstrap4を参考 */
+
+i.good {
+  color: #dc3545
+}
+
+i.normal {
+  color: #ffc107
+}
+
+i.bad {
+  color: #007bff
+}
