@@ -132,7 +132,11 @@
                         {% if not product.is_sold %}
                           <button type="submit" class="save btn btn-default">このユーザに販売</button>
                         {% else %}
-                          <button type="submit" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
+                          {% if wanting_user == product.buyer %}
+                            <button type="submit" style="text-align: center;" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
+                          {% else %}
+                            <button type="submit" style="text-align: center;" disabled class="save btn btn-default">他のユーザに販売を確定済みです</button>
+                          {% endif %}
                         {% endif %}
                       </form>
                     </td>
