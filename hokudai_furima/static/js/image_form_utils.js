@@ -60,8 +60,8 @@ function fileget(imgfile,targetID){
                 fr.onload=function(e) {
                     if(acceptimg.indexOf(imgfile.files[loop_count].type)==-1){
                         alert("ファイル形式はjpegかpngにしてください。");
-                    }else if(e.target.result.length>1024*1024*5){
-                        alert("5MB以下の画像をアップロードできます。");
+                    }else if(e.target.result.length>1024*1024*20){
+                        alert("20MB以下の画像をアップロードできます。");
                     }else{
                         console.log(i);
                         $("#img"+i).attr("src",e.target.result);
