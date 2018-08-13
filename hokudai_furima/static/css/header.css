@@ -43,19 +43,22 @@ input[type=text], .search {
   width: 50px;
 }
 
-/* PC用ロゴとスマホ用ロゴの使い分け */
+/* PC用とスマホ用での分岐 */
 @media screen and (max-width: 600px) {
- /* 800px以下の場合 */
+ /* 600px以下の場合 */
   #pc-logo {
     display: none;
   }
   .search-bar {
     margin-left: 50px;
   }
+  .notification {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 601px) {
-   /* 801px以上の場合 */
+   /* 601px以上の場合 */
   #sp-logo {
     display: none;
   }
