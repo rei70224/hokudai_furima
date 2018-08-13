@@ -10,3 +10,17 @@
   display: inline-block;
   vertical-align: top;
 }
+
+#carouselIndicators {
+  background-color: #cccccc;
+}
+
+.carousel-item {
+  height: 300px;
+}
+
+.carousel-item > img {
+  max-height: 300px;
+  margin: 0 auto;
+  display:block;
+}
