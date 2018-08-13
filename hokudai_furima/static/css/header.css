@@ -1,6 +1,7 @@
 /* PC用ヘッダ */
 .pc-header {
-  margin-top: 10px;
+  padding-top: 10px;
+  background-color:#fafafa;
 }
 
 #logo {
@@ -38,6 +39,7 @@ input[type=text], .search {
 
 /* ナビゲーションバー */
 #navbar {
+  overflow: hidden;
 }
 
 .nav-left {
