@@ -5,13 +5,13 @@
   <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <h2>最新商品</h2>
-        {% if product_list %}
-          {% show_pagenated_product_list request product_list %}
-        {% else %}
-          <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
-        {% endif %}
-    </div>
-    {% include "footer_sell_button.html" %}
+  <div class="container">
+    <h2>最新商品</h2>
+    {% if product_list %}
+      {% show_pagenated_product_list request product_list %}
+    {% else %}
+      <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
+    {% endif %}
+  </div>
+  {% include "footer_sell_button.html" %}
 {% endblock %}
