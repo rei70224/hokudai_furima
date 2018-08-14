@@ -6,7 +6,6 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-        <h1>ホームです</h1>
         <h2>最新商品</h2>
         {% if product_list %}
           {% show_pagenated_product_list request product_list %}
