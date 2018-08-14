@@ -3,8 +3,16 @@
 <meta property="og:description" content="北大生が開発！北大生による北大生のためのフリマサイト「北大フリマ」です。直接会って渡すから、手数料０。北大生同士の運命の出会いもあるかも・・・？" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://django.tetsufe.tokyo/" />
-<meta property="og:image" content="https://s3-ap-northeast-1.amazonaws.com/hokudaifurimapublic2/hu_furima_logo.png" />
+{% if ogp_image_url %}
+  <meta property="og:image" content="{{ ogp_image_url }}" />
+{% else %}
+  <meta property="og:image" content="https://s3-ap-northeast-1.amazonaws.com/hokudaifurimapublic2/hu_furima_logo.png?1" />
+{% endif %}
 
 <!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
+{% if ogp_image_url %}
+  <meta name="twitter:card" content="summary">
+{% else %}
+  <meta name="twitter:card" content="summary_large_image">
+{% endif %}
 <meta name="twitter:site" content="@huitclub">
