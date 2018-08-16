@@ -9,3 +9,22 @@
 #user-name {
   text-align: center;
 }
+
+i.good {
+  color: #dc3545;
+  font-size: 32px;
+}
+
+i.normal {
+  color: #ffc107;
+  font-size: 32px;
+}
+
+i.bad {
+  color: #007bff;
+  font-size: 32px;
+}
+
+.count {
+  margin-top: 10px;
+}
