@@ -45,7 +45,11 @@
     </div>
   </div>
   <h2>プロフィール</h2>
-  <p>{{ others_user.intro }}</p>
+  {% if others_user.intro %}
+    <p>{{ others_user.intro }}</p>
+  {% else %}
+    <p>プロフィールには何も書かれていません</p>
+  {% endif %}
   <h2>{{ others_user.username }}の出品商品一覧</h2>
   {% if others_user_product_list %}
     {% show_product_list others_user_product_list %}
