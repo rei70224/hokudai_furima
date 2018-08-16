@@ -9,6 +9,7 @@ from .forms import SignupForm, LoginForm, UserEditForm, ChangePasswordForm, Pass
 from django.contrib.auth.decorators import login_required
 import re
 from .models import User
+from hokudai_furima.rating.models import UserRating
 from hokudai_furima.notification.models import Notification
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
@@ -69,8 +70,11 @@ def mypage(request):
 
 def others_page(request, user_pk):
     others_user = get_object_or_404(User, pk=user_pk)
+    good_rating_count = UserRating.objects.filter(rated_user=others_user, rating='good').count()
+    normal_rating_count = UserRating.objects.filter(rated_user=others_user, rating='normal').count()
+    bad_rating_count = UserRating.objects.filter(rated_user=others_user, rating='bad').count()
     others_user_product_list = get_public_product_list(request.user, Product.objects.filter(seller=others_user))
-    return render(request, 'account/others_page.html', {'others_user': others_user, 'others_user_product_list': others_user_product_list})
+    return render(request, 'account/others_page.html', {'others_user': others_user, 'good_rating_count': good_rating_count, 'normal_rating_count':normal_rating_count, 'bad_rating_count':bad_rating_count, 'others_user_product_list': others_user_product_list})
 
 
 @login_required
