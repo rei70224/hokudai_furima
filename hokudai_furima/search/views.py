@@ -14,11 +14,11 @@ def search_product(request):
         keyword_form = SearchProductKeywordForm(request.GET)
         option_form = SearchProductOptionForm(request.GET)
         if keyword_form.is_valid() and option_form.is_valid():
-            search_results = get_public_product_list(request.user, search(request))
+            search_results = get_public_product_list(search(request))
             if len(search_results) > 0:
                 return render(request, 'search/product/search_product.html', {'product_list': search_results, 'keyword_form': keyword_form, 'option_form': option_form, 'is_searched': True})
             else:
-                latest_products = get_public_product_list(request.user, Product.objects.all().order_by('-created_date')[:16])
+                latest_products = get_public_product_list(Product.objects.all().order_by('-created_date')[:16])
                 return render(request, 'search/product/search_product.html', {'latest_product_list': latest_products, 'keyword_form': keyword_form, 'option_form': option_form, 'is_searched': True})
 
     keyword_form = SearchProductKeywordForm()
@@ -49,7 +49,7 @@ def search(request):
 def search_product_ajax(request):
     if request.method == "GET":
         q = request.GET.get('q')
-        search_results = get_public_product_list(request.user, search_ajax(q))
+        search_results = get_public_product_list(search_ajax(q))
         if len(search_results) > 5:
             search_results = search_results[:5]
         minimal_search_results = [{'title': result.title} for result in search_results]

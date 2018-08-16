@@ -60,8 +60,8 @@ def login(request, backends='django.contrib.auth.backends.ModelBackend'):
 
 @login_required
 def mypage(request):
-    wanting_product_list = get_public_product_list(request.user, Product.objects.filter(wanting_users=request.user))
-    selling_product_list = get_public_product_list(request.user, Product.objects.filter(seller=request.user))
+    wanting_product_list = get_public_product_list(Product.objects.filter(wanting_users=request.user))
+    selling_product_list = Product.objects.filter(seller=request.user)
     notification_list = fetch_notification_list(request)
     sorted_undone_todo_list = get_undone_todo_list(request.user)
     sorted_done_todo_list = get_done_todo_list(request.user)
@@ -73,7 +73,7 @@ def others_page(request, user_pk):
     good_rating_count = UserRating.objects.filter(rated_user=others_user, rating='good').count()
     normal_rating_count = UserRating.objects.filter(rated_user=others_user, rating='normal').count()
     bad_rating_count = UserRating.objects.filter(rated_user=others_user, rating='bad').count()
-    others_user_product_list = get_public_product_list(request.user, Product.objects.filter(seller=others_user))
+    others_user_product_list = get_public_product_list(Product.objects.filter(seller=others_user))
     return render(request, 'account/others_page.html', {'others_user': others_user, 'good_rating_count': good_rating_count, 'normal_rating_count':normal_rating_count, 'bad_rating_count':bad_rating_count, 'others_user_product_list': others_user_product_list})
 
 
