@@ -3,7 +3,8 @@
 }
 
 #user-icon img {
-  height: 400px;
+  max-height: 100px;
+  max-width: 100px;
 }
 
 #user-name {
@@ -12,19 +13,24 @@
 
 i.good {
   color: #dc3545;
-  font-size: 32px;
+  font-size: 24px;
 }
 
 i.normal {
   color: #ffc107;
-  font-size: 32px;
+  font-size: 24px;
 }
 
 i.bad {
   color: #007bff;
-  font-size: 32px;
+  font-size: 24px;
 }
 
 .count {
   margin-top: 10px;
+}
+
+.rating-list {
+  padding-top: 10px;
+  margin-bottom: 10px;
 }
