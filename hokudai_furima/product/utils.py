@@ -1,4 +1,4 @@
-from .rules import has_access_permission
+from .models import AccessLevelChoice
 
-def get_public_product_list(user, product_list):
-    return [product for product in product_list if has_access_permission(user, product)]
+def get_public_product_list(product_list):
+    return [product for product in product_list if product.access_level == AccessLevelChoice.public.name]
