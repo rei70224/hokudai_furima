@@ -8,6 +8,11 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ('title', 'description', 'price', 'access_level')
 
+    def __init__(self, *args, **kwargs):
+        super(ProductForm, self).__init__(*args, **kwargs)
+        self.fields['description'].widget.attrs['placeholder'] = '商品の状態（未使用、傷あり等）、その他詳しい説明など'
+        self.fields['title'].widget.attrs['placeholder'] = '（例）入門線形代数'
+
 class ProductImageForm(forms.ModelForm):
     class Meta:
         model = ProductImage
