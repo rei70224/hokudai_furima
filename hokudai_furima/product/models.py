@@ -32,7 +32,7 @@ class Product(models.Model):
     access_level = models.CharField('公開/非公開',
         max_length=10,
         choices=[(level.name, level.value) for level in AccessLevelChoice],
-        default='公開'
+        default='public'
     )
 
     def update(self):
