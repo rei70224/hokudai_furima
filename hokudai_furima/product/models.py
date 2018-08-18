@@ -9,8 +9,8 @@ from django.core.exceptions import ValidationError
 from enum import Enum
 
 class AccessLevelChoice(Enum):   # A subclass of Enum
-    private = "非公開"
     public = "公開"
+    private = "非公開"
 
 def has_no_singlequote(value):
     if "\'" in value:
