@@ -69,12 +69,6 @@ def create_product(request):
     return render(request, 'product/create_product.html', {'product_form': product_form, 'product_image_forms': product_image_forms})
 
 
-def get_original_filename(versatileimagefield_filepath):
-    original_filename_without_extent = re.search(r'/(.+)_',versatileimagefield_filepath.image.name).group(1)
-    original_extent = re.search(r'(\..+)$',versatileimagefield_filepath.image.name).group(1)
-    return original_filename_without_extent+original_extent
-
-
 def make_product_image_forms(request):
     product_image_forms = []
     for i, _file in enumerate(request.FILES.getlist('image')):
@@ -111,12 +105,11 @@ def update_product(request, product_pk):
                     if flag == '1':
                         if posted_image_index < len(posted_images):
                             if image_form_index < len(before_product_images):
-                                if posted_images[posted_image_index].name != get_original_filename(before_product_images[posted_image_index]):
-                                    product_image = before_product_images[image_form_index]
-                                    product_image.image = product_image_forms[posted_image_index].save(commit=False).image
-                                    product_image.product = product
-                                    product_image.update()
-                                    posted_image_index += 1
+                                product_image = before_product_images[image_form_index]
+                                product_image.image = product_image_forms[posted_image_index].save(commit=False).image
+                                product_image.product = product
+                                product_image.update()
+                                posted_image_index += 1
                             else:
                                 product_image = product_image_forms[posted_image_index].save(commit=False)
                                 product_image.product = product
