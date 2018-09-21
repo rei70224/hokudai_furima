@@ -6,12 +6,19 @@
 {% endblock %}
 {% block content %}
   <div class="container">
-    <h2>最新商品</h2>
-    {% if product_list %}
-      {% show_pagenated_product_list request product_list %}
-    {% else %}
-      <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
-    {% endif %}
+    <section style="margin-bottom: 30px">
+      <h2>はじめての方向けガイド</h2>
+      <a href="{% url 'guide:buy_guide' %}">購入ガイド</a>
+      <a href="{% url 'guide:sell_guide' %}">出品・販売ガイド</a>
+    </section>
+    <section>
+      <h2>最新商品</h2>
+      {% if product_list %}
+        {% show_pagenated_product_list request product_list %}
+      {% else %}
+        <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
+      {% endif %}
+    </section>
   </div>
   {% include "footer_sell_button.html" %}
 {% endblock %}
