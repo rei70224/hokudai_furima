@@ -8,6 +8,7 @@
   <div class="container">
     <section style="margin-bottom: 30px">
       <h2>ホクマの特徴</h2>
+      <hr>
       <p>
         <i class="fa fa-check" style="color: #2cbe4e"></i>
         <strong>北大生だけ</strong>が使える安心のフリマWebサービス
@@ -23,6 +24,7 @@
     </section>
     <section style="margin-bottom: 30px">
       <h2>はじめての方向けガイド</h2>
+      <hr>
       <ul>
         <li>
           <a href="{% url 'guide:buy_guide' %}">購入ガイド</a>
@@ -33,6 +35,7 @@
     </section>
     <section>
       <h2>最新商品</h2>
+      <hr>
       {% if product_list %}
         {% show_pagenated_product_list request product_list %}
       {% else %}
