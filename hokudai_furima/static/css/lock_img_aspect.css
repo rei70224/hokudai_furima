@@ -10,12 +10,15 @@
 }
 
 .imgAspect img{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+  position:absolute;
+  display:block;
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  margin:auto;
+  height: 100%;
+  object-fit: contain;
 }
 
 .imgAspect img[class='width_larger'] {

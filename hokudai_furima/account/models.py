@@ -51,10 +51,4 @@ class User(PermissionsMixin, AbstractBaseUser):
     @property
     def icon_url(self):
         if self.icon and hasattr(self.icon, 'url'):
-            return self.icon.url
-
-class Notification(models.Model):
-    reciever = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    unread = models.BooleanField(default=True)
-    message = models.TextField(max_length=256, null=True) 
-    relative_url = models.TextField(max_length=256, null=True) 
+            return self.icon.thumbnail['200x200'].url

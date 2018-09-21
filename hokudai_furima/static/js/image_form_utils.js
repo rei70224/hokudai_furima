@@ -1,10 +1,16 @@
 $(function(){
+    for(var i=0;i<4;i++){
+        if($('#img'+i).attr('src') != PLACEHOLDER_IMAGE){
+            $("#edde"+i).html('<button type="button" id="rem'+i+'" onclick="resetImg('+i+');return false;">削除</button>');
+        }
+    }
     var date = new Date();
     date.setTime( date.getTime() + ( 10 * 1000 ));
     //submitを押したら、クッキーを保存
     $("#submit").click(function(){
-        if($('img[src=\"'+PLACEHOLDER_IMAGE+'\"]').length==4){
-            alert("商品画像をアップロードして下さい。");
+        //if($('img[src=\"'+PLACEHOLDER_IMAGE+'\"]').length==4){
+        if($('#img0').attr('src') == PLACEHOLDER_IMAGE){
+            alert("一番左に商品画像をアップロードして下さい。");
             return false;
         }
     })
@@ -54,14 +60,15 @@ function fileget(imgfile,targetID){
                 fr.onload=function(e) {
                     if(acceptimg.indexOf(imgfile.files[loop_count].type)==-1){
                         alert("ファイル形式はjpegかpngにしてください。");
-                    }else if(e.target.result.length>1024*1024*5){
-                        alert("5MB以下の画像をアップロードできます。");
+                    }else if(e.target.result.length>1024*1024*20){
+                        alert("20MB以下の画像をアップロードできます。");
                     }else{
                         console.log(i);
                         $("#img"+i).attr("src",e.target.result);
                         $("#base64_"+i).val(e.target.result);
                         $("#edde"+i).html('<button type="button" id="rem'+i+'" onclick="resetImg('+i+');return false;">削除</button>');
                         resolve(i+1);
+                        $("input[name=image_"+targetID+"_exists]").val(1);
                     }
                 }
                 console.log("loop_count:"+loop_count);
@@ -98,6 +105,7 @@ function resetImg(targetID){
     $("#img"+targetID).attr("src",PLACEHOLDER_IMAGE);
     $("#edi"+targetID).remove();
     $("#rem"+targetID).remove();
+    $("input[name=image_"+targetID+"_exists]").val(2);
 }
 
 function checknum(){
@@ -108,5 +116,4 @@ function checknum(){
     $('#filenames').val('');
     $('#keynames').val('');
 }
-
 

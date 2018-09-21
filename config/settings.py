@@ -47,6 +47,12 @@ INSTALLED_APPS = [
     'hokudai_furima.search',
     'hokudai_furima.chat',
     'hokudai_furima.core',
+    'hokudai_furima.todo_list',
+    'hokudai_furima.contact',
+    'hokudai_furima.rating',
+    'hokudai_furima.notification',
+    'hokudai_furima.guide',
+    'rules.apps.AutodiscoverRulesConfig',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +66,8 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    ('django.contrib.auth.backends.ModelBackend'),
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 #ROOT_URLCONF = 'hokudai_furima.urls'
@@ -131,9 +138,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -206,14 +215,14 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-DEFAULT_FROM_EMAIL='mail@tetsufe.tokyo'
-EMAIL_HOST = 'mail.tetsufe.tokyo'
-EMAIL_HOST_USER = 'mail@tetsufe.tokyo'
-EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_SMTP_PASS')
+DEFAULT_FROM_EMAIL='noreply@hufurima.com'
+EMAIL_HOST = 'mail.hufurima.com'
+EMAIL_HOST_USER = 'noreply@hufurima.com'
+EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_NOREPLY_SMTP_PASS')
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 
-SITE_HOST = 'django.tetsufe.tokyo'
+SITE_HOST = 'hufurima.com'
 ENABLE_SSL = True
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
@@ -232,6 +241,63 @@ DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage' # DEBUG == F
 
 AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
 PRIVATE_FILE_STORAGE = 'config.storage_backends.PrivateMediaStorage'
+
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {
+    message_constants.ERROR: 'alert alert-danger',
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'root': {
+        'level': 'INFO',
+        'handlers': ['console']},
+    'formatters': {
+        'verbose': {
+            'format': (
+                '%(levelname)s %(name)s %(message)s'
+                ' [PID:%(process)d:%(threadName)s]')},
+        'simple': {
+            'format': '%(levelname)s %(message)s'}},
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'}},
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'},
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'},
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'hokuma_debug.log')}},
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'mail_admins', 'file'],
+            'level': 'DEBUG',
+            'propagate': True},
+        'django.server': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True},
+        'django.request': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True},
+        'config': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True
+        }
+    }
+}
+
+PRODUCT_NUM_PER_PAGE = 16
 
 try:
     from .local_settings import *

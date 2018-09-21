@@ -1,52 +1,58 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
+  <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+  <link rel="stylesheet" href="{% static 'css/todo_list.css' %}">
+  <link rel="stylesheet" href="{% static 'css/notification.css' %}">
+{% endblock %}
 {% load bootstrap4 %}
 {% load show_product_list %}
-<script>
-    let PLACEHOLDER_IMAGE = "{% static 'img/placeholder.png' %}";
-</script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="{% static 'js/image_form_utils.js' %}"></script>
-{% block css %}
-  <link rel="stylesheet" href="{% static 'css/lock_img_aspect.css' %}">
-  <link rel="stylesheet" href="{% static 'css/hide_djangoform_message.css' %}">
-{% endblock %}
-
+{% load show_todo_list %}
+{% load show_notification_list %}
+{% block content %}
 <div class="container">
-  {% if user.is_authenticated %}
-    <div id="notice-link">
-      <a href="{% url "account:notification" %}">お知らせ</a>
+  <div class="row">
+    <div class="side col-lg-3 col-12 order-lg-1 order-12 list-group">
+      <a href="{% url "notification:index" %}" class="list-group-item">お知らせ</a>
+      <a href="{% url "todo_list:show_todo_list" %}" class="list-group-item">TODOリスト</a>
+      <a href="{% url "account:edit" %}" class="list-group-item">プロフィール情報変更</a>
+      <a href="{% url "account:logout" %}" class="list-group-item">ログアウト</a>
+      <a href="{% url "account:delete" %}" class="list-group-item">退会</a>
     </div>
-    <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-        <div class="image-form-group">
-            <label for="upload-image_files">プロフィール画像</label>
-            <div class="row">
-                <div class="col-3 " style="display:inline-block;">
-                    <div class="imgAspect ratio1_1">
-                        <img id="img0" src="{% if user.icon_url %}{{ user.icon_url }}{% else %}{% static 'img/placeholder.png' %}{% endif %}" alt="img" name="thumbnail_img" class="img-fluid"> 
-                    </div>
-                        <button type="button" class="btn" onclick="$('#icon').click();">変更</button>
-                </div>
-            </div>
-            {% bootstrap_form form layout='virtical' %}
+    <div class="col-lg-8 offset-lg-1 col-12 order-lg-2 list-group">
+      <div class="main">
+        <div id="user-icon">
+          <img src="{% if request.user.icon_url %}{{ request.user.icon_url }}{% else %}{% static 'img/placeholder.png' %}{% endif %}" class="img-fluid"> 
         </div>
-        <div class="form-group column">  
-            <button id="submit" type="submit" class="btn">save</button>
+        <h1 id="user-name">{{ request.user.username }}</h1>
+        <ul class="nav nav-tabs nav-justified">
+          <li class="nav-item"><a href="#tab1" class="nav-link active" data-toggle="tab" role="tab">TODO</a></li>
+          <li class="nav-item"><a href="#tab2" class="nav-link" data-toggle="tab" role="tab">お知らせ</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="tab1" class="tab-pane active" role="tabpanel">
+            {% show_todo_list done_todo_list undone_todo_list %}
+          </div>
+          <div id="tab2" class="tab-pane" role="tabpanel">
+            {% show_notification_list notification_list %}
+          </div>
         </div>
-    </form>
-    <h2>出品中/販売済みの商品</h2>
-    {% if selling_product_list %}
-        {% show_product_list selling_product_list %}
-    {% else %}
-        <p>出品中/販売済みの商品はありません。</p>
-    {% endif %}
-    <h2>購入希望中の商品</h2>
-    {% if wanting_product_list %}
-        {% show_product_list wanting_product_list %}
-    {% else %}
-        <p>購入希望中の商品はありません。</p>
-    {% endif %}
-  {% endif %}
+        <h2>出品中/販売済みの商品</h2>
+        {% if selling_product_list %}
+            {% show_product_list selling_product_list %}
+        {% else %}
+            <p>出品中/販売済みの商品はありません。</p>
+        {% endif %}
+        <h2>購入希望中の商品</h2>
+        {% if wanting_product_list %}
+            {% show_product_list wanting_product_list %}
+        {% else %}
+            <p>購入希望中の商品はありません。</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
+{% include "footer_sell_button.html" %}
 {% endblock %}

@@ -1,109 +1,225 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/product_items.css' %}">
+  <link rel="stylesheet" href="{% static 'css/product_items.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
+  <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
 {% endblock %}
 {% block content %}
-<div class="container">
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+  <div class="container">
     <div class="product">
-        {% if product.published_date %}
-            <div class="date">
-                最終更新: {{ product.published_date }}
+      {% if product.published_date %}
+        <div class="date">
+          最終更新: {{ product.published_date }}
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="col-12 col-md-6">
+          {% if product.is_sold %}
+            <div class="ribbon_area big_ribbon_area">
+              <span class="ribbon">SOLD</span>
             </div>
-        {% endif %}
-        <div class="row">
-            <div class="col-6 col-md-6 col-xl-6 col-lg-6">
-                {% if product.is_sold %}
-                  <div class="ribbon_area big_ribbon_area">
-                    <span class="ribbon">SOLD</span>
+          {% endif %}
+          <div id="carouselIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+            <ol class="carousel-indicators">
+              {% for _ in product.productimage_set.all %}
+                {% if forloop.counter0 == 0 %}
+                  <li data-target="#carouselIndicators" data-slide-to="{{forloop.counter0}}" class="active"></li>
+                {% else %}
+                  <li data-target="#carouselIndicators" data-slide-to="{{forloop.counter0}}"></li>
+                {% endif %}
+              {% endfor %}
+            </ol>
+            <div class="carousel-inner">
+              {% for image in product.productimage_set.all %}
+                {% if forloop.counter0 == 0 %}
+                <div class="carousel-item active">
+                {% else %}
+                <div class="carousel-item text-center">
+                {% endif %}
+                  <img src="{{ image.thumbnail_url }}" class="img-fluid">
+                </div>
+              {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselIndicators" data-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#carouselIndicators" data-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </a>
+          </div>
+        </div>
+        <div class="col-12 col-md-6" style="padding:20px;">
+          <div class="h4">{{ product.title }}</div>
+          <div class="h3" style="color:#ff5722"> {{ product.price }} 円</div>
+          {% if request.user.is_authenticated %}
+            {% if request.user == product.seller %}
+              <div class="row">
+                <div class="col-md-6" style="margin:15px 15px 0px 15px; padding:0;">
+                  <button type="button" class="btn btn-lg btn-block btn-info">
+                    <a href="{% url "product:update_product" product.pk %}" style="display:block; color:white; text-decoration:none">商品情報の編集</a>
+                  </button>
+                </div>
+              </div>
+            {% else %}
+              {% if request.user in wanting_users %}
+                {% if not product.is_sold %}
+                  <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-6" style="margin:0 15px; padding:0;">
+                        <button type="button" name="cancel-want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;" data-toggle="modal" data-target="#cancel-product-modal">購入希望のキャンセル</button>
+                        <div class="modal fade" id="cancel-product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">注意</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                悪質な購入希望のキャンセル行為は、アカウント停止及び削除の対象になります。購入希望をキャンセルしてよろしいですか？
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">はい</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">いいえ</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                {% else %}
+                  <div class="row">
+                    <div class="col-md-6" style="margin:0 15px; padding:0;">
+                      {% if request.user == product.buyer %}
+                        <button type="button" class="btn btn-lg btn-block" disabled style="background-color:#25b425;color:white;">購入済み</button>
+                      {% else %}
+                        <button type="button" class="btn btn-lg btn-block" disabled style="background-color:#25b425;color:white;">売り切れ</button>
+                      {% endif %}
+                    </div>
                   </div>
                 {% endif %}
-                <img src="{{ product.image0.url }}" class="img-fluid">
-            </div>
-            <!--<div class="col-sm-3"></div>-->
-            <div class="col-6 col-md-6 col-xl-6 col-lg-6">
-
-                    <div class="name">{{ product.title }}</div>
-                    <div class="price"> {{ product.price }} 円</div>
-            {% if request.user.is_authenticated %}
+              {% else %}
+                <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6" style="margin:0 15px; padding:0;">
+                      {% if not product.is_sold %}
+                        <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;">購入希望</button>
+                      {% else %}
+                        <button type="button" class="btn btn-lg btn-block" disabled style="background-color:#25b425;color:white;">売り切れ</button>
+                      {% endif %}
+                    </div>
+                  </div>
+                </form>
+              {% endif %}
               {% if request.user != product.seller %}
-                {% if request.user in wanting_users %}
-                    <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-                        <div class="button cancel-want">
-                            <button type="submit" name="cancel-want"  class="cancel-want btn" >購入希望のキャンセル</button>
-                        </div>
-                    </form>
-                {% else %}
-                    <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-                        <div class="button_buy">
-                            <button type="submit" name="buy"  class="buy btn" >購入希望</button>
-                        </div>
-                    </form>
-                {% endif %}
-                {% if request.user != product.seller %}
-                    <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}">非公開チャット</a>
-                {% endif %}
+                  <div class="row">
+                    <div class="col-md-6" style="margin:15px 15px 0px 15px; padding:0;">
+                      <button type="button" class="btn btn-lg btn-block" style="background-color:#fe6222;">
+                        <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}" style="display:block; color:white; text-decoration:none">非公開チャット</a>
+                      </button>
+                    </div>
+                  </div>
               {% endif %}
             {% endif %}
-            </div>
+          {% else %}
+            <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+              <div class="row">
+                <div class="col-md-6" style="margin:0 15px; padding:0;">
+                  {% if not product.is_sold %}
+                    <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;">購入希望</button>
+                  {% else %}
+                    <button type="button" class="btn btn-lg btn-block" disabled style="background-color:#25b425;color:white;">売り切れ</button>
+                  {% endif %}
+                </div>
+              </div>
+            </form>
+          {% endif %}
         </div>
+        <div class="sns-buttons">
+          <div class="twitter-button">
+          　<a href="//twitter.com/share" class="twitter-share-button" data-text="{{product.title}} {{'https://hufurima.com'}}{{request.path}} #ホクマ #北大 @hufurimaさんから" data-url="{{'https://hufurima.com'}}{{request.path}}" data-lang="ja">Tweet</a>
+          </div>
+          <div class="fb-share-button" data-href="{{'https://hufurima.com'}}{{request.path}}" data-layout="button_count" data-size="small" data-mobile-iframe="true">
+            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{'https://hufurima.com'}}{{request.path}}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+          </div>
+        </div>
+      </div>
 
-        <table class="table">
+      <table class="table">
         <thead>
-            <tr>
-                <th>出品者</th>
-                <th>{{ product.seller }}</th>
-            </tr>
+          <tr>
+            <th>出品者</th>
+            <th><a href="{% url 'account:others_page' product.seller.pk %}">{{ product.seller }}</a></th>
+          </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>出品状態</td>
-                <td>{{ product.is_sold|yesno:"売り切れ,販売中" }}</td>
-            </tr>
+          <tr>
+            <th>出品状態</th>
+            <td>{{ product.is_sold|yesno:"売り切れ,販売中" }}</td>
+          </tr>
         </tbody>
-        </table>
-        {% if request.user.is_authenticated %}
-            {% if product.seller.id == request.user.id %}
-            <a href="{% url "product:update_product" product.pk %}" style="display: block">編集</a>
-            {% endif %}
+      </table>
+      <p>{{ product.description|linebreaksbr }}</p>
+      <br>
+      {% if request.user.is_authenticated %}
+        {% if product.seller.id == request.user.id %}
+          <h5>購入希望中のユーザー</h5>
+          {% if wanting_users %}
+            {% for wanting_user in wanting_users %}
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>{{ wanting_user }}</td>
+                    <td><a href="{% url 'product:product_direct_chat' product.pk wanting_user.pk %}">非公開チャット</a></td>
+                    <td>
+                      <form method="POST" action="{% url "product:decide_to_sell" product.pk wanting_user.pk %}" id="dicide-to-sell-form">{% csrf_token %}
+                        {% if not product.is_sold %}
+                          <button type="submit" class="save btn btn-default">このユーザに販売</button>
+                        {% else %}
+                          {% if wanting_user == product.buyer %}
+                            <button type="submit" style="text-align: center;" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
+                          {% else %}
+                            <button type="submit" style="text-align: center;" disabled class="save btn btn-default">他のユーザに販売を確定済みです</button>
+                          {% endif %}
+                        {% endif %}
+                      </form>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            {% endfor %}
+          {% else %}
+            <p>購入希望中のユーザはいません。</p>
+          {% endif %}
+          <h5>チャットのみ進行中（購入検討中）のユーザー</h5>
+          {% if chatting_but_not_wanting_users %}
+            {% for catting_user in chatting_but_not_wanting_users %}
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>{{ catting_user }}</td>
+                    <td><a href="{% url 'product:product_direct_chat' product.pk catting_user.pk %}">非公開チャット</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            {% endfor %}
+          {% else %}
+            <p>チャットのみ進行中のユーザはいません。</p>
+          {% endif %}
         {% endif %}
-        <p>{{ product.description|linebreaksbr }}</p>
-
-        {% if request.user.is_authenticated %}
-            {% if product.seller.id == request.user.id %}
-                <h2>購入希望中のユーザー</h2>
-                {% if wanting_users %}
-                    {% for wanting_user in wanting_users %}
-                        <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>{{ wanting_user }}</td>
-                                <td><a href="{% url 'product:product_direct_chat' product.pk wanting_user.pk %}">非公開チャット</a></td>
-                                <td>
-                                  <form method="POST" action="{% url "product:decide_to_sell" product.pk wanting_user.pk %}" id="dicide-to-sell-form">{% csrf_token %}
-                                    {% if not product.is_sold %}
-                                      <button type="submit" class="save btn btn-default">このユーザに販売</button>
-                                    {% else %}
-                                      <button type="submit" disabled class="save btn btn-default">このユーザに販売を確定済みです</button>
-                                    {% endif %}
-                                  </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                        </table>
-                    {% endfor %}
-                {% else %}
-                    <p>購入希望中のユーザはいません。</p>
-                {% endif %}
-            {% endif %}
-        {% endif %}
+      {% endif %}
     </div>
-</div>
+  </div>
+  {% include "footer_sell_button.html" %}
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
 {% endblock %}

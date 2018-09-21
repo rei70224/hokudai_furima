@@ -4,22 +4,43 @@ from django import forms
 from ..account.models import User
 from django.contrib.auth import forms as django_forms, update_session_auth_hash
 from . import emails
+import re
  
 class SignupForm(django_forms.UserCreationForm):
     class Meta:
         model = User
         fields = ('username','email',)
         
+    def clean(self):
+        cleaned_data=super().clean()
+        email = cleaned_data.get("email")
+        m = re.search('@eis.hokudai.ac.jp$',email)
+        if m is None:
+            self._errors["email"]=["登録に使えるのは@eis.hokudai.ac.jpを持つメールアドレスのみです。"]
 
 class LoginForm(django_forms.AuthenticationForm):
 
     def __init__(self, request=None, *args, **kwargs):
         super().__init__(request=request, *args, **kwargs)
+        self.fields['username'].label = "メールアドレスまたはユーザ名"
         if request:
             email = request.GET.get('email')
             print(email)
             if email:
                 self.fields['username'].initial = email
+
+    def clean(self):
+        username_or_email = self.cleaned_data.get('username')
+        m = re.search('@eis.hokudai.ac.jp$', username_or_email)
+        if m is not None:
+            email = username_or_email
+            try:
+                user = User.objects.get(email=email)
+                if user:
+                    self.cleaned_data['username'] = user.username
+            except:
+                pass
+        super().clean()
 
 class UserEditForm(forms.ModelForm):
     class Meta:
@@ -70,3 +91,13 @@ class PasswordResetForm(django_forms.PasswordResetForm):
         del context['user']
         #emails.send_password_reset_email.delay(context, to_email)
         emails.send_password_reset_email(context, to_email)
+
+class DeleteAccountForm(forms.Form):
+    password = forms.CharField(label='パスワード', max_length=256, widget=forms.PasswordInput())
+    def is_valid(self, user):
+        if super().is_valid():
+            if not user.check_password(self.cleaned_data['password']):
+                self._errors["password"] = ["正しいパスワードを入力してください。"]
+            else:
+                return True
+        return False
