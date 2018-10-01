@@ -26,7 +26,7 @@
               {% else %}
                 <div>{{ talk.talker }}</div>
               {% endif %}
-              <div class="balloon">{{ talk.sentence|linebreaksbr }}</div>
+              <div class="balloon">{{ talk.sentence | linebreaksbr }}</div>
               <div>{{ talk.created_date }}</div>
               <form method="POST" action="{% url 'chat:delete_talk' %}" class="delete_talk_form">{% csrf_token %}
                   <input type="hidden" name="talk_id" value={{talk.id}}>
