@@ -1,21 +1,49 @@
 #wrap-sold-timeline{
   position: relative;
-  height: 800px;
+  height: 400px;
+  width: 100%;
   margin-bottom: 40px;
 }
 
 #wrap-sold-timeline ul {
-  height: 800px;
-  width: 600px;
+  height: 400px;
+  width: 100%;
   position: absolute;
   overflow: scroll;
   margin: 0;
   padding: 0;
-
-  border: 2px solid #ccc;
-
   font-size: 16px;
   font-family: Arial, sans-serif;
 
   -webkit-overflow-scrolling: touch;
+}
+
+#wrap-sold-timeline .right-content h4 {
+  color: black;
+  height: 58px;
+  font-size: 24px;
+  margin: 10px 0 0 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+
+
+#wrap-sold-timeline .right-content p#sold-price {
+  color: #fe6222;
+  font-size: 20px;
+  margin: 0;
+}
+
+#wrap-sold-timeline .left-content {
+  margin: 10px 0 0 0;
+  float: left;
+  width: 100px;
+  display: inline-block;
+}
+
+#wrap-sold-timeline .right-content{
+  margin-left: 130px;
 }

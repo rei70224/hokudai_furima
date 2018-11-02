@@ -14,7 +14,7 @@ def fetch_latest_sold_timeline():
                 'title': product.title,
                 'price': product.price,
                 'sold_date': product.sold_date,
-                'icon': product.productimage_set.first().thumbnail_url,
+                'icon': product.productimage_set.first().thumbnail_100_url,
             }
         )
     return product_dict_list

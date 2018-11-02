@@ -6,19 +6,19 @@
   <h2>最近購入された商品</h2>
   <hr>
   <div id="wrap-sold-timeline">
-    <div class="row">
-    <div class="col-lg-6">
-      <ul class="list-group">
-        {% for sold_product in latest_sold_products %}
-          <li class="list-group-item">
-            <span>{{ sold_product.sold_date }}</span>
-            <span><img src="{{ sold_product.icon }}"></span>
-            <span>{{ sold_product.title }}</span>
-            <span>{{ sold_product.price }}円</span>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-    </div>
+    <ul class="list-group">
+      {% for sold_product in latest_sold_products %}
+        <li class="list-group-item">
+          <div class="left-content">
+            <img src="{{ sold_product.icon }}">
+          </div>
+          <div class="right-content">
+            <h4>{{ sold_product.title }}</h4>
+            <p id="sold-price">{{ sold_product.price }}円</p>
+            <p id="sold-date">{{ sold_product.sold_date }}</p>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
   </div>
 </div>

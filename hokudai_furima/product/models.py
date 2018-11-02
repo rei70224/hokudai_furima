@@ -59,3 +59,8 @@ class ProductImage(models.Model):
     def thumbnail_url(self):
         if self.image and hasattr(self.image, 'url'):
             return self.image.thumbnail['600x600'].url
+
+    @property
+    def thumbnail_100_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.thumbnail['100x100'].url
