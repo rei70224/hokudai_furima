@@ -214,7 +214,7 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
     product = get_object_or_404(Product, pk=product_pk)
     if request.user == product.seller:
         product.is_sold = True
-        product.sold_date = timezone.now
+        product.sold_date = timezone.now()
         product.buyer = wanting_user
         product.update()
         relative_url = reverse('product:product_direct_chat', kwargs={'product_pk': product.pk, 'wanting_user_pk': wanting_user.pk})
