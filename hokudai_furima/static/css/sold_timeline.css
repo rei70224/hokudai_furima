@@ -1,0 +1,21 @@
+#wrap-sold-timeline{
+  position: relative;
+  height: 800px;
+  margin-bottom: 40px;
+}
+
+#wrap-sold-timeline ul {
+  height: 800px;
+  width: 600px;
+  position: absolute;
+  overflow: scroll;
+  margin: 0;
+  padding: 0;
+
+  border: 2px solid #ccc;
+
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+
+  -webkit-overflow-scrolling: touch;
+}
