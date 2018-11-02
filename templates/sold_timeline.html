@@ -8,7 +8,7 @@
   <div id="wrap-sold-timeline">
     <ul class="list-group">
       {% for sold_product in latest_sold_products %}
-        <li class="list-group-item">
+        <a href="{% url 'product:product_details' pk=sold_product.pk %}" class="list-group-item">
           <div class="left-content">
             <img src="{{ sold_product.icon }}">
           </div>
@@ -17,7 +17,7 @@
             <p id="sold-price">{{ sold_product.price }}円</p>
             <p id="sold-date">{{ sold_product.sold_date }}</p>
           </div>
-        </li>
+        </a>
       {% endfor %}
     </ul>
   </div>

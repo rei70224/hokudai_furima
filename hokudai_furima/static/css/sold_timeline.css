@@ -18,6 +18,11 @@
   -webkit-overflow-scrolling: touch;
 }
 
+#wrap-sold-timeline a {
+  text-decoration: none;
+  color: black;
+}
+
 #wrap-sold-timeline .right-content h4 {
   color: black;
   height: 58px;
