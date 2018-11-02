@@ -27,6 +27,7 @@ class Product(models.Model):
     is_sold = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
+    sold_date = models.DateTimeField(blank=True, null=True)
     wanting_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wanting_users')
     buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='buyer')
     access_level = models.CharField('公開/非公開',
