@@ -26,7 +26,7 @@
               {% else %}
                 <div>{{ talk.talker }}</div>
               {% endif %}
-              <div class="balloon">{{ talk.sentence|linebreaksbr }}</div>
+              <div class="balloon">{{ talk.sentence | linebreaksbr }}</div>
               <div>{{ talk.created_date }}</div>
               <form method="POST" action="{% url 'chat:delete_talk' %}" class="delete_talk_form">{% csrf_token %}
                   <input type="hidden" name="talk_id" value={{talk.id}}>
@@ -41,7 +41,7 @@
 
 {% if request.user.is_authenticated %}
     <div class="row">
-        <div class="col-8 offset-2">
+        <div class="col-lg-8 offset-lg-2 col-12">
             <form method="POST" action="{% url 'chat:post_talk' %}" id="user_talk_form">{% csrf_token %}
                 <input type="hidden" name="product_id" value={{product.id}}>
                 <input type="hidden" name="talk_reciever_id" value={{talk_reciever_id}}>
