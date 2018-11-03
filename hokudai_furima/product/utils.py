@@ -6,7 +6,7 @@ def get_public_product_list(product_list):
 
 
 def fetch_latest_sold_timeline():
-    latest_sold_products = Product.objects.filter(is_sold=True).order_by('-sold_date')[:5]
+    latest_sold_products = Product.objects.filter(is_sold=True, sold_date__isnull=False).order_by('-sold_date')[:5]
     product_dict_list = []
     for product in latest_sold_products:
         product_dict_list.append(
