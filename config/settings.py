@@ -86,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'config.context_processors.google_analytics',  # これ
             ],
         },
     },
@@ -228,8 +229,9 @@ ENABLE_SSL = True
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = os.getenv('HOKUDAI_FURIMA_CLOUDFRONT_HOST')
 AWS_S3_OBJECT_PARAMETERS = {
+    'Expires': 'Thu, 31 Dec 2020 20:00:00 GMT',
     'CacheControl': 'max-age=86400',
 }
 AWS_STATIC_LOCATION = 'static'
