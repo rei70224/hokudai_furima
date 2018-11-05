@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+    {% include "gtm_head.html" %}
     <title>{% block title %}{% if title %}{{ title }}{% else %}ホクマ 北大生のためのフリマサイト{% endif %}{% endblock %}</title>
       <meta name="description" content="北大生が開発！北大生による北大生のためのフリマサイト「ホクマ」です。直接会って渡すから、手数料０。北大生同士の運命の出会いもあるかも・・・？">
       <meta charset="UTF-8">
@@ -20,6 +21,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   </head>
   <body>
+    {% include "gtm_body.html" %}
     <header>
       {% include "header.html" %}
     </header>
