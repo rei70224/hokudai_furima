@@ -21,12 +21,9 @@ function getImageOriginalHeight(element){
 }
 
 function addImageFitDirectionName(sender_image_id){
-    console.log("add class");
     sender_image = $('#img'+sender_image_id)
     let width = getImageOriginalWidth(sender_image);
-    console.log(width)
     let height = getImageOriginalHeight(sender_image);
-    console.log(height)
     if(width >= height){
         sender_image.attr('class', 'width_larger')
     }else{
@@ -53,7 +50,6 @@ function fileget(imgfile,targetID){
                     }else if(e.target.result.length>1024*1024*20){
                         alert("20MB以下の画像をアップロードできます。");
                     }else{
-                        console.log(i);
                         $("#img"+i).attr("src",e.target.result);
                         $("#base64_"+i).val(e.target.result);
                         $("#edde"+i).html('<button type="button" id="rem'+i+'" onclick="resetImg('+i+');return false;">削除</button>');
@@ -61,7 +57,6 @@ function fileget(imgfile,targetID){
                         $("input[name=image_"+targetID+"_exists]").val(1);
                     }
                 }
-                console.log("loop_count:"+loop_count);
                 fr.readAsDataURL(imgfile.files[loop_count]);
 
             })
@@ -82,10 +77,7 @@ function fileget(imgfile,targetID){
         loop(targetID);
     }).then(function() {
         // ループ処理が終わったらここにくる
-        console.log("add class");
-        console.log("Finish");
         addImageFitDirectionName(targetID);
-        console.log("add class");
     })
 }
 
