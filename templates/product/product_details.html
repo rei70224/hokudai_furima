@@ -50,8 +50,9 @@
           </div>
         </div>
         <div class="col-12 col-md-6" style="padding:20px;">
-          <div class="h4">{{ product.title }}</div>
-          <div class="h3" style="color:#ff5722"> {{ product.price }} 円</div>
+          <div class="h3">{{ product.title }}</div>
+          <div class="h4" style="color:#ff5722"> {{ product.price }} 円</div>
+          <div class="h5 text-secondary"> {{ product.watched_count }} views</div>
           {% if request.user.is_authenticated %}
             {% if request.user == product.seller %}
               <div class="row">
