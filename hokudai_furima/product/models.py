@@ -35,6 +35,7 @@ class Product(models.Model):
         choices=[(level.name, level.value) for level in AccessLevelChoice],
         default='public'
     )
+    watched_count = models.PositiveIntegerField(default=0)
 
     def update(self):
         self.updated_date = timezone.now()
@@ -42,6 +43,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def increment_watched_count(self):
+        self.watched_count += 1
+        self.update()
+
 
 class ProductImage(models.Model):
     image = VersatileImageField(
