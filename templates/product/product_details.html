@@ -57,8 +57,9 @@
             {% if request.user == product.seller %}
               <div class="row">
                 <div class="col-md-6" style="margin:15px 15px 0px 15px; padding:0;">
-                  <a href="{% url "product:update_product" product.pk %}" class="btn btn-lg btn-block btn-info" style="display:block; color:white; text-decoration:none">商品情報の編集</a>
+                  <div><a href="{% url "product:update_product" product.pk %}" class="btn btn-lg btn-block btn-info" style="display:block; color:white; text-decoration:none">商品情報の編集</a></div>
                 </div>
+                <p style="margin:25px 15px 0px 15px; padding:0;">この商品への<span style="color:#25b425">購入希望</span>または<span style="color:#fe6222">非公開チャット</span>への投稿が来たとき、メール通知されます。（<a href="{% url 'notification:index' %}">お知らせ</a>にも表示されます）</p>
               </div>
             {% else %}
               {% if request.user in wanting_users %}
