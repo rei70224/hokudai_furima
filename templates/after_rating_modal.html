@@ -1,0 +1,34 @@
+{% load static %}
+{% block content %}
+<div class="modal fade" id="after-rating-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ホクマを応援！</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        取引お疲れ様でした！よろしければ、ぜひ「ホクマ」の応援ツイートをお願いします。
+        <div class="sns-buttons">
+          <div class="twitter-button">
+            　<a href="//twitter.com/share" class="twitter-share-button" data-text="北大生限定フリマ「ホクマ」を応援しています！　#ホクマ #北大 @hufurimaさんから" data-url="https://hufurima.com/" data-lang="ja">Tweet</a>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block post_javascript %}
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    $(window).on('load',function(){
+        $('#after-rating-modal').modal('show');
+    });
+  </script>
+{% endblock %}

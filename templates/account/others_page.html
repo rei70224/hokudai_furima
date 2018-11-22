@@ -57,4 +57,7 @@
     <p>このユーザはまだ商品を出品していません。</p>
   {% endif %}
 </div>
+{% if is_after_rating %}
+  {% include "after_rating_modal.html" %}
+{% endif %}
 {% endblock %}
