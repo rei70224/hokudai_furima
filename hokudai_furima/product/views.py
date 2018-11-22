@@ -137,6 +137,8 @@ def update_product(request, product_pk):
 @permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    if request.user.pk != product.seller.pk:
+        product.increment_watched_count()
     wanting_users = product.wanting_users.all()
     ogp_image_url = product.productimage_set.first().thumbnail_url
     if request.user.is_authenticated:
