@@ -319,6 +319,10 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
 )
 
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'hokudai_furima.core.utils.jwt_auth_response_handler'
+}
+
 try:
     from .local_settings import *
 except ImportError:
