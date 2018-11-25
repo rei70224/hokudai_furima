@@ -63,14 +63,25 @@ class App extends Component<{}, IState> {
       },
       body: JSON.stringify(data)
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        this.setState({
-          logged_in: true,
-          displayed_form: '',
-          username: json.username
-        });
+      .then(res => {
+        if (res.status === 201) {
+          res.json()
+            .then(json => {
+              localStorage.setItem('token', json.token);
+              this.setState({
+                logged_in: true,
+                displayed_form: '',
+                username: json.username
+              });
+            })
+        }else{
+          res.json()
+            .then(json => {
+              for(const k of Object.keys(json)) {
+                alert(json[k]);
+              }
+            });
+        }
       });
   };
 
