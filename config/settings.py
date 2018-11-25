@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'bootstrap4',  # django-bootstrap4
     'versatileimagefield', # djang-versatileimagefield
     'storages',
+    'rest_framework',
+    'corsheaders',
     'hokudai_furima.account',
     'hokudai_furima.product',
     'hokudai_furima.search',
@@ -58,6 +60,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # Note that this needs to be placed above CommonMiddleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -300,6 +303,25 @@ LOGGING = {
 }
 
 PRODUCT_NUM_PER_PAGE = 16
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+)
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'hokudai_furima.core.utils.jwt_auth_response_handler'
+}
 
 try:
     from .local_settings import *

@@ -1,6 +1,8 @@
 from django.conf.urls import url, include
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     url(r'account/', include('hokudai_furima.account.urls')),
@@ -13,5 +15,6 @@ urlpatterns = [
     url(r'rating/', include('hokudai_furima.rating.urls')),
     url(r'notification/', include('hokudai_furima.notification.urls')),
     url(r'guide/', include('hokudai_furima.guide.urls')),
+    path('token-auth/', obtain_jwt_token)
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # 画像への直リンクを使う場合は必要。この一行がなくても、{{user.icon.url}}で表示することは可能
