@@ -1,19 +1,116 @@
-import * as React from 'react';
+import React, { Component } from 'react';
+import Nav from './components/Nav';
+import LoginForm from './components/LoginForm';
+import SignupForm from './components/SignupForm';
 import './App.css';
 
-import logo from './logo.svg';
+interface IState {
+  displayed_form: string,
+  logged_in: boolean,
+  username: string,
+}
 
-class App extends React.Component {
-  public render() {
+class App extends Component<{}, IState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      displayed_form: '',
+      logged_in: localStorage.getItem('token') ? true : false,
+      username: ''
+    };
+  }
+
+  componentDidMount() {
+    if (this.state.logged_in) {
+      fetch('http://localhost:8000/core/current_user/', {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`
+        }
+      })
+        .then(res => res.json())
+        .then(json => {
+          this.setState({ username: json.username });
+        });
+    }
+  }
+
+  handleLogin = (e: any, data:any) => {
+    e.preventDefault();
+    fetch('http://localhost:8000/token-auth/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(json => {
+        localStorage.setItem('token', json.token);
+        this.setState({
+          logged_in: true,
+          displayed_form: '',
+          username: json.user.username
+        });
+      });
+  };
+
+  handleSignup = (e:any, data:any) => {
+    e.preventDefault();
+    fetch('http://localhost:8000/users/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(json => {
+        localStorage.setItem('token', json.token);
+        this.setState({
+          logged_in: true,
+          displayed_form: '',
+          username: json.username
+        });
+      });
+  };
+
+  handleLogout = () => {
+    localStorage.removeItem('token');
+    this.setState({ logged_in: false, username: '' });
+  };
+
+  displayForm = (form:any) => {
+    this.setState({
+      displayed_form: form
+    });
+  };
+
+  render() {
+    let form;
+    switch (this.state.displayed_form) {
+      case 'login':
+        form = <LoginForm handleLogin={this.handleLogin} />;
+        break;
+      case 'signup':
+        form = <SignupForm handleSignup={this.handleSignup} />;
+        break;
+      default:
+        form = null;
+    }
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        <Nav
+          logged_in={this.state.logged_in}
+          displayForm={this.displayForm}
+          handleLogout={this.handleLogout}
+        />
+        {form}
+        <h3>
+          {this.state.logged_in
+            ? `Hello, ${this.state.username}`
+            : 'Please Log In'}
+        </h3>
       </div>
     );
   }
