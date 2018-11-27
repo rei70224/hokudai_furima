@@ -23,7 +23,7 @@
     <div class="col-lg-8 offset-lg-1 col-12 order-lg-2 list-group">
       <div class="main">
         <div id="user-icon">
-          <img src="{% if request.user.icon_url %}{{ request.user.icon_url }}{% else %}{% static 'img/placeholder.png' %}{% endif %}" class="img-fluid"> 
+          <img data-src="{% if request.user.icon_url %}{{ request.user.icon_url }}{% else %}{% static 'img/placeholder.png' %}{% endif %}" class="lazyload img-fluid">
         </div>
         <h1 id="user-name">{{ request.user.username }}</h1>
         <ul class="nav nav-tabs nav-justified">
