@@ -1,11 +1,6 @@
 {% load staticfiles %}
 {% load bootstrap4 %}
 <head>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script type="text/javascript" src="{% static 'js/csrf_token_ajax.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/delete_talk_ajax.js' %}"></script>
-
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 </head>
@@ -84,33 +79,3 @@
 {% endif %}
 </div>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-      $('#user_talk_form').submit(function() {  // ボタンクリックでAJAX
-          $.ajax({
-          'url':$('form#user_talk_form').attr('action'),
-              'type':'POST',
-              'data':{
-                  'product_id': $('input[name="product_id"]').val(),
-                  'sentence': $('textarea[name="sentence"]').val(),
-                  'talk_reciever_id': $('input[name="talk_reciever_id"]').val(),
-              },
-              'dataType':'json',
-              'success':function(response){  // 通信が成功したら動く処理で、引数には返ってきたレスポンスが入る
-          $('.talk_list').append(
-              '<div class="user_talk" id="'+response.talk_id+'">'+
-                  '<div>'+ response.talker + '</div>'+
-                  '<div class="balloon">' + response.sentence + '</div>'+
-                  '<div>' + response.created_date + '</div>'+
-                  '<form method="POST" action="{% url 'chat:delete_talk' %}" class="delete_talk_form">'+
-                  "{% csrf_token %}"+
-                    '<input type="hidden" name="talk_id" value='+ response.talk_id +'>'+
-                    '<button type="submit" class="save btn btn-default">削除</button>'+
-                  '</form>'+
-              '</div>');
-              },
-          });
-          return false;
-      });
-  });
-</script>
