@@ -19,7 +19,68 @@
   </head>
   <body>
     <header>
-      {% include "header.html" %}
+      <div class="header">
+        <div class="container">
+          <div id="pc-logo" class="logo">
+            <a href="{% url "home" %}">
+              <img src="{% static "img/hu_furima_logo_pc.png" %}" alt="ロゴ">
+            </a>
+          </div>
+          <div id="sp-logo" class="logo">
+            <a href="{% url "home" %}">
+              <img src="{% static "img/hu_furima_logo_sp.png" %}" alt="ロゴ">
+            </a>
+          </div>
+          <div class="search-bar">
+            <form method="GET" action="{% url 'search:search_product' %}" class="search-form ml-auto">{% csrf_token %}
+              <input type='hidden' name="price_range" value='0_1000000' />
+              <input type='hidden' name="is_sold" value='all' />
+              <input type='hidden' name="sort_method" value='sort_new' />
+              <input type="text" id="header_query" name="q" class="form-control search" placeholder="キーワードから検索" value="">
+              <button class="btn btn-success search-button" type="submit">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </button>
+            </form>
+            <div id="header_suggest_area">
+            </div>
+          </div>
+          <nav id="navbar">
+            <div class="nav-right">
+              <ul>
+                {% if request.user.is_authenticated %}
+                  <li class="notification">
+                    <a href="{% url "notification:index" %}">
+                      <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                      <span>お知らせ</span>
+                      <span class="notification-badge badge badge-info"></span>
+                    </a>
+                  </li>
+                  <li class="todo">
+                    <a href="{% url "todo_list:show_todo_list" %}">
+                      <i class="fa fa-check" aria-hidden="true"></i>
+                      <span>TODO</span>
+                      <span class="todo-badge badge badge-info"></span>
+                    </a>
+                  </li>
+                  <li class="mypage-link">
+                    <a href="{% url "account:mypage" %}">
+                      <i class="fa fa-user" aria-hidden="true"></i>
+                      <span>マイページ</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li>
+                    <a href="{% url "account:login" %}">ログイン</a>
+                  </li>
+                  <li>
+                    <a href="{% url "account:signup" %}">新規登録</a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
     </header>
     <main>
       {% if messages %}
@@ -36,11 +97,14 @@
     <footer>
       {% include "footer.html" %}
     </footer>
-  {% block post_javascript %}
     {% include "gtm_body.html" %}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/csrf_token_ajax.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/incremental_search.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/load_badge_numbers.js' %}"></script>
+  {% block post_javascript %}
   {% endblock %}
   </body>
 </html>
