@@ -23,12 +23,12 @@
         <div class="container">
           <div id="pc-logo" class="logo">
             <a href="{% url "home" %}">
-              <img src="{% static "img/hu_furima_logo_pc.png" %}" alt="ロゴ">
+              <img data-src="{% static "img/hu_furima_logo_pc.png" %}" class="lazyload" alt="ロゴ">
             </a>
           </div>
           <div id="sp-logo" class="logo">
             <a href="{% url "home" %}">
-              <img src="{% static "img/hu_furima_logo_sp.png" %}" alt="ロゴ">
+              <img data-src="{% static "img/hu_furima_logo_sp.png" %}" class="lazyload" alt="ロゴ">
             </a>
           </div>
           <div class="search-bar">
@@ -104,6 +104,7 @@
     <script type="text/javascript" src="{% static 'js/csrf_token_ajax.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/incremental_search.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/load_badge_numbers.js' %}"></script>
+    <script src="{% static "js/lazysizes.min.js" %}" async=""></script>
   {% block post_javascript %}
   {% endblock %}
   </body>

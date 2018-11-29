@@ -11,7 +11,7 @@
         {% for sold_product in latest_sold_products %}
           <a href="{% url 'product:product_details' pk=sold_product.pk %}" class="list-group-item">
             <div class="left-content">
-              <img src="{{ sold_product.icon }}">
+              <img data-src="{{ sold_product.icon }}" class="lazyload">
             </div>
             <div class="right-content">
               <h4>{{ sold_product.title }}</h4>

@@ -16,7 +16,7 @@
               </div>
             {% endif %}
             <div class="square-box">
-                <img src="{{ product.productimage_set.all.0.thumbnail_url }}" class="img-fluid">
+              <img data-src="{{ product.productimage_set.all.0.thumbnail_url }}" class="lazyload img-fluid">
             </div>
             <div class="caption">
               <h4>{{ product.title}}</h4>
