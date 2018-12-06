@@ -25,6 +25,17 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
+    def create_superuser(self, username, password):
+        if settings.DEBUG:
+            user = self.create_user(username, username, password=password)
+            user.is_staff = True
+            user.is_superuser = True
+            user.is_active = True
+            user.save()
+            return user
+        else:
+            raise RuntimeError("It is not valid function in production")
+
 
 class User(PermissionsMixin, AbstractBaseUser):
     username_validator = UnicodeUsernameValidator()
@@ -44,6 +55,8 @@ class User(PermissionsMixin, AbstractBaseUser):
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
     is_active = models.BooleanField(default=False)
     icon = VersatileImageField('',upload_to='account',blank=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
     objects = UserManager()
