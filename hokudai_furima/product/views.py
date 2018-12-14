@@ -83,8 +83,9 @@ def get_posted_product_images(request):
 
 @login_required
 def update_product(request, product_pk):
-    print(request.POST)
     product = get_object_or_404(Product, pk=product_pk)
+    if product.is_sold:
+        return render(request, 'product/cant_update_sold_product.html', {'product_name': product.title, 'product_pk': product.pk})
     product_seller_id = product.seller.id
     if product_seller_id != request.user.id:
         return HttpResponse('invalid request')
