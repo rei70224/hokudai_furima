@@ -15,6 +15,12 @@
     var canvas = document.getElementById("picture");
     canvas.setAttribute("style", "display: none");
     var ctx = canvas.getContext("2d");
+
+    let getPriceFromISBNMock = function(isbn){
+        isbn = "9784563002213";
+        let price = 2052;
+        return price;
+    }
     JOB.Init();
     JOB.SetImageCallback(function(result) {
         if(result.length > 0){
@@ -25,13 +31,9 @@
                     console.log(result[i].Value);
                     Result.innerHTML="ISBN: "+result[i].Value;
                     let isbn = result[i].Value;
-                    (function(){
-                        if(isbn == "9784563002213"){
-                            let price = 2052;
-                            console.log(price);
-                            PriceText.innerHTML = price + "円";
-                        }
-                    })()
+                    let price = getPriceFromISBNMock(isbn);
+                    console.log(price);
+                    PriceText.innerHTML = price + "円";
                 }
             }
             //Result.innerHTML=tempArray.join("<br />");
