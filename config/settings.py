@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'hokudai_furima.rating',
     'hokudai_furima.notification',
     'hokudai_furima.guide',
+    'hokudai_furima.api',
     'rules.apps.AutodiscoverRulesConfig',
 ]
 
@@ -300,6 +301,8 @@ LOGGING = {
 }
 
 PRODUCT_NUM_PER_PAGE = 16
+
+RAKUTEN_APPLICATION_ID = os.getenv('RAKUTEN_APPLICATION_ID')
 
 try:
     from .local_settings import *
