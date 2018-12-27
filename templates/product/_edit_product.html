@@ -34,8 +34,9 @@
             <button id="submit" type="submit" class="btn submit_button">save</button>
         </div>
     </form>
+    {% include 'product/barcodeReader-html.html' %}
 </div>
 {% endblock %}
 {% block post_javascript %}
-  <script type="text/javascript" src="{% static 'js/image_form_utils.js' %}"></script>
+    {% include 'product/barcodeReader-js.html' %}
 {% endblock %}
