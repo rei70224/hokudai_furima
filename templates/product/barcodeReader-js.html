@@ -21,6 +21,16 @@
         let price = 2052;
         return price;
     }
+
+    let getPriceFromISBNRakuten = function(isbn){
+        let application_id = "1048533231853649352";
+        let djangoRakutenBookSearchAPIURL = "https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404";
+        return $.ajax({
+            'url': djangoRakutenBookSearchAPIURL + "?applicationId=" + application_id + "&isbn=" + isbn,
+            'cache': false,
+        });
+    }
+
     JOB.Init();
     JOB.SetImageCallback(function(result) {
         if(result.length > 0){
@@ -31,9 +41,16 @@
                     console.log(result[i].Value);
                     Result.innerHTML="ISBN: "+result[i].Value;
                     let isbn = result[i].Value;
-                    let price = getPriceFromISBNMock(isbn);
+                    let price = 0;
                     console.log(price);
-                    PriceText.innerHTML = price + "円";
+                    let deferred = getPriceFromISBNRakuten(isbn);
+                    deferred.done(function(result){
+                        price = result;
+                        console.log(price);
+                        PriceText.innerHTML = price + "円";
+                    }).fail(function(result){
+                        alert("APIエラーです。もう一度試してみてください")
+                    });
                 }
             }
             //Result.innerHTML=tempArray.join("<br />");
