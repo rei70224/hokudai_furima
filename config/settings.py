@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'hokudai_furima.rating',
     'hokudai_furima.notification',
     'hokudai_furima.guide',
+    'hokudai_furima.watchlist',
     'rules.apps.AutodiscoverRulesConfig',
 ]
 
