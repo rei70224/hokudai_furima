@@ -7,6 +7,7 @@ import os
 from versatileimagefield.placeholder import OnDiscPlaceholderImage
 from django.core.exceptions import ValidationError
 from enum import Enum
+from hokudai_furima.watchlist.models import WatchList
 
 class AccessLevelChoice(Enum):   # A subclass of Enum
     public = "公開"
@@ -36,6 +37,7 @@ class Product(models.Model):
         default='public'
     )
     watched_count = models.PositiveIntegerField(default=0)
+    watchlist = models.ForeignKey(WatchList, on_delete=models.CASCADE, null=True, default=None)
 
     def update(self):
         self.updated_date = timezone.now()
