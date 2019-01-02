@@ -46,43 +46,97 @@
           </div>
           <nav id="navbar">
             <div class="nav-right">
-              <ul>
-                {% if request.user.is_authenticated %}
-                  <li class="watchlist">
-                    <a href="{% url "watchlist:show_watch_list" %}">
-                      <i class="fa fa-check" aria-hidden="true"></i>
-                      <span>ウォッチリスト</span>
-                    </a>
-                  </li>
-                  <li class="notification">
-                    <a href="{% url "notification:index" %}">
-                      <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                      <span>お知らせ</span>
-                      <span class="notification-badge badge badge-info"></span>
-                    </a>
-                  </li>
-                  <li class="todo">
-                    <a href="{% url "todo_list:show_todo_list" %}">
-                      <i class="fa fa-check" aria-hidden="true"></i>
-                      <span>TODO</span>
-                      <span class="todo-badge badge badge-info"></span>
-                    </a>
-                  </li>
-                  <li class="mypage-link">
-                    <a href="{% url "account:mypage" %}">
-                      <i class="fa fa-user" aria-hidden="true"></i>
-                      <span>マイページ</span>
-                    </a>
-                  </li>
-                {% else %}
-                  <li>
-                    <a href="{% url "account:login" %}">ログイン</a>
-                  </li>
-                  <li>
-                    <a href="{% url "account:signup" %}">新規登録</a>
-                  </li>
-                {% endif %}
-              </ul>
+              <div id="pc-nav-content">
+                <div class="nav-right">
+                <ul>
+                  {% if request.user.is_authenticated %}
+                    <li class="watchlist">
+                      <a href="{% url "watchlist:show_watch_list" %}">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        <span>ウォッチリスト</span>
+                      </a>
+                    </li>
+                    <li class="notification">
+                      <a href="{% url "notification:index" %}">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <span>お知らせ</span>
+                        <span class="notification-badge badge badge-info"></span>
+                      </a>
+                    </li>
+                    <li class="todo">
+                      <a href="{% url "todo_list:show_todo_list" %}">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        <span>TODO</span>
+                        <span class="todo-badge badge badge-info"></span>
+                      </a>
+                    </li>
+                    <li class="mypage-link">
+                      <a href="{% url "account:mypage" %}">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <span>マイページ</span>
+                      </a>
+                    </li>
+                  {% else %}
+                    <li>
+                      <a href="{% url "account:login" %}">ログイン</a>
+                    </li>
+                    <li>
+                      <a href="{% url "account:signup" %}">新規登録</a>
+                    </li>
+                  {% endif %}
+                </ul>
+                </div>
+              </div>
+              <div id="sp-nav-content">
+                <nav class="navbar navbar-light" style="padding: 10px 0">
+                  <div class="nav-right">
+                  <div class="text-right" style="margin-right:0; text-align:right">
+                    <button type="button" class="btn" style="background-color:#fafafa; border-color:gray" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                  </div>
+                  <div class="collapse navbar-collapse" id="collapseExample">
+                    <ul class="navbar-nav">
+                      {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                          <a class="watchlist" href="{% url "watchlist:show_watch_list" %}">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <span>ウォッチリスト</span>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="notification" href="{% url "notification:index" %}">
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                            <span>お知らせ</span>
+                            <span class="notification-badge badge badge-info"></span>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="todo" href="{% url "todo_list:show_todo_list" %}">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <span>TODO</span>
+                            <span class="todo-badge badge badge-info"></span>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="mypage-link" href="{% url "account:mypage" %}">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <span>マイページ</span>
+                          </a>
+                        </li>
+                      {% else %}
+                        <li class="nav-item">
+                          <a href="{% url "account:login" %}">ログイン</a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="{% url "account:signup" %}">新規登録</a>
+                        </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                  </div>
+                </nav>
+                </div>
             </div>
           </nav>
         </div>
