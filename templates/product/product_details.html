@@ -137,7 +137,7 @@
             {% endif %}
             <div class="row">
               <div class="col-md-6" style="margin:15px 15px; padding:0;">
-                <button type="button" id="add-watchlist-button" name="add-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;">ウォッチリストに追加</button>
+                <button type="button" id="add-watchlist-button" name="add-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;">&nbsp;</button>
               </div>
             </div>
           </div>
@@ -229,6 +229,12 @@
 {% endblock %}
 {% block post_javascript %}
   <script async>
+      function changeWatchListButtonTextWhenInIt(){
+          $('#add-watchlist-button').text("ウォッチリストから外す");
+      }
+      function changeWatchListButtonTextWhenNotInIt(){
+          $('#add-watchlist-button').text("ウォッチリストに追加");
+      }
       $(document).ready(function() {
           $('#add-watchlist-button').click(function() {  // ボタンクリックでAJAX
               let apiURL = "{% url 'watchlist:add_watch_list' %}";
@@ -239,6 +245,7 @@
                   'cache': false,
               }).done(function(result){
                   alert("ウォッチリストに追加されました。")
+                  changeWatchListButtonTextWhenInIt();
               }).fail(function(result){
                   alert("APIエラーです。もう一度試してみてください")
               });
@@ -250,14 +257,14 @@
               'cache': false,
           }).done(function(result){
               if(result.is_in_watch_list === 'true'){
-                  alert("ウォッチリスト追加済")
+                  changeWatchListButtonTextWhenInIt();
               }else{
-                  alert("ウォッチリスト追加まだ")
+                  changeWatchListButtonTextWhenNotInIt();
               }
           }).fail(function(){
-              alert("APIエラー")
+              alert("APIエラー");
+              changeWatchListButtonTextWhenNotInIt();
           });
       })();
-
   </script>
 {% endblock %}
