@@ -192,12 +192,11 @@ def product_direct_chat(request, product_pk, wanting_user_pk):
         if chat.exists():
             talks = chat[0].talk_set.all()
         else:
-            # チャットルームがなけれは、新たにチャットルームを作る
+            # チャットルームがなけれは、新たにチャットルームを作る（ただし、保存はしない。トークの投稿があって初めて保存）
             # 売り手以外の人は、自由にチャットルームを作れる
             # 売り手からチャットルームを作成する場合、相手が購入希望をしている時だけ
             if request.user != product.seller or wanting_user in product.wanting_users.all():
                 chat = Chat(product=product, product_wanting_user=wanting_user, product_seller=product.seller, created_date=timezone.now())
-                chat.save()
                 talks = []
             else:
                 return HttpResponse('invalid request')
