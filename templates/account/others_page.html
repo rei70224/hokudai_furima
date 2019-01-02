@@ -46,7 +46,7 @@
   </div>
   <h2>プロフィール</h2>
   {% if others_user.intro %}
-    <p>{{ others_user.intro | linebreaksbr}}</p>
+    <p>{{ others_user.intro | urlize | linebreaksbr}}</p>
   {% else %}
     <p>プロフィールには何も書かれていません</p>
   {% endif %}

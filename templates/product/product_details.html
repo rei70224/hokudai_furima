@@ -165,7 +165,7 @@
           </tr>
           </tbody>
         </table>
-        <p>{{ product.description | linebreaksbr }}</p>
+        <p>{{ product.description | urlize | linebreaksbr }}</p>
         <br>
         {% if request.user.is_authenticated %}
           {% if product.seller.id == request.user.id %}
