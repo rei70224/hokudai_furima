@@ -243,6 +243,21 @@
                   alert("APIエラーです。もう一度試してみてください")
               });
           });
+          let productIsInWatchlistApiURL = "{% url 'watchlist:is_in_watch_list' %}";
+          $.ajax({
+              'type': 'GET',
+              'url': productIsInWatchlistApiURL + '?product_pk={{ product.pk }}',
+              'cache': false,
+          }).done(function(result){
+              if(result.is_in_watch_list === 'true'){
+                  alert("ウォッチリスト追加済")
+              }else{
+                  alert("ウォッチリスト追加まだ")
+              }
+          }).fail(function(){
+              alert("APIエラー")
+          });
       })();
+
   </script>
 {% endblock %}

@@ -27,3 +27,16 @@ def add_watch_list(request):
     watch_list.product_set.add(product)
     watch_list.update()
     return JsonResponse({'success': True})
+
+
+@login_required
+def is_in_watch_list(request):
+    try:
+        watch_list = WatchList.objects.get(user=request.user)
+        product_pk = request.GET.get('product_pk')
+        if watch_list.product_set.filter(pk=product_pk).count() > 0:
+            return JsonResponse({'is_in_watch_list': 'true'})
+        else:
+            return JsonResponse({'is_in_watch_list': 'false'})
+    except WatchList.DoesNotExist:
+        return JsonResponse({'is_in_watch_list': 'false'})
