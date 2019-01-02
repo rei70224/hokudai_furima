@@ -30,6 +30,20 @@ def add_watch_list(request):
 
 
 @login_required
+def remove_from_watch_list(request):
+    try:
+        watch_list = WatchList.objects.get(user=request.user)
+    except WatchList.DoesNotExist:
+        watch_list = WatchList(user=request.user)
+        watch_list.save()
+    product_pk = request.POST.get('product_pk')
+    product = Product.objects.get(pk=product_pk)
+    watch_list.product_set.remove(product)
+    watch_list.update()
+    return JsonResponse({'success': True})
+
+
+@login_required
 def is_in_watch_list(request):
     try:
         watch_list = WatchList.objects.get(user=request.user)

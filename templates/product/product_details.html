@@ -137,7 +137,7 @@
             {% endif %}
             <div class="row">
               <div class="col-md-6" style="margin:15px 15px; padding:0;">
-                <button type="button" id="add-watchlist-button" name="add-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;">&nbsp;</button>
+                <button type="button" id="toggle-watchlist-button" name="toggle-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;">&nbsp;</button>
               </div>
             </div>
           </div>
@@ -229,14 +229,14 @@
 {% endblock %}
 {% block post_javascript %}
   <script async>
-      function changeWatchListButtonTextWhenInIt(){
-          $('#add-watchlist-button').text("ウォッチリストから外す");
-      }
-      function changeWatchListButtonTextWhenNotInIt(){
-          $('#add-watchlist-button').text("ウォッチリストに追加");
-      }
       $(document).ready(function() {
-          $('#add-watchlist-button').click(function() {  // ボタンクリックでAJAX
+          function changeWatchListButtonTextWhenInIt(){
+              $('#toggle-watchlist-button').text("ウォッチリストから外す");
+          }
+          function changeWatchListButtonTextWhenNotInIt(){
+              $('#toggle-watchlist-button').text("ウォッチリストに追加");
+          }
+          function addWatchlist(){
               let apiURL = "{% url 'watchlist:add_watch_list' %}";
               $.ajax({
                   'type': 'POST',
@@ -246,10 +246,42 @@
               }).done(function(result){
                   alert("ウォッチリストに追加されました。")
                   changeWatchListButtonTextWhenInIt();
+                  changeBehaviorToggleButton(true);
               }).fail(function(result){
                   alert("APIエラーです。もう一度試してみてください")
+                  changeWatchListButtonTextWhenNotInIt();
+                  changeBehaviorToggleButton(false);
               });
-          });
+          }
+
+          function removeFromWatchlist(){
+              let apiURL = "{% url 'watchlist:remove_from_watch_list' %}";
+              $.ajax({
+                  'type': 'POST',
+                  'url': apiURL,
+                  'data': {'product_pk': {{ product.pk }} },
+                  'cache': false,
+              }).done(function(result){
+                  alert("ウォッチリストから削除されました。")
+                  changeWatchListButtonTextWhenNotInIt();
+                  changeBehaviorToggleButton(false);
+              }).fail(function(result){
+                  alert("APIエラーです。もう一度試してみてください")
+                  changeWatchListButtonTextWhenNotInIt();
+                  changeBehaviorToggleButton(false);
+              });
+          }
+
+          function changeBehaviorToggleButton(isInWatchlist){
+              $('#toggle-watchlist-button').click(function() {  // ボタンクリックでAJAX
+                  if(isInWatchlist){
+                      removeFromWatchlist()
+                  }else{
+                      addWatchlist()
+                  }
+              });
+          }
+
           let productIsInWatchlistApiURL = "{% url 'watchlist:is_in_watch_list' %}";
           $.ajax({
               'type': 'GET',
@@ -258,12 +290,15 @@
           }).done(function(result){
               if(result.is_in_watch_list === 'true'){
                   changeWatchListButtonTextWhenInIt();
+                  changeBehaviorToggleButton(true);
               }else{
                   changeWatchListButtonTextWhenNotInIt();
+                  changeBehaviorToggleButton(false);
               }
           }).fail(function(){
               alert("APIエラー");
               changeWatchListButtonTextWhenNotInIt();
+              changeBehaviorToggleButton(false);
           });
       })();
   </script>
