@@ -137,26 +137,7 @@
             {% endif %}
             <div class="row">
               <div class="col-md-6" style="margin:15px 15px; padding:0;">
-                <button type="button" name="add-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;" data-toggle="modal" data-target="#add-watchlist-modal">ウォッチリストに追加</button>
-                <div class="modal fade" id="add-watchlist-modal" tabindex="-1" role="dialog" aria-labelledby="addWatchListModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="addWatchList">確認</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        この商品をウォッチリストに入れますか？
-                      </div>
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal">はい</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">いいえ</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <button type="button" id="add-watchlist-button" name="add-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;">ウォッチリストに追加</button>
               </div>
             </div>
           </div>
@@ -245,4 +226,23 @@
       js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1';
       fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
+{% endblock %}
+{% block post_javascript %}
+  <script async>
+      $(document).ready(function() {
+          $('#add-watchlist-button').click(function() {  // ボタンクリックでAJAX
+              let apiURL = "{% url 'watchlist:add_watch_list' %}";
+              $.ajax({
+                  'type': 'POST',
+                  'url': apiURL,
+                  'data': {'product_pk': {{ product.pk }} },
+                  'cache': false,
+              }).done(function(result){
+                  alert("ウォッチリストに追加されました。")
+              }).fail(function(result){
+                  alert("APIエラーです。もう一度試してみてください")
+              });
+          });
+      })();
+  </script>
 {% endblock %}
