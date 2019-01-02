@@ -56,7 +56,7 @@
             {% if request.user.is_authenticated %}
               {% if request.user == product.seller %}
                 <div class="row">
-                  <div class="col-md-6" style="margin:15px 15px 0px 15px; padding:0;">
+                  <div class="col-md-8" style="margin:15px 15px 0px 15px; padding:0;">
                     <div><a href="{% url "product:update_product" product.pk %}" class="btn btn-lg btn-block btn-info" style="display:block; color:white; text-decoration:none">商品情報の編集</a></div>
                   </div>
                   <p style="margin:25px 15px 0px 15px; padding:0;">この商品への<span style="color:#25b425">購入希望</span>または<span style="color:#fe6222">非公開チャット</span>への投稿が来たとき、メール通知されます。（<a href="{% url 'notification:index' %}">お知らせ</a>にも表示されます）</p>
@@ -66,7 +66,7 @@
                   {% if not product.is_sold %}
                     <form action="{% url 'product:cancel_want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                       <div class="row">
-                        <div class="col-md-6" style="margin:0 15px; padding:0;">
+                        <div class="col-md-8" style="margin:0 15px; padding:0;">
                           <button type="button" name="cancel-want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;" data-toggle="modal" data-target="#cancel-product-modal">購入希望のキャンセル</button>
                           <div class="modal fade" id="cancel-product-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -92,7 +92,7 @@
                     </form>
                   {% else %}
                     <div class="row">
-                      <div class="col-md-6" style="margin:0 15px; padding:0;">
+                      <div class="col-md-8" style="margin:0 15px; padding:0;">
                         {% if request.user == product.buyer %}
                           <button type="button" class="btn btn-lg btn-block" disabled style="background-color:#25b425;color:white;">購入済み</button>
                         {% else %}
@@ -104,7 +104,7 @@
                 {% else %}
                   <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                     <div class="row">
-                      <div class="col-md-6" style="margin:0 15px; padding:0;">
+                      <div class="col-md-8" style="margin:0 15px; padding:0;">
                         {% if not product.is_sold %}
                           <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;">購入希望</button>
                         {% else %}
@@ -116,7 +116,7 @@
                 {% endif %}
                 {% if request.user != product.seller %}
                   <div class="row">
-                    <div class="col-md-6" style="margin:15px 15px 0px 15px; padding:0;">
+                    <div class="col-md-8" style="margin:15px 15px 0px 15px; padding:0;">
                       <a href="{% url 'product:product_direct_chat' product.pk request.user.pk %}" class="btn btn-lg btn-block" style="display:block; color:white; background-color:#fe6222; text-decoration:none">非公開チャット</a>
                     </div>
                   </div>
@@ -125,7 +125,7 @@
             {% else %}
               <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                 <div class="row">
-                  <div class="col-md-6" style="margin:0 15px; padding:0;">
+                  <div class="col-md-8" style="margin:0 15px; padding:0;">
                     {% if not product.is_sold %}
                       <button type="submit" name="want" class="btn btn-lg btn-block" style="background-color:#25b425;color:white;">購入希望</button>
                     {% else %}
@@ -136,7 +136,7 @@
               </form>
             {% endif %}
             <div class="row">
-              <div class="col-md-6" style="margin:15px 15px; padding:0;">
+              <div class="col-md-8" style="margin:15px 15px; padding:0;">
                 <button type="button" id="toggle-watchlist-button" name="toggle-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;">&nbsp;</button>
               </div>
             </div>
