@@ -25,12 +25,18 @@ def post_talk(request):
     created_date = timezone.now()
     if request.user == product.seller:
         product_wanting_user = talk_reciever
-        chat = Chat.objects.get(product=product, product_seller=request.user, product_wanting_user=product_wanting_user)
+        try:
+            chat = Chat.objects.get(product=product, product_wanting_user=product_wanting_user, product_seller=request.user)
+        except Chat.DoesNotExist:
+            chat = Chat(product=product, product_wanting_user=product_wanting_user, product_seller=request.user, created_date=timezone.now())
+            chat.save()
     else:
         product_wanting_user = request.user
-        chat = Chat.objects.get(product=product, product_seller=talk_reciever, product_wanting_user=product_wanting_user)
-    if not chat:
-        return HttpResponse('invalid request')
+        try:
+            chat = Chat.objects.get(product=product, product_wanting_user=product_wanting_user, product_seller=talk_reciever)
+        except Chat.DoesNotExist:
+            chat = Chat(product=product, product_wanting_user=product_wanting_user, product_seller=talk_reciever, created_date=timezone.now())
+            chat.save()
     talk = Talk(talker=talker, chat=chat, sentence=sentence, created_date=created_date)
     talk.save()
     chat.talk_set.add(talk)
