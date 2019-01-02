@@ -5,7 +5,7 @@ from django.utils import timezone
 
 # Create your models here.
 class WatchList(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    products = models.ManyToManyField(Product, related_name='watchlist_product')
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='watching_user')
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
