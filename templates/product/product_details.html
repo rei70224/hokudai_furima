@@ -122,6 +122,11 @@
                   </div>
                 {% endif %}
               {% endif %}
+              <div class="row">
+                <div class="col-md-8" style="margin:15px 15px; padding:0;">
+                  <button type="button" id="toggle-watchlist-button" name="toggle-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;">&nbsp;</button>
+                </div>
+              </div>
             {% else %}
               <form action="{% url 'product:want_product' product.pk %}" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
                 <div class="row">
@@ -135,11 +140,6 @@
                 </div>
               </form>
             {% endif %}
-            <div class="row">
-              <div class="col-md-8" style="margin:15px 15px; padding:0;">
-                <button type="button" id="toggle-watchlist-button" name="toggle-watchlist" class="btn btn-lg btn-block" style="background-color:#223a70;color:white;">&nbsp;</button>
-              </div>
-            </div>
           </div>
           <div class="sns-buttons">
             <div class="twitter-button">
