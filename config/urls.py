@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'rating/', include('hokudai_furima.rating.urls')),
     url(r'notification/', include('hokudai_furima.notification.urls')),
     url(r'guide/', include('hokudai_furima.guide.urls')),
+    url(r'watchlist/', include('hokudai_furima.watchlist.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # 画像への直リンクを使う場合は必要。この一行がなくても、{{user.icon.url}}で表示することは可能
 
