@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="matching_offer">
+      <div class="h3">{{ matching_offer.title }}</div>
+      {% if request.user.is_authenticated %}
+        {% if request.user == matching_offer.host %}
+          <div class="row">
+            <div class="col-md-8" style="margin:15px 15px 0px 15px; padding:0;">
+              <div><a href="{% url "matching_offer:update_matching_offer" matching_offer.pk %}" class="btn btn-lg btn-block btn-info" style="display:block; color:white; text-decoration:none">商品情報の編集</a></div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+      <div class="sns-buttons">
+        <div class="twitter-button">
+          <a href="//twitter.com/share" class="twitter-share-button" data-text="{{matching_offer.title}} {{'https://hufurima.com'}}{{request.path}} #ホクマ #北大 @hufurimaさんから" data-url="{{'https://hufurima.com'}}{{request.path}}" data-lang="ja">Tweet</a>
+        </div>
+        <div class="fb-share-button" data-href="{{'https://hufurima.com'}}{{request.path}}" data-layout="button_count" data-size="small" data-mobile-iframe="true">
+          <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{'https://hufurima.com'}}{{request.path}}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+        </div>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>作成者</th>
+          <td><a href="{% url 'account:others_page' matching_offer.host.pk %}">{{ matching_offer.host }}</a></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <p>{{ matching_offer.description | urlize | linebreaksbr }}</p>
+  </div>
+  </div>
+  {% include "footer_sell_button.html" %}
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1';
+      fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+{% endblock %}
+{% block post_javascript %}
+{% endblock %}
