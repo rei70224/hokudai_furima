@@ -80,7 +80,6 @@ def others_page(request, user_pk):
     return render(request, 'account/others_page.html', {'others_user': others_user, 'good_rating_count': good_rating_count, 'normal_rating_count':normal_rating_count, 'bad_rating_count':bad_rating_count, 'others_user_product_list': others_user_product_list})
 
 
-@site_rules_confirm_required
 @login_required
 def logout(request):
     auth.logout(request)
