@@ -165,6 +165,41 @@
     <script type="text/javascript" src="{% static 'js/incremental_search.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/load_badge_numbers.js' %}"></script>
     <script src="{% static "js/lazysizes.min.js" %}" async=""></script>
+
+    {% if request.user.is_authenticated %}
+      <div id="rulesModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">利用規約への同意のお願い</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div><!-- /.modal-header -->
+            <div class="modal-body">
+              <p>本サイトにログインして利用を続ける場合に、利用規約とプライバシーポリシーへの同意が必要になりました。ご理解のほどよろしくお願い致します。</p>
+              <ul>
+                <li><a href="{% url 'site_rules:privacy_policy' %}">プライバシーポリシー</a></li>
+                <li><a href="{% url 'site_rules:tos' %}">利用規約</a></li>
+              </ul>
+            </div><!-- /.modal-body -->
+            <div class="modal-footer">
+              <p>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">同意して利用を続ける</button>
+              </p>
+              <p>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">同意しない</button>
+              </p>
+            </div><!-- /.modal-footer -->
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+      <script>
+        $(document).ready(function() {
+            $('#rulesModal').modal('show')
+        });
+      </script>
+    {% endif %}
   {% block post_javascript %}
   {% endblock %}
   </body>
