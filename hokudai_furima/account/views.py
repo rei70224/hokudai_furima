@@ -20,6 +20,7 @@ from copy import deepcopy
 from hokudai_furima.product.utils import get_public_product_list
 from hokudai_furima.todo_list.utils import get_undone_todo_list, get_done_todo_list
 from hokudai_furima.notification.utils import fetch_notification_list
+from hokudai_furima.core.decorators import site_rules_confirm_required
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -58,6 +59,8 @@ def login(request, backends='django.contrib.auth.backends.ModelBackend'):
         'authentication_form': LoginForm}
     return auth_views.LoginView.as_view(**kwargs)(request, **kwargs)
 
+
+@site_rules_confirm_required
 @login_required
 def mypage(request):
     wanting_product_list = get_public_product_list(Product.objects.filter(wanting_users=request.user))
