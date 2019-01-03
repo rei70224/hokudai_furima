@@ -57,6 +57,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     icon = VersatileImageField('',upload_to='account',blank=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    is_rules_confirmed = models.BooleanField(default=False)
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
     objects = UserManager()
