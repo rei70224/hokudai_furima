@@ -13,8 +13,10 @@ from hokudai_furima.account.models import User
 from hokudai_furima.notification.models import Notification
 from django.urls import reverse
 from .emails import send_accept_new_message_email
+from hokudai_furima.core.decorators import site_rules_confirm_required
 
 
+@site_rules_confirm_required
 @login_required
 def post_talk(request):
     talker=request.user
@@ -59,6 +61,8 @@ def post_talk(request):
             }
     return JsonResponse(d)
 
+
+@site_rules_confirm_required
 @login_required
 def delete_talk(request):
     talk_id = request.POST.get('talk_id')

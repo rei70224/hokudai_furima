@@ -80,6 +80,7 @@ def others_page(request, user_pk):
     return render(request, 'account/others_page.html', {'others_user': others_user, 'good_rating_count': good_rating_count, 'normal_rating_count':normal_rating_count, 'bad_rating_count':bad_rating_count, 'others_user_product_list': others_user_product_list})
 
 
+@site_rules_confirm_required
 @login_required
 def logout(request):
     auth.logout(request)
@@ -134,6 +135,8 @@ def get_or_process_password_form(request):
             'Storefront message', 'Password successfully changed.'))
     return form
 
+
+@site_rules_confirm_required
 @login_required
 def edit(request):
     if request.method == 'POST':
@@ -149,6 +152,8 @@ def edit(request):
     form = UserEditForm(instance=request.user)
     return render(request, 'account/edit.html', {'form': form})
 
+
+@site_rules_confirm_required
 @login_required
 def delete(request):
     if request.method == 'POST':

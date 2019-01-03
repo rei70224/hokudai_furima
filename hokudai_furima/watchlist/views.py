@@ -4,8 +4,10 @@ from hokudai_furima.product.models import Product
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 #from .emails import send_accept_new_message_email
+from hokudai_furima.core.decorators import site_rules_confirm_required
 
 
+@site_rules_confirm_required
 @login_required
 def show_watch_list(request):
     try:
@@ -15,6 +17,7 @@ def show_watch_list(request):
         return render(request, 'watchlist/no_watchlist.html')
 
 
+@site_rules_confirm_required
 @login_required
 def add_watch_list(request):
     try:
@@ -29,6 +32,7 @@ def add_watch_list(request):
     return JsonResponse({'success': True})
 
 
+@site_rules_confirm_required
 @login_required
 def remove_from_watch_list(request):
     try:
@@ -43,6 +47,7 @@ def remove_from_watch_list(request):
     return JsonResponse({'success': True})
 
 
+@site_rules_confirm_required
 @login_required
 def is_in_watch_list(request):
     try:

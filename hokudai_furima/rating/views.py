@@ -9,7 +9,10 @@ from hokudai_furima.account.models import User
 from hokudai_furima.notification.models import Notification
 from django.contrib.auth.decorators import login_required
 from hokudai_furima.todo_list.models import RatingTodo
+from hokudai_furima.core.decorators import site_rules_confirm_required
 
+
+@site_rules_confirm_required
 @login_required
 def post_rating(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk)

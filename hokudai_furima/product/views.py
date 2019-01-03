@@ -19,6 +19,8 @@ import re
 from hokudai_furima.todo_list.models import ReportToRecieveTodo, RatingTodo
 from rules.contrib.views import permission_required
 from .emails import send_decided_buyer_email, send_rating_other_email, send_want_your_product_email, send_cancel_your_product_email
+from hokudai_furima.core.decorators import site_rules_confirm_required
+
 
 def get_product_by_pk(request, pk):
     return get_object_or_404(Product, pk=pk)
@@ -44,6 +46,7 @@ def is_totally_valid(product_form, product_image_forms):
                 return False
     return True
 
+@site_rules_confirm_required
 @login_required
 def create_product(request):
     if request.method == "POST":
@@ -81,6 +84,7 @@ def get_posted_product_images(request):
     return posted_images
 
 
+@site_rules_confirm_required
 @login_required
 def update_product(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk)
@@ -152,6 +156,7 @@ def product_details(request, pk):
     return render(request, 'product/product_details.html', {'product': product, 'ogp_image_url': ogp_image_url})
 
 
+@site_rules_confirm_required
 @login_required
 @permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def want_product(request, pk):
@@ -172,6 +177,7 @@ def want_product(request, pk):
         return HttpResponse('can\'t accept GET request')
 
 
+@site_rules_confirm_required
 @login_required
 @permission_required('products.can_access', fn=get_product_by_pk, raise_exception=True)
 def cancel_want_product(request, pk):
@@ -179,9 +185,10 @@ def cancel_want_product(request, pk):
     product.wanting_users.remove(request.user)
     messages.success(request, '購入希望をキャンセルしました')
     send_cancel_your_product_email(pk, request.user.pk, product.seller.email)
-    return redirect('product:product_details', pk=product.pk)   
+    return redirect('product:product_details', pk=product.pk)
 
 
+@site_rules_confirm_required
 @permission_required('products.can_access', fn=get_product_by_pk_for_chat, raise_exception=True)
 @login_required
 def product_direct_chat(request, product_pk, wanting_user_pk):
@@ -210,6 +217,7 @@ def product_direct_chat(request, product_pk, wanting_user_pk):
         return HttpResponse('invalid request')
 
 
+@site_rules_confirm_required
 @login_required
 def decide_to_sell(request, product_pk, wanting_user_pk):
     wanting_user = get_object_or_404(User, pk=wanting_user_pk)
@@ -234,6 +242,7 @@ def decide_to_sell(request, product_pk, wanting_user_pk):
         return HttpResponse('invalid request')
 
 
+@site_rules_confirm_required
 @permission_required('products.can_access', fn=get_product_by_product_pk, raise_exception=True)
 @login_required
 def complete_to_recieve(request, product_pk):
