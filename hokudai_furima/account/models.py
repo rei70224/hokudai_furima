@@ -21,7 +21,8 @@ class UserManager(BaseUserManager):
             **extra_fields)
         if password:
             user.set_password(password)
-            print("set_password")
+        user.is_rules_confirmed = True
+        user.is_active = False
         user.save()
         return user
 
@@ -31,6 +32,7 @@ class UserManager(BaseUserManager):
             user.is_staff = True
             user.is_superuser = True
             user.is_active = True
+            user.is_rules_confirmed = True
             user.save()
             return user
         else:

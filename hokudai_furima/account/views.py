@@ -29,8 +29,15 @@ def signup(request):
     form = SignupForm(request.POST or None)
     if form.is_valid():
         user = form.save(commit=False)
-        user.is_active = False
-        user.save()
+        username = user.username
+        email = user.email
+        password = user.password
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password)
+        #auth.authenticate は、is_activeをfalseにすると失敗する
+        #user = auth.authenticate(request=request, username=username, password=password)
         # activateモデルの作成と保存。userモデルを紐づけています。
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk)).decode()
         token = default_token_generator.make_token(user)
