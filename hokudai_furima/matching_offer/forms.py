@@ -20,8 +20,10 @@ class MatchingOfferForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MatchingOfferForm, self).__init__(*args, **kwargs)
-        self.fields['title'].widget.attrs['placeholder'] = '（例）入門線形代数'
-        self.fields['description'].widget.attrs['placeholder'] = '商品の状態（未使用、傷あり等）、その他詳しい説明など'
+        self.fields['title'].label = 'タイトル'
+        self.fields['description'].label = '説明'
+        self.fields['title'].widget.attrs['placeholder'] = '（例）プログラミングの勉強を一緒にやってくれる友達募集！'
+        self.fields['description'].widget.attrs['placeholder'] = '開催場所・時間（毎週何時など）・内容・連絡先などをお書きください'
 
 
 class MatchingOfferImageForm(forms.ModelForm):
