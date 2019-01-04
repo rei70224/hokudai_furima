@@ -10,6 +10,7 @@
 {% load show_product_list %}
 {% load show_todo_list %}
 {% load show_notification_list %}
+{% load show_matching_offer_list %}
 {% block content %}
 <div class="container">
   <div class="row">
@@ -50,6 +51,12 @@
             {% show_product_list wanting_product_list %}
         {% else %}
             <p>購入希望中の商品はありません。</p>
+        {% endif %}
+        <h2>募集中の仲間募集</h2>
+        {% if my_matching_offer_list %}
+          {% show_matching_offer_list my_matching_offer_list %}
+        {% else %}
+          <p>募集中の仲間募集はありません。</p>
         {% endif %}
       </div>
     </div>
