@@ -5,12 +5,19 @@ from hokudai_furima.core.decorators import site_rules_confirm_required
 from .forms import MatchingOfferForm, MatchingOfferImageForm, MatchingOfferTalkForm
 from django.utils import timezone
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils import html
 from hokudai_furima.notification.models import Notification
 from django.urls import reverse
 from hokudai_furima.core.utils import is_object_form_and_imageforms_valid
 from django.contrib import messages
+
+
+def make_matching_offer_image_forms(request):
+    matching_offer_image_forms = []
+    for i, _file in enumerate(request.FILES.getlist('image')):
+        matching_offer_image_forms.append(MatchingOfferImageForm(i, request.POST, {'image':_file}))
+    return matching_offer_image_forms
 
 
 def matching_offer_details(request, pk):
@@ -46,7 +53,6 @@ def create_matching_offer(request):
     return render(request, 'matching_offer/create_matching_offer.html', {'matching_offer_form': matching_offer_form, 'matching_offer_image_forms': matching_offer_image_forms})
 
 
-"""
 @site_rules_confirm_required
 @login_required
 def update_matching_offer(request, matching_offer_pk):
@@ -60,14 +66,14 @@ def update_matching_offer(request, matching_offer_pk):
         if request.method == "POST":
             matching_offer_form = MatchingOfferForm(request.POST, instance=matching_offer)
             matching_offer_image_forms = make_matching_offer_image_forms(request)
-            if is_totally_valid(matching_offer_form, matching_offer_image_forms):
+            if is_object_form_and_imageforms_valid(matching_offer_form, matching_offer_image_forms):
                 matching_offer = matching_offer_form.save(commit=False)
                 matching_offer.seller = request.user
                 matching_offer.save()
                 changed_image_flags = [request.POST['image_'+str(i)+'_exists'] for i in range(4)]
                 changed_flag_1_length = len([_ for _ in changed_image_flags if _ == '1'])
                 before_matching_offer_images = [bpi for bpi in matching_offer.matching_offerimage_set.all()]
-                posted_images = get_posted_matching_offer_images(request)
+                posted_images = request.FILES.getlist('image')
                 posted_image_index = 0
                 for image_form_index, flag in enumerate(changed_image_flags):
                     if flag == '1':
@@ -88,7 +94,7 @@ def update_matching_offer(request, matching_offer_pk):
                     elif flag == '2':
                         before_matching_offer_image = before_matching_offer_images[image_form_index]
                         before_matching_offer_image.delete()
-                messages.success(request, '商品情報を更新しました')
+                messages.success(request, '募集情報を更新しました')
                 return redirect('matching_offer:matching_offer_details', pk=matching_offer.pk)
 
         matching_offer_form = MatchingOfferForm(instance=matching_offer)
@@ -101,7 +107,6 @@ def update_matching_offer(request, matching_offer_pk):
             else:
                 matching_offer_image_forms.append(MatchingOfferImageForm(_i))
         return render(request, 'matching_offer/update_matching_offer.html', {'matching_offer_form': matching_offer_form, 'matching_offer_image_forms': matching_offer_image_forms, 'matching_offer':matching_offer, 'matching_offer_image_thumbnail_urls': matching_offer_image_thumbnail_urls, 'placeholder_image_number_list': range(len(matching_offer_image_thumbnail_urls), 4)})
-    """
 
 
 @site_rules_confirm_required
