@@ -23,7 +23,7 @@
       {% endif %}
       <div class="balloon">{{ talk.text | urlize | linebreaksbr }}</div>
       <div>{{ talk.created_date }}</div>
-      <form method="POST" action="{% url 'chat:delete_talk' %}" class="delete_talk_form">{% csrf_token %}
+      <form method="POST" action="{% url 'matching_offer:delete_offer_talk' %}" class="delete_talk_form">{% csrf_token %}
         <input type="hidden" name="talk_id" value={{talk.id}}>
         {% if talk.talker == request.user %}
           <button type="submit" class="save btn btn-default">削除</button>

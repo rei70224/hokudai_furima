@@ -51,12 +51,11 @@ def create_offer_talk(request):
     return JsonResponse(d)
 
 
-"""
 @site_rules_confirm_required
 @login_required
-def delete_talk(request):
+def delete_offer_talk(request):
     talk_id = request.POST.get('talk_id')
-    talk = Talk.objects.get(id=talk_id)
+    talk = MatchingOfferTalk.objects.get(id=talk_id)
     if request.user == talk.talker:
         talk.delete()
         d = {
@@ -65,4 +64,3 @@ def delete_talk(request):
         return JsonResponse(d)
     else:
         return JsonResponse({'status':'false'}, status=500)
-"""
