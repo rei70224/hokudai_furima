@@ -105,6 +105,12 @@ def update_matching_offer(request, matching_offer_pk):
         return render(request, 'matching_offer/update_matching_offer.html', {'matching_offer_form': matching_offer_form, 'matching_offer_image_forms': matching_offer_image_forms, 'matching_offer':matching_offer, 'matching_offer_image_thumbnail_urls': matching_offer_image_thumbnail_urls, 'placeholder_image_number_list': range(len(matching_offer_image_thumbnail_urls), 4)})
 
 
+def show_latest_matching_offer_list(request):
+    MAX_NUM_LATEST_MATCHING_OFFER = 80
+    latest_matching_offer_list = MatchingOffer.objects.all().order_by('-created_date')[:MAX_NUM_LATEST_MATCHING_OFFER]
+    return render(request, 'matching_offer/latest_matching_offer_list.html', {'matching_offer_list': latest_matching_offer_list})
+
+
 @site_rules_confirm_required
 @login_required
 def create_offer_talk(request):

@@ -303,6 +303,7 @@ LOGGING = {
 }
 
 PRODUCT_NUM_PER_PAGE = 16
+MATCHING_OFFER_NUM_PER_PAGE = 16
 
 try:
     from .local_settings import *
