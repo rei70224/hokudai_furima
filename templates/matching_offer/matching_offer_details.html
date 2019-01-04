@@ -28,16 +28,18 @@
 
     <table class="table">
       <thead>
-        <tr>
-          <th>作成者</th>
-          <td><a href="{% url 'account:others_page' matching_offer.host.pk %}">{{ matching_offer.host }}</a></th>
-        </tr>
+      <tr>
+        <th>作成者</th>
+        <td><a href="{% url 'account:others_page' matching_offer.host.pk %}">{{ matching_offer.host }}</a></th>
+      </tr>
       </thead>
       <tbody>
       </tbody>
     </table>
     <p>{{ matching_offer.description | urlize | linebreaksbr }}</p>
-  </div>
+    <section id="chat-wrap">
+      {% include 'matching_offer/_offer_chat.html' %}
+    </section>
   </div>
   {% include "footer_sell_button.html" %}
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
