@@ -15,6 +15,6 @@ class MatchingOffer(models.Model):
 
 class MatchingOfferTalk(models.Model):
     talker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    text = models.TextField(max_length=512)
+    text = models.TextField('', max_length=512)
     matching_offer = models.ForeignKey(MatchingOffer, on_delete=models.CASCADE, null=True)
     created_date = models.DateTimeField(default=timezone.now)
