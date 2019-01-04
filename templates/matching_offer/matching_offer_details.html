@@ -38,7 +38,7 @@
     </table>
     <p>{{ matching_offer.description | urlize | linebreaksbr }}</p>
     <section id="chat-wrap">
-      {% include 'matching_offer/_offer_chat.html' %}
+      {% include 'matching_offer/_offer_chat_html.html' %}
     </section>
   </div>
   {% include "footer_sell_button.html" %}
@@ -52,4 +52,5 @@
   }(document, 'script', 'facebook-jssdk'));</script>
 {% endblock %}
 {% block post_javascript %}
+  {% include 'matching_offer/_offer_chat_js.html' %}
 {% endblock %}
