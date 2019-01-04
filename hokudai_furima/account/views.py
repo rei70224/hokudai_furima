@@ -21,6 +21,8 @@ from hokudai_furima.product.utils import get_public_product_list
 from hokudai_furima.todo_list.utils import get_undone_todo_list, get_done_todo_list
 from hokudai_furima.notification.utils import fetch_notification_list
 from hokudai_furima.core.decorators import site_rules_confirm_required
+from hokudai_furima.matching_offer.models import MatchingOffer
+
 
 # inspired: https://github.com/mirumee/saleor/blob/eb1deda79d1f36bc8ac5979fc58fc37a758c92c2/saleor/account/views.py
 # How to log a user in https://docs.djangoproject.com/en/2.0/topics/auth/default/
@@ -75,7 +77,8 @@ def mypage(request):
     notification_list = fetch_notification_list(request)
     sorted_undone_todo_list = get_undone_todo_list(request.user)
     sorted_done_todo_list = get_done_todo_list(request.user)
-    return render(request, 'account/mypage.html', {'wanting_product_list': wanting_product_list, 'selling_product_list': selling_product_list, 'notification_list': notification_list, 'done_todo_list': sorted_done_todo_list, 'undone_todo_list': sorted_undone_todo_list})
+    my_matching_offer_list = MatchingOffer.objects.filter(host=request.user)
+    return render(request, 'account/mypage.html', {'wanting_product_list': wanting_product_list, 'selling_product_list': selling_product_list, 'my_matching_offer_list': my_matching_offer_list, 'notification_list': notification_list, 'done_todo_list': sorted_done_todo_list, 'undone_todo_list': sorted_undone_todo_list})
 
 
 def others_page(request, user_pk):
