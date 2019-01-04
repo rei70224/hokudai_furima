@@ -11,8 +11,6 @@ from hokudai_furima.notification.models import Notification
 from django.urls import reverse
 
 
-@site_rules_confirm_required
-@login_required
 def matching_offer_details(request, pk):
     matching_offer = get_object_or_404(MatchingOffer, pk=pk)
     talks = MatchingOfferTalk.objects.filter(matching_offer=matching_offer)
