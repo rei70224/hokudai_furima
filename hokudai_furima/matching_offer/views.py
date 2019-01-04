@@ -57,9 +57,7 @@ def create_matching_offer(request):
 @login_required
 def update_matching_offer(request, matching_offer_pk):
     matching_offer = get_object_or_404(MatchingOffer, pk=matching_offer_pk)
-    if matching_offer.is_sold:
-        return render(request, 'matching_offer/cant_update_sold_matching_offer.html', {'matching_offer_name': matching_offer.title, 'matching_offer_pk': matching_offer.pk})
-    matching_offer_seller_id = matching_offer.seller.id
+    matching_offer_seller_id = matching_offer.host.id
     if matching_offer_seller_id != request.user.id:
         return HttpResponse('invalid request')
     else:
@@ -68,11 +66,9 @@ def update_matching_offer(request, matching_offer_pk):
             matching_offer_image_forms = make_matching_offer_image_forms(request)
             if is_object_form_and_imageforms_valid(matching_offer_form, matching_offer_image_forms):
                 matching_offer = matching_offer_form.save(commit=False)
-                matching_offer.seller = request.user
                 matching_offer.save()
                 changed_image_flags = [request.POST['image_'+str(i)+'_exists'] for i in range(4)]
-                changed_flag_1_length = len([_ for _ in changed_image_flags if _ == '1'])
-                before_matching_offer_images = [bpi for bpi in matching_offer.matching_offerimage_set.all()]
+                before_matching_offer_images = [bpi for bpi in matching_offer.matchingofferimage_set.all()]
                 posted_images = request.FILES.getlist('image')
                 posted_image_index = 0
                 for image_form_index, flag in enumerate(changed_image_flags):
@@ -88,7 +84,7 @@ def update_matching_offer(request, matching_offer_pk):
                                 matching_offer_image = matching_offer_image_forms[posted_image_index].save(commit=False)
                                 matching_offer_image.matching_offer = matching_offer
                                 matching_offer_image.save()
-                                matching_offer.matching_offerimage_set.add(matching_offer_image)
+                                matching_offer.matchingofferimage_set.add(matching_offer_image)
                                 matching_offer.save()
                                 posted_image_index += 1
                     elif flag == '2':
@@ -99,7 +95,7 @@ def update_matching_offer(request, matching_offer_pk):
 
         matching_offer_form = MatchingOfferForm(instance=matching_offer)
         matching_offer_image_forms = []
-        matching_offer_images = matching_offer.matching_offerimage_set.all()
+        matching_offer_images = matching_offer.matchingofferimage_set.all()
         matching_offer_image_thumbnail_urls = [matching_offer_image.thumbnail_url for matching_offer_image in matching_offer_images]
         for _i in range(4):
             if _i < len(matching_offer_images):
