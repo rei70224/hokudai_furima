@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load details_images_carousel %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
 {% endblock %}
@@ -7,6 +8,7 @@
   <div class="container">
     <div class="matching_offer">
       <div class="h3">{{ matching_offer.title }}</div>
+      {% details_images_carousel matching_offer.matchingofferimage_set.all %}
       {% if request.user.is_authenticated %}
         {% if request.user == matching_offer.host %}
           <div class="row">
