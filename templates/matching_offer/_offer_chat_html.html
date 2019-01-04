@@ -8,7 +8,10 @@
 <div class="container">
   <div id="chat">
     <h1 style = "font-size:20px;" >チャット</h1>
-    <p>・質問・場所の相談など、自由にチャットしてください</p>
+    <ul>
+      <li>質問・場所の相談など、自由にチャットしてください</li>
+      <li>このページのチャット内容は全てのユーザーが見ることができます。ご注意下さい</li>
+    </ul>
     <ol class="talk_list">
       {% for talk in talks %}
         {% if talk.talker == request.user %}
