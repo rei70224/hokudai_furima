@@ -1,14 +1,16 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import MatchingOffer, MatchingOfferTalk
 from hokudai_furima.core.decorators import site_rules_confirm_required
-from .forms import MatchingOfferTalkForm
+from .forms import MatchingOfferForm, MatchingOfferImageForm, MatchingOfferTalkForm
 from django.utils import timezone
 from django.conf import settings
 from django.http import JsonResponse
 from django.utils import html
 from hokudai_furima.notification.models import Notification
 from django.urls import reverse
+from hokudai_furima.core.utils import is_object_form_and_imageforms_valid
+from django.contrib import messages
 
 
 def matching_offer_details(request, pk):
@@ -16,6 +18,90 @@ def matching_offer_details(request, pk):
     talks = MatchingOfferTalk.objects.filter(matching_offer=matching_offer)
     talk_form = MatchingOfferTalkForm()
     return render(request, 'matching_offer/matching_offer_details.html', {'matching_offer': matching_offer, 'talks': talks, 'form': talk_form})
+
+
+@site_rules_confirm_required
+@login_required
+def create_matching_offer(request):
+    if request.method == "POST":
+        matching_offer_image_forms = []
+        for i, _file in enumerate(request.FILES.getlist('image')):
+            matching_offer_image_forms.append(MatchingOfferImageForm(i, request.POST, {'image':_file}))
+        matching_offer_form = MatchingOfferForm(request.POST)
+        if is_object_form_and_imageforms_valid(matching_offer_form, matching_offer_image_forms):
+            matching_offer = matching_offer_form.save(commit=False)
+            matching_offer.seller = request.user
+            matching_offer.save()
+            for matching_offer_image_form in matching_offer_image_forms:
+                matching_offer_image = matching_offer_image_form.save(commit=False)
+                matching_offer_image.matching_offer = matching_offer
+                matching_offer_image.save()
+                matching_offer.matchingofferimage_set.add(matching_offer_image)
+            matching_offer.save()
+            messages.success(request, '募集の投稿に成功しました')
+            return redirect('matching_offer:matching_offer_details', pk=matching_offer.pk)
+    else:
+        matching_offer_form = MatchingOfferForm()
+    matching_offer_image_forms = [MatchingOfferImageForm(_i) for _i in range(4)]
+    return render(request, 'matching_offer/create_matching_offer.html', {'matching_offer_form': matching_offer_form, 'matching_offer_image_forms': matching_offer_image_forms})
+
+
+"""
+@site_rules_confirm_required
+@login_required
+def update_matching_offer(request, matching_offer_pk):
+    matching_offer = get_object_or_404(MatchingOffer, pk=matching_offer_pk)
+    if matching_offer.is_sold:
+        return render(request, 'matching_offer/cant_update_sold_matching_offer.html', {'matching_offer_name': matching_offer.title, 'matching_offer_pk': matching_offer.pk})
+    matching_offer_seller_id = matching_offer.seller.id
+    if matching_offer_seller_id != request.user.id:
+        return HttpResponse('invalid request')
+    else:
+        if request.method == "POST":
+            matching_offer_form = MatchingOfferForm(request.POST, instance=matching_offer)
+            matching_offer_image_forms = make_matching_offer_image_forms(request)
+            if is_totally_valid(matching_offer_form, matching_offer_image_forms):
+                matching_offer = matching_offer_form.save(commit=False)
+                matching_offer.seller = request.user
+                matching_offer.save()
+                changed_image_flags = [request.POST['image_'+str(i)+'_exists'] for i in range(4)]
+                changed_flag_1_length = len([_ for _ in changed_image_flags if _ == '1'])
+                before_matching_offer_images = [bpi for bpi in matching_offer.matching_offerimage_set.all()]
+                posted_images = get_posted_matching_offer_images(request)
+                posted_image_index = 0
+                for image_form_index, flag in enumerate(changed_image_flags):
+                    if flag == '1':
+                        if posted_image_index < len(posted_images):
+                            if image_form_index < len(before_matching_offer_images):
+                                matching_offer_image = before_matching_offer_images[image_form_index]
+                                matching_offer_image.image = matching_offer_image_forms[posted_image_index].save(commit=False).image
+                                matching_offer_image.matching_offer = matching_offer
+                                matching_offer_image.update()
+                                posted_image_index += 1
+                            else:
+                                matching_offer_image = matching_offer_image_forms[posted_image_index].save(commit=False)
+                                matching_offer_image.matching_offer = matching_offer
+                                matching_offer_image.save()
+                                matching_offer.matching_offerimage_set.add(matching_offer_image)
+                                matching_offer.save()
+                                posted_image_index += 1
+                    elif flag == '2':
+                        before_matching_offer_image = before_matching_offer_images[image_form_index]
+                        before_matching_offer_image.delete()
+                messages.success(request, '商品情報を更新しました')
+                return redirect('matching_offer:matching_offer_details', pk=matching_offer.pk)
+
+        matching_offer_form = MatchingOfferForm(instance=matching_offer)
+        matching_offer_image_forms = []
+        matching_offer_images = matching_offer.matching_offerimage_set.all()
+        matching_offer_image_thumbnail_urls = [matching_offer_image.thumbnail_url for matching_offer_image in matching_offer_images]
+        for _i in range(4):
+            if _i < len(matching_offer_images):
+                matching_offer_image_forms.append(MatchingOfferImageForm(_i, instance=matching_offer_images[_i]))
+            else:
+                matching_offer_image_forms.append(MatchingOfferImageForm(_i))
+        return render(request, 'matching_offer/update_matching_offer.html', {'matching_offer_form': matching_offer_form, 'matching_offer_image_forms': matching_offer_image_forms, 'matching_offer':matching_offer, 'matching_offer_image_thumbnail_urls': matching_offer_image_thumbnail_urls, 'placeholder_image_number_list': range(len(matching_offer_image_thumbnail_urls), 4)})
+    """
 
 
 @site_rules_confirm_required

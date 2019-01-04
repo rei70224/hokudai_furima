@@ -20,6 +20,7 @@ from hokudai_furima.todo_list.models import ReportToRecieveTodo, RatingTodo
 from rules.contrib.views import permission_required
 from .emails import send_decided_buyer_email, send_rating_other_email, send_want_your_product_email, send_cancel_your_product_email
 from hokudai_furima.core.decorators import site_rules_confirm_required
+from hokudai_furima.core.utils import is_object_form_and_imageforms_valid
 
 
 def get_product_by_pk(request, pk):
@@ -35,16 +36,6 @@ def product_list(request):
     products = product.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'product/product_list.html', {'products': products})
 
-def is_totally_valid(product_form, product_image_forms):
-    if not product_form.is_valid():
-        print(product_form)
-        return False
-    else:
-        for product_image_form in product_image_forms:
-            if not product_image_form.is_valid():
-                print(product_image_form)
-                return False
-    return True
 
 @site_rules_confirm_required
 @login_required
@@ -54,7 +45,7 @@ def create_product(request):
         for i, _file in enumerate(request.FILES.getlist('image')):
             product_image_forms.append(ProductImageForm(i, request.POST, {'image':_file}))
         product_form = ProductForm(request.POST)
-        if is_totally_valid(product_form, product_image_forms):
+        if is_object_form_and_imageforms_valid(product_form, product_image_forms):
             product = product_form.save(commit=False)
             product.seller = request.user
             product.save()

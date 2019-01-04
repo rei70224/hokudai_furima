@@ -13,3 +13,12 @@ def make_email_body_with_template(main_text):
     template_body = "ホクマ運営です。\n\n" + main_text + '\n\nお問い合わせは、このメールへの返信ではなく、support@hufurima.comまでよろしくお願いいたします。'
     return template_body
 
+
+def is_object_form_and_imageforms_valid(object_form, image_forms):
+    if not object_form.is_valid():
+        return False
+    else:
+        for image_form in image_forms:
+            if not image_form.is_valid():
+                return False
+    return True
