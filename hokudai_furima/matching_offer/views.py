@@ -30,7 +30,7 @@ def create_matching_offer(request):
         matching_offer_form = MatchingOfferForm(request.POST)
         if is_object_form_and_imageforms_valid(matching_offer_form, matching_offer_image_forms):
             matching_offer = matching_offer_form.save(commit=False)
-            matching_offer.seller = request.user
+            matching_offer.host = request.user
             matching_offer.save()
             for matching_offer_image_form in matching_offer_image_forms:
                 matching_offer_image = matching_offer_image_form.save(commit=False)
