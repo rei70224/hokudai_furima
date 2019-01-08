@@ -1,5 +1,5 @@
 {% load static %}
-{% for thumbnail_url in matching_offer_image_thumbnail_urls %}
+{% for thumbnail_url in product_image_thumbnail_urls %}
   <div class="col-3 " style="display:inline-block;">
     <div class="imgAspect ratio1_1">
       <img id="img{{forloop.counter0}}" src="{{ thumbnail_url }}" class="img-fluid" alt="img" onclick="$('#file_{{forloop.counter0}}').click();" name="thumbnail_img"> 
