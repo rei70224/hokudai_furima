@@ -88,7 +88,7 @@ def update_product(request, product_pk):
         if request.method == "POST":
             product_form = ProductForm(request.POST, instance=product)
             product_image_forms = make_product_image_forms(request)
-            if is_totally_valid(product_form, product_image_forms):
+            if is_object_form_and_imageforms_valid(product_form, product_image_forms):
                 product = product_form.save(commit=False)
                 product.seller = request.user
                 product.save()
