@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Product, ProductImage
+from .models import Product, Category
 from .forms import ProductForm, ProductImageForm
 from django.contrib import messages
 from django.conf import settings
@@ -265,3 +265,6 @@ def complete_to_recieve(request, product_pk):
         return HttpResponse('invalid request')
 
 
+def category_details(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    return render(request, 'product/category_details.html', {'category': category})
