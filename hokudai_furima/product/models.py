@@ -36,6 +36,9 @@ class Category(MPTTModel):
     objects = models.Manager()
     tree = TreeManager()
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='seller')
