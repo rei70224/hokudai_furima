@@ -165,7 +165,11 @@
           </tr>
           <tr>
             <th>カテゴリ</th>
-            <td>{{ product.category }}</td>
+            {% if product.category %}
+              <td><a href="{% url 'product:category_details' product.category.pk %}">{{ product.category }}</a></td>
+            {% else %}
+              <td>未設定</td>
+            {% endif %}
           </tr>
           </tbody>
         </table>
