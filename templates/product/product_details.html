@@ -163,6 +163,10 @@
             <th>出品状態</th>
             <td>{{ product.is_sold|yesno:"売り切れ,販売中" }}</td>
           </tr>
+          <tr>
+            <th>カテゴリ</th>
+            <td>{{ product.category }}</td>
+          </tr>
           </tbody>
         </table>
         <p>{{ product.description | urlize | linebreaksbr }}</p>
