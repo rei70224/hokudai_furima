@@ -275,4 +275,6 @@ def category_details(request, pk):
         temp_parent_category = temp_parent_category.parent
     category_parent_chain.reverse()
 
-    return render(request, 'product/category_details.html', {'category': category, 'category_parent_chain': category_parent_chain})
+    child_categories = category.children.all()
+    return render(request, 'product/category_details.html', {'category': category, 'category_parent_chain': category_parent_chain, 'child_categories': child_categories})
+
