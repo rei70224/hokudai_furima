@@ -7,6 +7,21 @@
 {% block content %}
   <div class="container">
     <h2>カテゴリ：「{{ category.name }}」</h2>
+    <nav aria-label="ぱんくずリスト">
+     <ol class="breadcrumb">
+       {% for item in category_parent_name_chain %}
+         {% if forloop.counter1 == category_parent_name_chain.count %}
+           <li class="breadcrumb-item">
+         {% else %}
+           <li class="breadcrumb-item active">
+         {% endif %}
+             <a href="{% url 'product:category_details' item.pk %}">
+               {{ item.name }}
+             </a>
+           </li>
+       {% endfor %}
+     </ol>
+    </nav>
     <p>{{ category.description }}</p>
     {% show_pagenated_product_list request category.products.all %}
   </div>
