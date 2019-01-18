@@ -8,6 +8,9 @@ from versatileimagefield.placeholder import OnDiscPlaceholderImage
 from django.core.exceptions import ValidationError
 from enum import Enum
 from hokudai_furima.watchlist.models import WatchList
+from mptt.managers import TreeManager
+from mptt.models import MPTTModel
+
 
 class AccessLevelChoice(Enum):   # A subclass of Enum
     public = "公開"
@@ -19,6 +22,20 @@ def has_no_singlequote(value):
             '商品名にはシングルクオート（\'）を含めないでください。',
             params={'value': value},
         )
+
+
+class Category(MPTTModel):
+    name = models.CharField(max_length=128)
+    description = models.TextField(blank=True)
+    parent = models.ForeignKey(
+        'self', null=True, blank=True, related_name='children',
+        on_delete=models.CASCADE)
+    background_image = VersatileImageField(
+        upload_to='category-backgrounds', blank=True, null=True)
+
+    objects = models.Manager()
+    tree = TreeManager()
+
 
 class Product(models.Model):
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='seller')
@@ -38,6 +55,8 @@ class Product(models.Model):
     )
     watched_count = models.PositiveIntegerField(default=0)
     watchlist = models.ForeignKey(WatchList, on_delete=models.CASCADE, null=True, default=None)
+    category = models.ForeignKey(
+        Category, related_name='products', on_delete=models.CASCADE, null=True)
 
     def update(self):
         self.updated_date = timezone.now()
