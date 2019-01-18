@@ -268,11 +268,11 @@ def complete_to_recieve(request, product_pk):
 def category_details(request, pk):
     category = get_object_or_404(Category, pk=pk)
 
-    category_parent_name_chain = [category]
+    category_parent_chain = [category]
     temp_parent_category = category.parent
     while(temp_parent_category):
-        category_parent_name_chain.append(temp_parent_category)
+        category_parent_chain.append(temp_parent_category)
         temp_parent_category = temp_parent_category.parent
-    category_parent_name_chain.reverse()
+    category_parent_chain.reverse()
 
-    return render(request, 'product/category_details.html', {'category': category, 'category_parent_name_chain': category_parent_name_chain})
+    return render(request, 'product/category_details.html', {'category': category, 'category_parent_chain': category_parent_chain})

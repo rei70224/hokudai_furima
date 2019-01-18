@@ -9,8 +9,8 @@
     <h2>カテゴリ：「{{ category.name }}」</h2>
     <nav aria-label="ぱんくずリスト">
      <ol class="breadcrumb">
-       {% for item in category_parent_name_chain %}
-         {% if forloop.counter1 == category_parent_name_chain.count %}
+       {% for item in category_parent_chain %}
+         {% if forloop.counter1 == category_parent_chain.count %}
            <li class="breadcrumb-item">
          {% else %}
            <li class="breadcrumb-item active">
