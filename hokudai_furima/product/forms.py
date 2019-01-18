@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Product, ProductImage
+from .models import Product, ProductImage, Category
 
 
 class ProductForm(forms.ModelForm):
@@ -14,6 +14,8 @@ class ProductForm(forms.ModelForm):
         self.fields['description'].widget.attrs['placeholder'] = '商品の状態（未使用、傷あり等）、その他詳しい説明など'
         self.fields['title'].widget.attrs['placeholder'] = '（例）入門線形代数'
         self.fields['category'].label = 'カテゴリ'
+
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), empty_label='その他')
 
 
 class ProductImageForm(forms.ModelForm):
