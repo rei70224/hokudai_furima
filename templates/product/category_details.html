@@ -29,6 +29,10 @@
       {% endfor %}
     {% endif %}
     <p>{{ category.description }}</p>
-    {% show_pagenated_product_list request category.products.all %}
+    {% if category.products.all %}
+      {% show_pagenated_product_list request category.products.all %}
+    {% else %}
+      <p>このカテゴリの商品はまだありません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
+    {% endif %}
   </div>
 {% endblock %}
