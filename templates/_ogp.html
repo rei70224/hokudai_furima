@@ -1,3 +1,4 @@
+{% load static %}
 {% if product %}
   <meta property="og:title" content="{{product.title}} - ホクマ" />
   <meta property="og:site_name" content="{{product.title}} - ホクマ" />
@@ -12,7 +13,7 @@
 {% if ogp_image_url %}
   <meta property="og:image" content="{{ ogp_image_url }}" />
 {% else %}
-  <meta property="og:image" content="https://s3-ap-northeast-1.amazonaws.com/hokudaifurimapublic2/hokuma_logo_ogp.jpg?1" />
+  <meta property="og:image" content="{% static 'img/hokuma_logo_ogp.jpg' %}">
 {% endif %}
 
 <!-- Twitter -->
