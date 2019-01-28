@@ -136,7 +136,11 @@ def product_details(request, pk):
     if request.user.pk != product.seller.pk:
         product.increment_watched_count()
     wanting_users = product.wanting_users.all()
-    ogp_image_url = product.productimage_set.first().thumbnail_url
+    ogp_image = product.productimage_set.first()
+    if ogp_image:
+        ogp_image_url = ogp_image.thumbnail_url
+    else:
+        ogp_image_url = None
     if request.user.is_authenticated:
         if request.user == product.seller:
             chatting_users = list(map(lambda x:x.product_wanting_user, Chat.objects.filter(product=product)))
