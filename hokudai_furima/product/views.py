@@ -21,6 +21,7 @@ from rules.contrib.views import permission_required
 from .emails import send_decided_buyer_email, send_rating_other_email, send_want_your_product_email, send_cancel_your_product_email
 from hokudai_furima.core.decorators import site_rules_confirm_required
 from hokudai_furima.core.utils import is_object_form_and_imageforms_valid
+from .utils import get_public_product_list
 
 
 def get_product_by_pk(request, pk):
@@ -278,6 +279,7 @@ def category_details(request, pk):
         category_parent_chain.append(temp_parent_category)
         temp_parent_category = temp_parent_category.parent
     category_parent_chain.reverse()
+    category_products = get_public_product_list(category.products.all())
 
     child_categories = category.children.all()
-    return render(request, 'product/category_details.html', {'category': category, 'category_parent_chain': category_parent_chain, 'child_categories': child_categories})
+    return render(request, 'product/category_details.html', {'category': category, 'category_parent_chain': category_parent_chain, 'child_categories': child_categories, 'category_products': category_products})
