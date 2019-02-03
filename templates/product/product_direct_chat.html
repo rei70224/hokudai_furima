@@ -32,7 +32,7 @@
                           '<div class="balloon">' + response.sentence + '</div>'+
                           '<div>' + response.created_date + '</div>'+
                           '<form method="POST" action="{% url 'chat:delete_talk' %}" class="delete_talk_form">'+
-                          "{% csrf_token %}"+
+                          '{% csrf_token %}'+
                           '<input type="hidden" name="talk_id" value='+ response.talk_id +'>'+
                           '<button type="submit" class="save btn btn-default">削除</button>'+
                           '</form>'+
