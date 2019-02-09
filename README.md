@@ -29,7 +29,6 @@
 
 
 ## 開発環境
-- macOS 10.14.3
 - Python 3.6.2
 - Django 2.1.5
 
@@ -44,7 +43,7 @@
   - ORMを用いた基本的なDB操作
   - 基本的なHTML, CSS, 古典的なJavascript(JSには期待しないで)
 - Githubの使い方が身に付く(issue, pull requestの基本)
-  - 大まかに[この記事]()に基づいています
+  - 大まかに[この記事](https://qiita.com/awakia/items/c571e93e96a1ec28044f)に基づいています
 - コードレビューが受けられる
 
 
