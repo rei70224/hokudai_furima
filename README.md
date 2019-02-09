@@ -14,10 +14,10 @@
 
 
 ## できること
-- 出品
-- 購入
+- [出品](https://hufurima.com/guide/sell)
+- [購入](https://hufurima.com/guide/buy)
 - チャット
-- 仲間募集（β: 1月~）
+- [仲間募集（β: 1月~）](https://hufurima.com/offer/latest)
 
 
 ## リリース予定
