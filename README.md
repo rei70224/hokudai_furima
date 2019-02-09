@@ -66,3 +66,8 @@ DjangoとBootstrap4の基礎といっても、ほとんど知識は必要あり�
 
 ## メイン開発チーム
 - HUITCLUB: [Twitter](https://twitter.com/huitclub)
+
+
+## SNS
+- [Twitter](https://twitter.com/hufurima)
+- [マシュマロ](https://marshmallow-qa.com/hufurima?utm_medium=url_text&utm_source=promotion)
