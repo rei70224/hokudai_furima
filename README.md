@@ -1,24 +1,16 @@
-# 北大フリマ（仮）
+# ホクマ
 - 北大生だけで安全な売り買いができるフリマWebサービス
 - 直接手渡しで渡すスタイルなので、運命の出会いも・・・？
 - URL: [https://hufurima.com/](https://hufurima.com/)
 
 ## ScreenShot 
-<img src="./screenshot/home_for_readme1.png" alt="北大フリマスクショ1" width="800" height="700">
+<img src="./screenshot/home_for_readme1.png" alt="ホクマスクショ1" width="650" height="500">
 
-<img src="./screenshot/home_for_readme2.png" alt="北大フリマスクショ2" width="800" height="700">
+<img src="./screenshot/home_for_readme2.png" alt="ホクマスクショ2" width="650" height="500">
 
 
 ## 技術構成図
-![./screenshot/hokuma_tech_map.jpg](./screenshot/hokuma_tech_map.jpg)
-
-
-このレポジトリにコントリビュートする（手伝う）ためには、**DjangoとBootstrap4の基礎知識があればOKです！**
-
-DjangoとBootstrap4の基礎といっても、ほとんど知識は必要ありません。公式のチュートリアルをコピペでいいので一周しましょう。
-
-- Bootstrap4: [https://getbootstrap.com/docs/4.2/getting-started/introduction/](https://getbootstrap.com/docs/4.2/getting-started/introduction/)
-- Django: [https://docs.djangoproject.com/ja/2.1/intro/install/](https://docs.djangoproject.com/ja/2.1/intro/install/)
+<img src="./screenshot/hokuma_tech_map.jpg" alt="ホクマ技術構成図" width="650" height="500">
 
 
 ## できること
@@ -54,6 +46,16 @@ DjangoとBootstrap4の基礎といっても、ほとんど知識は必要あり�
 - Githubの使い方が身に付く(issue, pull requestの基本)
   - 大まかに[この記事]()に基づいています
 - コードレビューが受けられる
+
+
+このレポジトリにコントリビュートする（手伝う）ためには、**DjangoとBootstrap4の基礎知識があればOKです！**
+
+DjangoとBootstrap4の基礎といっても、ほとんど知識は必要ありません。公式のチュートリアルをコピペでいいので一周しましょう。
+
+- Bootstrap4: [https://getbootstrap.com/docs/4.2/getting-started/introduction/](https://getbootstrap.com/docs/4.2/getting-started/introduction/)
+- Django: [https://docs.djangoproject.com/ja/2.1/intro/install/](https://docs.djangoproject.com/ja/2.1/intro/install/)
+
+
 
 
 ## contributors
