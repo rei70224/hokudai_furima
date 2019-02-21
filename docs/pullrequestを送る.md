@@ -87,30 +87,7 @@ $ git branch # 全てのローカルにあるブランチを表示`
 
 `*`が今いるブランチになります。この例の場合、あなたがいるブランチは「master」になります
 
-**ここで、あなたがすでにファイルを編集済みであれば、`$ git stash -u` も行いましょう。一時的にファイルの変更が退避されます。（のちに復活方法も説明します**
-
-そこで、リモートにある`develop`もローカルにもってくるために以下のコマンドを実行しましょう。
-
-```bash
-$ git checkout -b develop origin/develop
-```
-
-すると、
-
-```bash
-$ git branch # 全てのローカルにあるブランチを表示
-```
-
-```
-* develop
-master
-```
-
-(`*`が今いるブランチ)
-
-developブランチの取得と、developブランチへの移動が完了したことが確認できました。
-
-**「北大フリマ」では、基本的にdevelopブランチから、新しい派生ブランチを作っていくことになります。（後述）**
+**「北大フリマ」では、基本的にmasterブランチから、新しい派生ブランチを作っていくことになります。**（興味がある人は、[GitHub flow](https://gist.github.com/Gab-km/3705015)も見てください）
 
 
 ### 2-2. 新しいブランチをつくる
@@ -121,7 +98,7 @@ developブランチの取得と、developブランチへの移動が完了した
 $ git checkout -b ブランチ名(追加する機能などの名前) # $ ブランチ名の例：feature/notification_page, add_button_color_css）
 ```
 
-このとき、元のブランチから「派生した」ブランチが作成されます。（今回の場合、developから派生した）
+このとき、元のブランチから「派生した」ブランチが作成されます。（今回の場合、masterから派生した）
 
 ブランチを作成したら、確認しましょう。
 
@@ -130,7 +107,6 @@ $ git branch
 ```
 
 ```
-  develop
 * さっき追加したブランチ
   master
 ```
@@ -140,13 +116,12 @@ $ git branch
 「北大フリマ」の場合、ブランチは、以下のような形で作成していきましょう。
 
 - master
-    - develop（masterブランチから派生）
-        - ブランチA（developブランチから派生）
-        - ブランチB（developブランチから派生）
+    - ブランチA（masterブランチから派生）
+    - ブランチB（masterブランチから派生）
 
 気をつけることは一つだけです。
 
-ブランチを作成する前に、 `$ git branch` して、**自分のブランチがdevelopであることを確認すればいいだけです。**
+ブランチを作成する前に、 `$ git branch` して、**自分のブランチがmasterであることを確認すればいいだけです。**
 
 
 ### 2.3 コードを編集する
@@ -193,7 +168,7 @@ github上で、pull requestを送ります。
 
 [https://github.com/tetsufe/hokudai_furima/pulls](https://github.com/tetsufe/hokudai_furima/pulls)から、「new pull request」を押して、そこから作成します。
 
-- base: 派生元ブランチA(基本はdevelop）
+- base: 派生元ブランチA(基本はmaster）
 - compare: pushしたブランチ（派生先ブランチB）
 
 という形でpull requestを送る
@@ -214,10 +189,10 @@ github上で、pull requestを送ります。
 - 作業内容をだいたい決める
 - `$ git status`で編集中かつ未コミットのファイルがないか確認。なければ次に進む
     - ある場合はコミットするか、`$ git stash # 場合によっては$ git stash -u` などで一時退避
-- `$ git co develop`
-- `$ git branch`でdevelopにいることを確認
+- `$ git co master`
+- `$ git branch`でmasterにいることを確認
     - もしくは過去の作業ブランチの続きをやる場合はそのブランチでもよい
-- `$ git pull origin develop` # リモートのorigin/developブランチのコミットを今の作業ブランチ(develop)にマージする
+- `$ git pull origin master` # リモートのorigin/masterブランチのコミットを今の作業ブランチ(master)にマージする
 - `$ git checkout -b 新しいブランチ名`
 - ファイル編集
 - `$ git add -A # または $ git add 編集したファイル`
@@ -264,6 +239,6 @@ githubのpull request上でマージ（統合）できます。
     - リモートリポジトリ: githubのサーバにあるコード
     - ローカルリポジトリ: あなたのPC上にあるコード
 - 注意すべきこと
-    - 「北大フリマ」では、基本的にdevelopから派生したブランチで作業すること
-        - `$ git branch`で自分がdevelopにいることを確認してから`$ git checkout -b 新しいブランチ名`で新しいブランチを作る
-    - pull requestのbaseはdevelopを指定する
+    - 「北大フリマ」では、基本的にmasterから派生したブランチで作業すること
+        - `$ git branch`で自分がmasterにいることを確認してから`$ git checkout -b 新しいブランチ名`で新しいブランチを作る
+    - pull requestのbaseはmasterを指定する
