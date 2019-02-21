@@ -181,6 +181,13 @@ github上で、pull requestを送ります。
 これで pull request の作成ができるようになりました！
 
 
+### 2.6.2 pull requestを送ったら？　レビューを待とう
+pull requestを送ったら、pull requestのコメント欄に@tetsufeと書きましょう。
+
+コードレビューをします。レビューが終わったら@tetsufeがマージします！
+
+
+
 ### 2.7 ２回目以降のpull request
 これであなたはpull requestを無事、送ることができたと思います。
 
