@@ -4,7 +4,13 @@
 <html lang="ja">
   <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
     {% include "gtm_head.html" %}
-    <title>{% block title %}{% if title %}{{ title }}{% else %}ホクマ 北大生のためのフリマサイト{% endif %}{% endblock %}</title>
+    <title>
+        {% block title %}
+        {% if product %}{{ product.title }}
+        {% else %}ホクマ 北大生のためのフリマサイト
+        {% endif %}
+        {% endblock %}
+    </title>
       <meta name="description" content="北大生が開発！北大生による北大生のためのフリマサイト「ホクマ」です。直接会って渡すから、手数料０。北大生同士の運命の出会いもあるかも・・・？">
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
