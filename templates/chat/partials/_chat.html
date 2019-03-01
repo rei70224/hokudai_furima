@@ -10,6 +10,12 @@
     <h1 style = "font-size:20px;" >チャット</h1>
     <p>・商品の価格交渉や受け渡し方法確認等について、自由にチャットしてください</p>
     <p style="margin-bottom:45px;">・チャットへの投稿が来たとき、メール通知されます。（<a href="{% url 'notification:index' %}">お知らせ</a>にも表示されます）</p>
+    <p>チャット例</p>
+    <ul>
+      <li>「待ち合わせ場所と時間はどうしましょうか？○○図書館・○○食堂にしますか？」</li>
+      <li>「初めまして。こちらの商品購入を考えています。突然ですみませんが、○○○円程のお値引きは可能でしょうか？ご検討よろしくお願いします」</li>
+      <li>「連絡手段はどうしましょうか？自分のTwitterアカウントは@○○○です！」</li>
+    </ul>
     <ol class="talk_list">
     {% for talk in talks %}
         {% if talk.talker == request.user %}
