@@ -309,3 +309,9 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    INTERNAL_IPS = ['127.0.0.1', '192.168.33.1']
