@@ -49,17 +49,17 @@ class Product(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(blank=True, null=True)
     sold_date = models.DateTimeField(blank=True, null=True)
-    wanting_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wanting_users')
-    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='buyer')
+    wanting_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wanting_users', blank=True)
+    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='buyer')
     access_level = models.CharField('公開/非公開',
         max_length=10,
         choices=[(level.name, level.value) for level in AccessLevelChoice],
         default='public'
     )
     watched_count = models.PositiveIntegerField(default=0)
-    watchlist = models.ForeignKey(WatchList, on_delete=models.CASCADE, null=True, default=None)
+    watchlist = models.ForeignKey(WatchList, on_delete=models.CASCADE, blank=True, null=True, default=None)
     category = models.ForeignKey(
-        Category, related_name='products', on_delete=models.CASCADE, null=True)
+        Category, related_name='products', on_delete=models.CASCADE, blank=True, null=True)
 
     def update(self):
         self.updated_date = timezone.now()
