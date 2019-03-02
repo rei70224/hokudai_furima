@@ -6,6 +6,7 @@
 {% endblock %}
 {% block content %}
   <div class="container">
+    {% if not request.user.is_authenticated %}
     <div class="row">
       <div class="col-lg-6 col-12">
         <section style="margin-bottom: 30px">
@@ -40,6 +41,7 @@
         {% include "sold_timeline.html" %}
       </section>
     </div>
+    {% endif %}
     <section id="temporary-pr">
       {% include 'temporary_PR.html' %}
     </section>
