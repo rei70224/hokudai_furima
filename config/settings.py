@@ -234,8 +234,8 @@ AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_CUSTOM_DOMAIN = os.getenv('HOKUDAI_FURIMA_CLOUDFRONT_HOST')
 AWS_S3_OBJECT_PARAMETERS = {
-    'Expires': 'Thu, 31 Dec 2020 20:00:00 GMT',
-    'CacheControl': 'max-age=86400',
+    'Expires': 'Thu, 31 Dec 2021 20:00:00 GMT',
+    'CacheControl': 'max-age=2592000',
 }
 AWS_STATIC_LOCATION = 'static'
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
