@@ -22,7 +22,7 @@ def make_matching_offer_image_forms(request):
 
 def matching_offer_details(request, pk):
     matching_offer = get_object_or_404(MatchingOffer, pk=pk)
-    talks = MatchingOfferTalk.objects.filter(matching_offer=matching_offer)
+    talks = MatchingOfferTalk.objects.filter(matching_offer=matching_offer).order_by('created_date')
     talk_form = MatchingOfferTalkForm()
     return render(request, 'matching_offer/matching_offer_details.html', {'matching_offer': matching_offer, 'talks': talks, 'form': talk_form})
 
