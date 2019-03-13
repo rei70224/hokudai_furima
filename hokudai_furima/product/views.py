@@ -193,7 +193,7 @@ def product_direct_chat(request, product_pk, wanting_user_pk):
     if (request.user == wanting_user and request.user != product.seller) or (request.user == product.seller and request.user != wanting_user):
         chat = Chat.objects.filter(product=product, product_wanting_user=wanting_user, product_seller=product.seller)
         if chat.exists():
-            talks = chat[0].talk_set.all()
+            talks = chat[0].talk_set.all().order_by('created_date')
         else:
             # チャットルームがなけれは、新たにチャットルームを作る（ただし、保存はしない。トークの投稿があって初めて保存）
             # 売り手以外の人は、自由にチャットルームを作れる
