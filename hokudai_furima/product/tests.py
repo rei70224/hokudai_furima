@@ -66,6 +66,3 @@ class ProductDirectChatViewTests(TestCase):
             response.context['talks'],
             ['<Talk: Talk object (1)>', '<Talk: Talk object (2)>']
         )
-
-    def fail_test(self):
-        self.assertEqual(True, False)
