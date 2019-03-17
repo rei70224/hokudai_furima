@@ -1,4 +1,7 @@
 # ホクマ
+
+[![CircleCI](https://circleci.com/gh/HUITCLUB/hokudai_furima/tree/master.svg?style=svg)](https://circleci.com/gh/HUITCLUB/hokudai_furima/tree/master)
+
 - 北大生だけで安全な売り買いができるフリマWebサービス
 - 直接手渡しで渡すスタイルなので、運命の出会いも・・・？
 - URL: [https://hufurima.com/](https://hufurima.com/)
