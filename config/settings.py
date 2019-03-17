@@ -219,33 +219,38 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-DEFAULT_FROM_EMAIL='noreply@hufurima.com'
-EMAIL_HOST = 'mail.hufurima.com'
-EMAIL_HOST_USER = 'noreply@hufurima.com'
-EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_NOREPLY_SMTP_PASS')
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
+if os.getenv('IS_CIRCLECI'):
+    STATIC_URL = '/static/'
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+else:
+    DEFAULT_FROM_EMAIL='noreply@hufurima.com'
+    EMAIL_HOST = 'mail.hufurima.com'
+    EMAIL_HOST_USER = 'noreply@hufurima.com'
+    EMAIL_HOST_PASSWORD = os.getenv('HOKUDAI_FURIMA_NOREPLY_SMTP_PASS')
+    EMAIL_PORT = 465
+    EMAIL_USE_SSL = True
 
-SITE_HOST = 'hufurima.com'
-ENABLE_SSL = True
+    SITE_HOST = 'hufurima.com'
+    ENABLE_SSL = True
 
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = os.getenv('HOKUDAI_FURIMA_CLOUDFRONT_HOST')
-AWS_S3_OBJECT_PARAMETERS = {
-    'Expires': 'Thu, 31 Dec 2021 20:00:00 GMT',
-    'CacheControl': 'max-age=2592000',
-}
-AWS_STATIC_LOCATION = 'static'
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-STATICFILES_STORAGE = 'config.storage_backends.StaticStorage' # DEBUG == False
-    
-AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
-DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage' # DEBUG == False 
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_CUSTOM_DOMAIN = os.getenv('HOKUDAI_FURIMA_CLOUDFRONT_HOST')
+    AWS_S3_OBJECT_PARAMETERS = {
+        'Expires': 'Thu, 31 Dec 2021 20:00:00 GMT',
+        'CacheControl': 'max-age=2592000',
+    }
+    AWS_STATIC_LOCATION = 'static'
+    STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+    STATICFILES_STORAGE = 'config.storage_backends.StaticStorage' # DEBUG == False
 
-AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-PRIVATE_FILE_STORAGE = 'config.storage_backends.PrivateMediaStorage'
+    AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
+    DEFAULT_FILE_STORAGE = 'config.storage_backends.PublicMediaStorage' # DEBUG == False
+
+    AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
+    PRIVATE_FILE_STORAGE = 'config.storage_backends.PrivateMediaStorage'
 
 from django.contrib.messages import constants as message_constants
 MESSAGE_TAGS = {

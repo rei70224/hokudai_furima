@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Build application Docker image
+          command: |
+            yes "y" | docker system prune || true
+            docker build \
+              -t huitclub/hokudai_furima:latest5 .
+      - run:
+          name: Run tests
+          command: |
+            docker network create my_network_5
+            docker run -d --network my_network_5 -p 5432:5432 --name db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres:10.4
+            docker ps
+            docker network ls
+            docker run --network my_network_5 --rm \
+            -e IS_CIRCLECI=$IS_CIRCLECI \
+            -e HOKUDAI_FURIMA_SECRET_KEY=$CIRCLECI_SECRET_KEY \
+            -e HOKUDAI_FURIMA_DB_NAME=postgres \
+            -e HOKUDAI_FURIMA_DB_USER=postgres \
+            -e HOKUDAI_FURIMA_DB_PASSWORD=postgres huitclub/hokudai_furima:latest5 python manage.py test
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+        - build
