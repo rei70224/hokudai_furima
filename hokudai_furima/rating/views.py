@@ -33,11 +33,9 @@ def post_rating(request, product_pk):
                 rating_todo.done()
                 rating_todo.update()
                 messages.success(request, 'ユーザ評価ありがとうございます。あなたの評価は相手のユーザページに反映されます。')
-                return redirect('account:others_page', user_pk=rated_user.pk, is_after_rating="true")
+                return redirect('account:others_page', user_pk=rated_user.pk)
             else:
                 messages.error(request, '評価は一度しかできません')
-                #todo_list
-                #return redirect('rating:thankyou', {'rated_user': rated_user})
 
         user_rating_form = UserRatingForm()
         return render(request, 'rating/post_rating.html', {'form': user_rating_form, 'product_pk': product_pk, 'rated_user_name': rated_user.username})
