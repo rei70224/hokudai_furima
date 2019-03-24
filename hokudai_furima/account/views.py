@@ -87,7 +87,14 @@ def others_page(request, user_pk):
     normal_rating_count = UserRating.objects.filter(rated_user=others_user, rating='normal').count()
     bad_rating_count = UserRating.objects.filter(rated_user=others_user, rating='bad').count()
     others_user_product_list = get_public_product_list(Product.objects.filter(seller=others_user))
-    return render(request, 'account/others_page.html', {'others_user': others_user, 'good_rating_count': good_rating_count, 'normal_rating_count':normal_rating_count, 'bad_rating_count':bad_rating_count, 'others_user_product_list': others_user_product_list})
+    contexts = {'others_user': others_user, 'good_rating_count': good_rating_count,
+                'normal_rating_count': normal_rating_count, 'bad_rating_count': bad_rating_count,
+                'others_user_product_list': others_user_product_list}
+    is_after_rating_key = 'is_after_rating'
+    is_after_rating_parameter = request.GET.get(is_after_rating_key)
+    if is_after_rating_parameter:
+        contexts[is_after_rating_key] = is_after_rating_parameter
+    return render(request, 'account/others_page.html', contexts)
 
 
 @login_required

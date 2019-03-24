@@ -33,7 +33,9 @@ def post_rating(request, product_pk):
                 rating_todo.done()
                 rating_todo.update()
                 messages.success(request, 'ユーザ評価ありがとうございます。あなたの評価は相手のユーザページに反映されます。')
-                return redirect('account:others_page', user_pk=rated_user.pk)
+                response = redirect('account:others_page', user_pk=rated_user.pk)
+                response['location'] += '?is_after_rating=true'
+                return response
             else:
                 messages.error(request, '評価は一度しかできません')
 
