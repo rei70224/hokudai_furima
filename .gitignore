@@ -93,3 +93,6 @@ Thumbs.db
 
 # static file(css, js, etc.)
 /static/
+
+# Production Dockerfile
+Dockerfile
