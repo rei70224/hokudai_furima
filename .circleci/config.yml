@@ -11,6 +11,7 @@ jobs:
           name: Build application Docker image
           command: |
             docker build \
+              -f Dockerfile.circleci \
               -t huitclub/hokudai_furima:latest .
       - run:
           name: Run tests
