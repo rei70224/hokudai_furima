@@ -10,6 +10,7 @@ from enum import Enum
 from hokudai_furima.watchlist.models import WatchList
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel
+from hokudai_furima.lecture.models import LectureCategory
 
 
 class AccessLevelChoice(Enum):   # A subclass of Enum
@@ -59,7 +60,9 @@ class Product(models.Model):
     watched_count = models.PositiveIntegerField(default=0)
     watchlist = models.ForeignKey(WatchList, on_delete=models.CASCADE, blank=True, null=True, default=None)
     category = models.ForeignKey(
-        Category, related_name='products', on_delete=models.CASCADE, blank=True, null=True)
+        Category, related_name='product_category_products', on_delete=models.PROTECT, blank=True, null=True)
+    lecture_category = models.ForeignKey(
+        LectureCategory, related_name='lecture_category_products', on_delete=models.PROTECT, blank=True, null=True)
 
     def update(self):
         self.updated_date = timezone.now()
