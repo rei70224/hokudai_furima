@@ -1,0 +1,20 @@
+{% load static %}
+{% block css %}
+{% endblock %}
+<div class="container">
+  <div class="row">
+    {% for lecture_category in lecture_category_list %}
+      <div class="col-6 col-lg-3" style="padding:2px;">
+        <div class="item-wrap">
+          <div class="item">
+            <a href="{% url 'lecture:lecture_category_details' pk=lecture_category.pk %}">
+              <div class="caption">
+                <h4>{{ lecture_category.name}}</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
