@@ -1,12 +1,13 @@
 {% load static %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/pagenation_item.css' %}">
+  <link rel="stylesheet" href="{% static 'css/lecture_category_pagenated_list.css' %}">
 {% endblock %}
 <div class="container">
   <div class="row">
   <ul>
     {% for lecture_category in pagenated_lecture_category_list %}
-      <li class="">
+      <li class="lecture-category-list-element">
         {% if lecture_category.children.exists %}
           <a href="{% url 'lecture:lecture_category_list_with_pk' pk=lecture_category.pk %}">
             {{ lecture_category.name }}・・・{{ lecture_category.lecture_category_products.count }}件
