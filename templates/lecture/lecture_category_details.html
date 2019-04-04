@@ -13,20 +13,23 @@
               {% else %}
             <li class="breadcrumb-item active">
           {% endif %}
-        <a href="{% url 'lecture:lecture_category_details' lecture_category.pk %}">
-          {{ lecture_category.name }}
-        </a>
+          <a href="{% url 'lecture:lecture_category_details' lecture_category.pk %}">
+            {{ lecture_category.name }}
+          </a>
         </li>
         {% endfor %}
       </ol>
     </nav>
-    {% if child_categories %}
-      <span>サブ区分：</span>
-      {% for child_lecture_category in child_categories %}
-        <a href="{% url 'lecture:lecture_category_details' child_lecture_category.pk %}">{{ child_lecture_category.name }}</a>
+    {% if child_lecture_categories %}
+      <h4>サブ区分</h4>
+      {% for child_lecture_category in child_lecture_categories %}
+        <ul>
+          <li>
+            <a href="{% url 'lecture:lecture_category_details' child_lecture_category.pk %}">{{ child_lecture_category.name }}</a>
+          </li>
+        </ul>
       {% endfor %}
     {% endif %}
-    <p>{{ lecture_category.description }}</p>
     {% if lecture_category_products %}
       {% show_pagenated_product_list request lecture_category_products %}
     {% else %}
