@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import Product, ProductImage, Category
+from hokudai_furima.lecture.models import LectureCategory
 
 
 class ProductForm(forms.ModelForm):
@@ -17,6 +18,7 @@ class ProductForm(forms.ModelForm):
         self.fields['lecture_category'].label = '科目区分'
 
     category = forms.ModelChoiceField(queryset=Category.objects.all(), empty_label='その他')
+    lecture_category = forms.ModelChoiceField(queryset=LectureCategory.objects.filter(children__isnull=True))
 
 
 class ProductImageForm(forms.ModelForm):
