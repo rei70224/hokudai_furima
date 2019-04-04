@@ -66,3 +66,18 @@ class ProductDirectChatViewTests(TestCase):
             response.context['talks'],
             ['<Talk: Talk object (1)>', '<Talk: Talk object (2)>']
         )
+
+
+class ProductDetailsViewTests(TestCase):
+    def test_product_details(self):
+        seller = create_user('test1', 'test1@eis.hokudai.ac.jp', 'hokuma1')
+        seller = activate_user(seller)
+        seller = comfirm_site_rules(seller)
+        product = create_product(seller, 'テスト商品', 'テスト商品です', 100)
+        client = Client()
+        response = client.get(reverse('product:product_details',
+                                      kwargs={'pk': product.pk}))
+        self.assertEqual(
+            response.context['product'],
+            product
+        )
