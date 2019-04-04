@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from .models import LectureCategory
 
+
 def create_lecture_category(name, description, parent):
     lecture_category = LectureCategory.objects.create(name=name, description=description, parent=parent)
     return lecture_category
@@ -77,6 +78,7 @@ class LectureCategoryDetailsViewTests(TestCase):
         create_lecture_category("一般教育演習(ﾌﾚｯｼｭﾏﾝｾﾐﾅｰ)", "フレッシュマンセミナー", parent=parent)
 
         client = Client()
+        client.session.flush()
         lecture_category = LectureCategory.objects.get(pk=1)
         response = client.get(reverse('lecture:lecture_category_details',
                                       kwargs={'pk': lecture_category.pk}))
@@ -103,6 +105,7 @@ class LectureCategoryDetailsViewTests(TestCase):
         create_lecture_category("共通科目", "環境と人間・健康と社会・人間と文化など", parent=parent)
 
         client = Client()
+        client.session.flush()
         lecture_category = LectureCategory.objects.get(pk=1)
         response = client.get(reverse('lecture:lecture_category_details',
                                       kwargs={'pk': lecture_category.pk}))
@@ -122,4 +125,3 @@ class LectureCategoryDetailsViewTests(TestCase):
             response.context['lecture_category_products'],
             []
         )
-
