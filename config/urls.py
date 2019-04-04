@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'watchlist/', include('hokudai_furima.watchlist.urls')),
     url(r'offer/', include('hokudai_furima.matching_offer.urls')),
     url(r'rules/', include('hokudai_furima.site_rules.urls')),
+    path('lecture/', include('hokudai_furima.lecture.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # 画像への直リンクを使う場合は必要。この一行がなくても、{{user.icon.url}}で表示することは可能
 
