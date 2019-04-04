@@ -9,7 +9,7 @@ register = template.Library()
 @register.inclusion_tag('lecture/_pagenated_lecture_category_list.html')
 def show_pagenated_lecture_category_list(request, lecture_category_list):
     print(lecture_category_list)
-    paginator = Paginator(lecture_category_list, settings.PRODUCT_NUM_PER_PAGE)
+    paginator = Paginator(lecture_category_list, settings.LECTURE_CATEGORY_NUM_PER_PAGE)
     page = request.GET.get('page')
     pagenated_lecture_category_list = paginator.get_page(page)
     url_with_params = re.sub('(\?|&)page=\d+','',request.get_full_path())
