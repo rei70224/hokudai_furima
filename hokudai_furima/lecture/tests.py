@@ -14,7 +14,7 @@ class LectureCategoryListViewTests(TestCase):
         client = Client()
         response = client.get(reverse('lecture:lecture_category_list'))
         self.assertQuerysetEqual(
-            response.context['lecture_category_list'],
+            response.context['lecture_category_dict_list'],
             []
         )
 
@@ -23,8 +23,12 @@ class LectureCategoryListViewTests(TestCase):
         client = Client()
         response = client.get(reverse('lecture:lecture_category_list'))
         self.assertQuerysetEqual(
-            response.context['lecture_category_list'],
+            map(lambda x: x['content'], response.context['lecture_category_dict_list']),
             ['<LectureCategory: 総合教育部>']
+        )
+        self.assertEqual(
+            list(map(lambda x: x['leaf_product_count'], response.context['lecture_category_dict_list'])),
+            [0]
         )
 
     def test_two_lecture_category(self):
@@ -33,8 +37,12 @@ class LectureCategoryListViewTests(TestCase):
         client = Client()
         response = client.get(reverse('lecture:lecture_category_list'))
         self.assertQuerysetEqual(
-            response.context['lecture_category_list'],
+            map(lambda x: x['content'], response.context['lecture_category_dict_list']),
             ['<LectureCategory: 総合教育部>']
+        )
+        self.assertEqual(
+            list(map(lambda x: x['leaf_product_count'], response.context['lecture_category_dict_list'])),
+            [0]
         )
 
     def test_three_lecture_category(self):
@@ -43,10 +51,13 @@ class LectureCategoryListViewTests(TestCase):
         create_lecture_category("該当なし", "どの科目区分とも関連していないもの", None)
         client = Client()
         response = client.get(reverse('lecture:lecture_category_list'))
-        #print(response.context['lecture_category_list'])
         self.assertQuerysetEqual(
-            response.context['lecture_category_list'],
+            map(lambda x: x['content'], response.context['lecture_category_dict_list']),
             ['<LectureCategory: 総合教育部>', '<LectureCategory: 該当なし>']
+        )
+        self.assertEqual(
+            list(map(lambda x: x['leaf_product_count'], response.context['lecture_category_dict_list'])),
+            [0, 0]
         )
 
 
@@ -79,8 +90,6 @@ class LectureCategoryDetailsViewTests(TestCase):
         parent = create_lecture_category("総合教育部", "主に１年生が受ける授業の科目区分", None)
         create_lecture_category("一般教育演習(ﾌﾚｯｼｭﾏﾝｾﾐﾅｰ)", "フレッシュマンセミナー", parent=parent)
         client = Client()
-        print(list(map(lambda x: x.__dict__, LectureCategory.objects.all())))
-        #lecture_category = LectureCategory.objects.get(pk=1)
         response = client.get(reverse('lecture:lecture_category_details',
                                       kwargs={'pk': parent.pk}))
         self.assertQuerysetEqual(
@@ -105,8 +114,6 @@ class LectureCategoryDetailsViewTests(TestCase):
         create_lecture_category("一般教育演習(ﾌﾚｯｼｭﾏﾝｾﾐﾅｰ)", "フレッシュマンセミナー", parent=parent)
         create_lecture_category("共通科目", "環境と人間・健康と社会・人間と文化など", parent=parent)
         client = Client()
-        print(list(map(lambda x: x.__dict__, LectureCategory.objects.all())))
-        #lecture_category = LectureCategory.objects.get(pk=1)
         response = client.get(reverse('lecture:lecture_category_details',
                                       kwargs={'pk': parent.pk}))
         self.assertQuerysetEqual(

@@ -9,8 +9,8 @@
     <section>
       <h2>科目区分検索</h2>
       <hr>
-      {% if lecture_category_list %}
-        {% show_pagenated_lecture_category_list request lecture_category_list %}
+      {% if lecture_category_dict_list %}
+        {% show_pagenated_lecture_category_list request lecture_category_dict_list %}
       {% else %}
         <p>この科目区分の商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
       {% endif %}
