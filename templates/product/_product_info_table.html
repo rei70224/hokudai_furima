@@ -20,7 +20,7 @@
   </tr>
   <tr>
     <th>科目区分</th>
-    {% if product.category %}
+    {% if product.lecture_category %}
       <td><a href="{% url 'lecture:lecture_category_details' product.lecture_category.pk %}">{{ product.lecture_category.name }}</a></td>
     {% else %}
       <td>未設定</td>
