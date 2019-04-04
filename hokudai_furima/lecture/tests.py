@@ -123,8 +123,3 @@ class LectureCategoryDetailsViewTests(TestCase):
             response.context['lecture_category_products'],
             []
         )
-
-    def all_test(self):
-        self.test_one_lecture_category()
-        self.test_two_lecture_category()
-        self.test_three_lecture_category()
