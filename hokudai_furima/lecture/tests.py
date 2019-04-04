@@ -4,7 +4,8 @@ from .models import LectureCategory
 
 
 def create_lecture_category(name, description, parent):
-    lecture_category = LectureCategory.objects.create(name=name, description=description, parent=parent)
+    lecture_category = LectureCategory(name=name, description=description, parent=parent)
+    lecture_category.save()
     return lecture_category
 
 
