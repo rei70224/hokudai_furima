@@ -79,7 +79,7 @@ class LectureCategoryDetailsViewTests(TestCase):
         parent = create_lecture_category("総合教育部", "主に１年生が受ける授業の科目区分", None)
         create_lecture_category("一般教育演習(ﾌﾚｯｼｭﾏﾝｾﾐﾅｰ)", "フレッシュマンセミナー", parent=parent)
         client = Client()
-        #print(list(map(lambda x: x.__dict__, LectureCategory.objects.all())))
+        print(list(map(lambda x: x.__dict__, LectureCategory.objects.all())))
         lecture_category = LectureCategory.objects.get(pk=1)
         response = client.get(reverse('lecture:lecture_category_details',
                                       kwargs={'pk': lecture_category.pk}))
@@ -105,7 +105,7 @@ class LectureCategoryDetailsViewTests(TestCase):
         create_lecture_category("一般教育演習(ﾌﾚｯｼｭﾏﾝｾﾐﾅｰ)", "フレッシュマンセミナー", parent=parent)
         create_lecture_category("共通科目", "環境と人間・健康と社会・人間と文化など", parent=parent)
         client = Client()
-        #print(list(map(lambda x: x.__dict__, LectureCategory.objects.all())))
+        print(list(map(lambda x: x.__dict__, LectureCategory.objects.all())))
         lecture_category = LectureCategory.objects.get(pk=1)
         response = client.get(reverse('lecture:lecture_category_details',
                                       kwargs={'pk': lecture_category.pk}))
