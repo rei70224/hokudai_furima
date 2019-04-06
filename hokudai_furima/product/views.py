@@ -279,7 +279,7 @@ def category_details(request, pk):
         category_parent_chain.append(temp_parent_category)
         temp_parent_category = temp_parent_category.parent
     category_parent_chain.reverse()
-    category_products = get_public_product_list(category.category_products.all())
+    category_products = get_public_product_list(category.product_category_products.all().order_by('-id'))
 
     child_categories = category.children.all()
     return render(request, 'product/category_details.html', {'category': category, 'category_parent_chain': category_parent_chain, 'child_categories': child_categories, 'category_products': category_products})
