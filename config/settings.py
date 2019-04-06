@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'hokudai_furima.watchlist',
     'hokudai_furima.site_rules',
     'hokudai_furima.matching_offer',
+    'hokudai_furima.lecture',
     'rules.apps.AutodiscoverRulesConfig',
 ]
 
@@ -309,6 +310,7 @@ LOGGING = {
 
 PRODUCT_NUM_PER_PAGE = 16
 MATCHING_OFFER_NUM_PER_PAGE = 16
+LECTURE_CATEGORY_NUM_PER_PAGE = 16
 
 try:
     from .local_settings import *

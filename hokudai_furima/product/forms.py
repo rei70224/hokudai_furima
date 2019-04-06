@@ -1,21 +1,24 @@
 from django import forms
 
 from .models import Product, ProductImage, Category
+from hokudai_furima.lecture.models import LectureCategory
 
 
 class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('title', 'description', 'price', 'category', 'access_level')
+        fields = ('title', 'description', 'price', 'category', 'lecture_category', 'access_level')
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
         self.fields['description'].widget.attrs['placeholder'] = '商品の状態（未使用、傷あり等）、その他詳しい説明など'
         self.fields['title'].widget.attrs['placeholder'] = '（例）入門線形代数'
         self.fields['category'].label = 'カテゴリ'
+        self.fields['lecture_category'].label = '科目区分'
 
     category = forms.ModelChoiceField(queryset=Category.objects.all(), empty_label='その他')
+    lecture_category = forms.ModelChoiceField(queryset=LectureCategory.objects.filter(children__isnull=True))
 
 
 class ProductImageForm(forms.ModelForm):
