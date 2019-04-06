@@ -72,12 +72,12 @@ def login(request, backends='django.contrib.auth.backends.ModelBackend'):
 @site_rules_confirm_required
 @login_required
 def mypage(request):
-    wanting_product_list = get_public_product_list(Product.objects.filter(wanting_users=request.user))
-    selling_product_list = Product.objects.filter(seller=request.user)
+    wanting_product_list = get_public_product_list(Product.objects.filter(wanting_users=request.user)).order_by('-id')
+    selling_product_list = Product.objects.filter(seller=request.user).order_by('-id')
     notification_list = fetch_notification_list(request)
     sorted_undone_todo_list = get_undone_todo_list(request.user)
     sorted_done_todo_list = get_done_todo_list(request.user)
-    my_matching_offer_list = MatchingOffer.objects.filter(host=request.user)
+    my_matching_offer_list = MatchingOffer.objects.filter(host=request.user).order_by('-id')
     return render(request, 'account/mypage.html', {'wanting_product_list': wanting_product_list, 'selling_product_list': selling_product_list, 'my_matching_offer_list': my_matching_offer_list, 'notification_list': notification_list, 'done_todo_list': sorted_done_todo_list, 'undone_todo_list': sorted_undone_todo_list})
 
 
