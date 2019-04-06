@@ -97,5 +97,13 @@ input[type=text], .search {
 
 #navbar li a {
   text-decoration: none;
-  color: #000;
+  color: #000; /*.header-button-login と .header-button-signup には !importantで上書きされる*/
+}
+
+.header-button-login {
+  color: white !important;
+}
+
+.header-button-signup {
+  color: white !important;
 }

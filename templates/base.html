@@ -90,10 +90,10 @@
                     </li>
                   {% else %}
                     <li>
-                      <a href="{% url "account:login" %}">ログイン</a>
+                      <a class="btn btn-block btn-info header-button-login" href="{% url "account:login" %}">ログイン</a>
                     </li>
                     <li>
-                      <a href="{% url "account:signup" %}">新規登録</a>
+                      <a class="btn btn-block btn-success header-button-signup" href="{% url "account:signup" %}">新規登録</a>
                     </li>
                   {% endif %}
                 </ul>
@@ -141,10 +141,10 @@
                     {% else %}
                       <ul>
                         <li>
-                          <a href="{% url "account:login" %}">ログイン</a>
+                          <a class="btn btn-block btn-info header-button-login" href="{% url "account:login" %}">ログイン</a>
                         </li>
                         <li>
-                          <a href="{% url "account:signup" %}">新規登録</a>
+                          <a class="btn btn-block btn-success header-button-signup" href="{% url "account:signup" %}">新規登録</a>
                         </li>
                       </ul>
                     {% endif %}
