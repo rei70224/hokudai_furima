@@ -72,7 +72,7 @@ def login(request, backends='django.contrib.auth.backends.ModelBackend'):
 @site_rules_confirm_required
 @login_required
 def mypage(request):
-    wanting_product_list = get_public_product_list(Product.objects.filter(wanting_users=request.user)).order_by('-id')
+    wanting_product_list = get_public_product_list(Product.objects.filter(wanting_users=request.user).order_by('-id'))
     selling_product_list = Product.objects.filter(seller=request.user).order_by('-id')
     notification_list = fetch_notification_list(request)
     sorted_undone_todo_list = get_undone_todo_list(request.user)
