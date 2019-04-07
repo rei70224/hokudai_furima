@@ -1,13 +1,13 @@
 {% load bootstrap4 %}
 <form method="post" action="{% url 'account:login' %}" novalidate>
   {% csrf_token %}
-  <h1>ログイン</h3>
+  <h3>ログイン</h3>
   {% bootstrap_form form layout='virtical' %}
     {% if next %}
       <input type="hidden" name="next" value="{{ next }}" />
     {% endif %}
     <div class="form-group">
-      <button type="submit" class="btn btn-success">
+      <button type="submit" class="btn btn-info">
         ログイン
       </button>
     </div>
