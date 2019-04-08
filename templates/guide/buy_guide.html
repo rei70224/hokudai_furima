@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
+{% block google_adsense %}
+  {% include "google_adsense.html" %}
+{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
   <link rel="stylesheet" href="{% static 'css/buy_guide.css' %}">

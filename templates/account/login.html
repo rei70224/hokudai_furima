@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
-{% block content %} 
+{% block google_adsense %}
+  {% include "google_adsense.html" %}
+{% endblock %}
+{% block content %}
 <div class="container">
 {% include "account/partials/login_form.html" %}
 <a href="{% url 'account:reset-password' %}">パスワードを忘れた場合はこちら</a>

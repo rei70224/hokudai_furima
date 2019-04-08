@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
-{% block content %} 
+{% block google_adsense %}
+  {% include "google_adsense.html" %}
+{% endblock %}
+{% block content %}
 <div class="container">
     <form method="post" action="{% url 'account:signup' %}">
         <h2>新規登録</h2>

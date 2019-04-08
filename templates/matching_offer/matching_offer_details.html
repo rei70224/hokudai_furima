@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load details_images_carousel %}
+{% block google_adsense %}
+  {% include "google_adsense.html" %}
+{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
   <link rel="stylesheet" href="{% static 'css/details_page.css' %}">

@@ -2,6 +2,9 @@
 {% load static %}
 {% load bootstrap4 %}
 {% load show_pagenated_product_list %}
+{% block google_adsense %}
+  {% include "google_adsense.html" %}
+{% endblock %}
 {% block content %}
   <div class="container">
     <h2>科目区分：「{{ lecture_category.name }}」</h2>

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% load show_pagenated_product_list %}
+{% block google_adsense %}
+  {% include "google_adsense.html" %}
+{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/footer_sell_button.css' %}">
 {% endblock %}
