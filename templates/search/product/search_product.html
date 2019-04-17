@@ -10,7 +10,7 @@
 {% block content %}
     <div class="container">
         <div>
-            <form method="GET" class="post-form">{% csrf_token %}
+            <form method="GET" class="post-form">
                 {% bootstrap_form keyword_form layout='virtical' %}
                 <div id="main_suggest_area">
                 </div>
