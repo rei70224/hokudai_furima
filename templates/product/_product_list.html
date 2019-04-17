@@ -15,8 +15,8 @@
               </div>
             {% endif %}
             <div class="square-box">
-              {% if product.productimage_set.all %}
-                <img data-src="{{ product.productimage_set.all.0.thumbnail_url }}" class="lazyload img-fluid">
+              {% if product.productimage_set.first %}
+                <img data-src="{{ product.productimage_set.first.thumbnail_url }}" class="lazyload img-fluid">
               {% else %}
                 <img data-src="{% static 'img/placeholder.png' %}" class="lazyload img-fluid">
               {% endif %}
