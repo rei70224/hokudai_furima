@@ -22,7 +22,7 @@
           {% endif %}
           <div id="carouselIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
             <ol class="carousel-indicators">
-              {% for _ in product.productimage_set.all %}
+              {% for _ in product.productimage_set.all|dictsort:"id" %}
                 {% if forloop.counter0 == 0 %}
                   <li data-target="#carouselIndicators" data-slide-to="{{forloop.counter0}}" class="active"></li>
                 {% else %}
@@ -32,7 +32,7 @@
             </ol>
             <div class="carousel-inner">
               {% if product.productimage_set.all %}
-                {% for image in product.productimage_set.all %}
+                {% for image in product.productimage_set.all|dictsort:"id" %}
                   {% if forloop.counter0 == 0 %}
                     <div class="carousel-item active">
                   {% else %}
