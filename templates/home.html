@@ -57,6 +57,12 @@
         <p>商品はまだ一つも出品されていません。最初の出品者になるチャンスです！<a href="{% url 'product:create_product' %}">出品する</a></p>
       {% endif %}
     </section>
+    <section id="below-latest-product-ad" class="container">
+      <div class="offset-lg-3 col-lg-6 col-12 text-center">
+        <h4>【広告】</h4>
+        <a href="https://twitter.com/_takahashi_____/status/1120269771130322946"><img src="{% static 'img/ad_below_latest_product.jpeg' %}" class="img-fluid"></a>
+      </div>
+    </section>
   </div>
   {% include "footer_sell_button.html" %}
 {% endblock %}
